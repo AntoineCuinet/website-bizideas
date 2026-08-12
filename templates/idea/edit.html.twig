@@ -26,7 +26,13 @@
 
             <div class="form-group">
                 {{ form_label(form.description) }}
-                {{ form_widget(form.description, {'attr': {'class': 'form-control form-textarea', 'placeholder': 'Présentation détaillée du concept...', 'rows': 6}}) }}
+                {{ form_widget(form.description, {'attr': {
+                    'class': 'form-control form-textarea',
+                    'placeholder': 'Présentation détaillée du concept...',
+                    'rows': 6,
+                    'data-controller': 'textarea-autogrow',
+                    'data-action': 'input->textarea-autogrow#autogrow'
+                }}) }}
                 {{ form_errors(form.description) }}
             </div>
 
