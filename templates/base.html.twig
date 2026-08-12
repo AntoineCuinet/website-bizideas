@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="BizIdeas - Organisez, notez et classez vos idées de business en équipe.">
+        
+        <title>{% block title %}BizIdeas{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>💡</text></svg>">
+        
+        <script>
+            // Inline script to prevent theme flashing on load
+            (function() {
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            })();
+        </script>
+
+        {% block stylesheets %}
+        {% endblock %}
+
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    </head>
+    <body>
+        <!-- Flash Messages -->
+        <div class="flash-messages-container">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }} fade-in" data-controller="alert" data-action="click->alert#close">
+                        <span class="alert-message">{{ message|trans }}</span>
+                        <button class="alert-close">✕</button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+
+        <div class="app-layout">
+            {% block body %}{% endblock %}
+        </div>
+    </body>
+</html>
+

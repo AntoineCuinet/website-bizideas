@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>BizIdeas Export</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #1e293b;
+            line-height: 1.5;
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #2563eb;
+            font-size: 24px;
+            margin-bottom: 5px;
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 10px;
+        }
+        .meta-info {
+            color: #64748b;
+            margin-bottom: 30px;
+            font-size: 11px;
+        }
+        .page-break {
+            page-break-after: always;
+        }
+        .idea-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: #ffffff;
+        }
+        .idea-header {
+            margin-bottom: 10px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+        .idea-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+        .idea-rank {
+            float: right;
+            background: #dbeafe;
+            color: #1e40af;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-right: 5px;
+        }
+        .badge-draft { background-color: #64748b; }
+        .badge-adopted { background-color: #10b981; }
+        .badge-abandoned { background-color: #ef4444; }
+        
+        .badge-info {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+
+        .idea-desc {
+            margin: 15px 0;
+            font-size: 12px;
+            color: #334155;
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid #cbd5e1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            text-align: left;
+            padding: 6px 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th {
+            background-color: #f8fafc;
+            font-weight: bold;
+            color: #475569;
+        }
+        .score {
+            font-weight: bold;
+            text-align: center;
+        }
+        .clear {
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ 'app.title'|trans }} - Export des idées de business</h1>
+    <div class="meta-info">
+        Généré le : {{ "now"|date("d/m/Y H:i") }} par {{ currentUser.email }}
+    </div>
+
+    {% for item in rankedIdeas %}
+        {% set idea = item.idea %}
+        {% set globalScore = item.globalScore %}
+        {% set rank = item.rank %}
+        
+        <div class="idea-card {% if not loop.last and loop.index is divisible by(2) %}page-break{% endif %}">
+            <div class="idea-header">
+                <span class="idea-rank">Rang #{{ rank }}</span>
+                <span class="idea-title">{{ idea.title }}</span>
+                <div class="clear"></div>
+                <div style="margin-top: 5px;">
+                    <span class="badge badge-{{ idea.status }}">{{ ('status.' ~ idea.status)|trans }}</span>
+                    <span class="badge badge-info">{{ ('revenue.' ~ idea.revenueModel)|trans }}</span>
+                    <span class="badge badge-info">{{ ('audience.' ~ idea.targetAudience)|trans }}</span>
+                    <span style="color: #94a3b8; font-size: 10px; margin-left: 10px;">
+                        Créé par {{ idea.creator.email }} le {{ idea.createdAt|date("d/m/Y H:i") }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="idea-desc">
+                {{ idea.description|nl2br }}
+            </div>
+
+            <h4 style="margin-bottom: 5px; color: #1e293b;">Détail des évaluations (Note globale: {% if globalScore > 0 %}{{ globalScore }}/5{% else %}N/A{% endif %})</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 50%;">Critère</th>
+                        <th style="width: 25%; text-align: center;">Auto-évaluation (Créateur)</th>
+                        <th style="width: 25%; text-align: center;">Moyenne collaborateurs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set creatorRating = idea.ratingByUser(idea.creator) %}
+                    
+                    {# Find another rating #}
+                    {% set otherRating = null %}
+                    {% for r in idea.ratings %}
+                        {% if r.user.id != idea.creator.id %}
+                            {% set otherRating = r %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% for key, config in criteria %}
+                        <tr>
+                            <td>
+                                <strong>{{ config.label|trans }}</strong><br>
+                                <span style="font-size: 10px; color: #64748b;">{{ config.description|trans }}</span>
+                            </td>
+                            <td class="score">
+                                {% if creatorRating and creatorRating.scoreFor(key) is not null %}
+                                    {{ creatorRating.scoreFor(key) }} / 5
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td class="score">
+                                {% if otherRating and otherRating.scoreFor(key) is not null %}
+                                    {{ otherRating.scoreFor(key) }} / 5
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>{{ 'app.no_ideas'|trans }}</p>
+    {% endfor %}
+</body>
+</html>

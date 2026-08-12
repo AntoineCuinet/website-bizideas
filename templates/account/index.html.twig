@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'app.account'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    <div class="form-header">
+        <a href="{{ path('app_home') }}" class="btn-back">← Retour</a>
+        <h1>👤 {{ 'app.account'|trans }}</h1>
+        <p class="form-subtitle">Gérez vos informations de connexion et personnalisez la pondération de vos critères.</p>
+    </div>
+
+    {{ form_start(form, {'attr': {'class': 'standard-form'}}) }}
+        <!-- Personal Information Card -->
+        <div class="form-card">
+            <h2>🔒 {{ 'app.account_info'|trans }}</h2>
+            
+            <div class="form-group">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.email) }}
+            </div>
+
+            <div class="form-row-2">
+                <div class="form-group">
+                    {{ form_label(form.plainPassword.first) }}
+                    {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control', 'autocomplete': 'new-password'}}) }}
+                    {{ form_errors(form.plainPassword.first) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.plainPassword.second) }}
+                    {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control', 'autocomplete': 'new-password'}}) }}
+                    {{ form_errors(form.plainPassword.second) }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Preferences Card -->
+        <div class="form-card">
+            <h2>⚖️ {{ 'app.preferences'|trans }}</h2>
+            <p class="section-help-text">{{ 'app.preferences_intro'|trans }}</p>
+
+            <div class="preferences-grid">
+                {% for child in form %}
+                    {% if child.vars.name starts with 'pref_' %}
+                        <div class="preference-field-row">
+                            <div class="preference-info">
+                                <label class="preference-title-label">{{ child.vars.label|trans }}</label>
+                            </div>
+                            <div class="preference-input">
+                                {{ form_widget(child, {'attr': {'class': 'form-control preference-select-widget'}}) }}
+                                {{ form_errors(child) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions-bar">
+            <a href="{{ path('app_home') }}" class="btn btn-secondary btn-lg">{{ 'app.cancel'|trans }}</a>
+            <button type="submit" class="btn btn-primary btn-lg">💾 {{ 'app.save'|trans }}</button>
+        </div>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

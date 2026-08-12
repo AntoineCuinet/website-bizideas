@@ -1,0 +1,142 @@
+app:
+    title: "BizIdeas"
+    subtitle: "Organisez et classez vos idées de business à deux (ou plus) facilement"
+    login: "Se connecter"
+    logout: "Se déconnecter"
+    home: "Accueil"
+    account: "Mon Compte"
+    add_idea: "Ajouter une idée"
+    edit_idea: "Modifier l'idée"
+    delete_idea: "Supprimer l'idée"
+    delete_confirm: "Êtes-vous sûr de vouloir supprimer cette idée ?"
+    save: "Sauvegarder"
+    cancel: "Annuler"
+    export: "Exporter"
+    export.csv: "Format CSV"
+    export.md: "Format Markdown"
+    export.pdf: "Format PDF"
+    no_ideas: "Aucune idée de business pour le moment."
+    created_by: "Créé par %email%"
+    created_at: "Le %date%"
+    global_score: "Note globale"
+    user_score: "Ma note"
+    other_score: "Note de l'autre"
+    not_rated: "Non noté"
+    rank: "Classement"
+    rank_number: "Rang #%rank%"
+    details: "Détails de l'idée"
+    status: "Statut"
+    revenue_model: "Modèle de revenus"
+    target_audience: "Public ciblé"
+    stars: "étoiles"
+    rate_this_idea: "Noter l'idée"
+    rate_title: "Noter : %title%"
+    rating_preview: "Estimation de la note :"
+    login_title: "Connexion"
+    login_intro: "Veuillez vous authentifier pour accéder à l'application BizIdeas"
+    login_button: "Connexion"
+    login_error: "Identifiants invalides."
+    sorting: "Trier par"
+    sorting.global_score: "Meilleure note"
+    sorting.last_added: "Dernier ajout"
+    sorting.created_by_me: "Créé par moi"
+    sorting.created_by_other: "Créé par l'autre"
+    sorting.status: "Par statut"
+    preferences: "Mes préférences d'importance"
+    preferences_intro: "Personnalisez l'importance de chaque critère de notation. Vos préférences influencent directement le calcul de la note globale et le classement des idées sur votre page d'accueil."
+    account_info: "Informations personnelles"
+    email_label: "Adresse email"
+    password_label: "Nouveau mot de passe"
+    password_confirm_label: "Confirmer le mot de passe"
+    password_help: "Laissez vide pour conserver le mot de passe actuel."
+    success_account_updated: "Votre compte a bien été mis à jour."
+    success_idea_created: "L'idée de business a été créée et vos collaborateurs ont été notifiés."
+    success_idea_updated: "L'idée de business a bien été modifiée."
+    success_idea_deleted: "L'idée de business a bien été supprimée."
+    success_rating_saved: "Votre évaluation a bien été enregistrée."
+    self_evaluation: "Auto-évaluation"
+    other_evaluations: "Évaluations des collaborateurs"
+
+status:
+    draft: "Brouillon"
+    adopted: "Adopté"
+    abandoned: "Abandonné"
+
+revenue:
+    single: "Paiement unique"
+    recurring: "Récurrent / Abonnement"
+    both: "Les deux"
+
+audience:
+    b2b: "Entreprises (B2B)"
+    b2c: "Particuliers (B2C)"
+    both: "Les deux"
+
+weight:
+    low: "Faible"
+    medium: "Moyenne"
+    high: "Élevée"
+
+criteria:
+    profitability:
+        label: "Rentabilité"
+        description: "Potentiel de marge ou de revenus élevés"
+    feasibility:
+        label: "Faisabilité"
+        description: "Facilité de mise en œuvre avec vos compétences actuelles"
+    market:
+        label: "Marché"
+        description: "Volume et potentiel de clients touchés"
+    originality:
+        label: "Originalité"
+        description: "Facteur de différenciation par rapport à la concurrence"
+    scalability:
+        label: "Croissance"
+        description: "Potentiel d'évolution et de scalabilité dans le temps"
+    development_time:
+        label: "Temps de développement"
+        description: "Combien de temps faut-il pour sortir un MVP"
+    pleasure:
+        label: "Plaisir / Envie"
+        description: "Est-ce que l'idée est motivante et agréable à développer"
+    launch_cost:
+        label: "Coût de lancement"
+        description: "Budget initial nécessaire pour démarrer"
+    legal_complexity:
+        label: "Complexité juridique"
+        description: "Niveau de risque ou de règles à respecter"
+
+email:
+    new_idea:
+        subject: "[BizIdeas] Nouvelle idée : %title%"
+        title: "Nouvelle idée de business"
+        intro: "%creator% a ajouté une nouvelle idée de business sur l'application."
+        call_to_action: "Vous pouvez la consulter et lui attribuer une note dès maintenant :"
+        button: "Voir et Noter l'idée"
+    footer: "Cet email a été envoyé automatiquement depuis votre application BizIdeas."
+
+security:
+    email:
+        blank: "Veuillez renseigner une adresse email."
+        invalid: "L'adresse email n'est pas valide."
+    password:
+        blank: "Veuillez renseigner un mot de passe."
+        mismatch: "Les mots de passe ne correspondent pas."
+
+idea:
+    title:
+        label: "Titre de l'idée"
+        blank: "Le titre de l'idée ne peut pas être vide."
+        max_length: "Le titre de l'idée ne peut pas dépasser 255 caractères."
+    description:
+        label: "Description"
+        blank: "La description de l'idée ne peut pas être vide."
+    status:
+        label: "Statut"
+        blank: "Le statut est obligatoire."
+    revenue_model:
+        label: "Modèle de revenus"
+        blank: "Le modèle de revenus est obligatoire."
+    target_audience:
+        label: "Public ciblé"
+        blank: "Le public cible est obligatoire."

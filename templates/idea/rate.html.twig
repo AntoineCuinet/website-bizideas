@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'app.rate_this_idea'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+<div class="form-container" 
+     data-controller="live-rating-preview" 
+     data-action="change->live-rating-preview#update"
+     data-live-rating-preview-weights-value="{{ app.user.preferences ? app.user.preferences|json_encode : '{}' }}">
+    
+    <div class="form-header">
+        <a href="{{ path('app_home') }}" class="btn-back">← Retour</a>
+        <h1>⭐ {{ 'app.rate_title'|trans({'%title%': idea.title}) }}</h1>
+        <p class="form-subtitle">Attribuez votre évaluation sur les critères suivants pour cette idée.</p>
+    </div>
+
+    <!-- Read-only idea summary -->
+    <div class="idea-summary-card">
+        <span class="idea-badge-status badge-{{ idea.status }}">{{ ('status.' ~ idea.status)|trans }}</span>
+        <h3>{{ idea.title }}</h3>
+        <p class="summary-creator">Créé par {{ idea.creator.email }}</p>
+        <div class="summary-desc">
+            {{ idea.description|nl2br }}
+        </div>
+        <div class="summary-meta-tags">
+            <span class="meta-tag">{{ ('revenue.' ~ idea.revenueModel)|trans }}</span>
+            <span class="meta-tag">{{ ('audience.' ~ idea.targetAudience)|trans }}</span>
+        </div>
+    </div>
+
+    {{ form_start(form, {'attr': {'class': 'standard-form'}}) }}
+        <div class="form-card">
+            <div class="rating-header-sticky">
+                <h2>📊 Évaluation des critères</h2>
+                <div class="live-score-preview-box">
+                    {{ 'app.rating_preview'|trans }} 
+                    <span class="preview-number" data-live-rating-preview-target="preview">-</span>
+                </div>
+            </div>
+            
+            <div class="criteria-form-list">
+                {% for child in form %}
+                    {% if child.vars.name starts with 'rating_' %}
+                        <div class="criterion-field-row">
+                            <div class="criterion-label-col">
+                                <label class="criterion-title-label">{{ child.vars.label|trans }}</label>
+                                <span class="criterion-help-text">{{ child.vars.help|trans }}</span>
+                            </div>
+                            <div class="criterion-input-col">
+                                <div class="stars-radio-group">
+                                    {% for radio in child %}
+                                        <label class="star-radio-label">
+                                            {{ form_widget(radio, {'attr': {
+                                                'data-action': 'change->live-rating-preview#update',
+                                                'data-criterion': child.vars.name|replace({'rating_': ''}),
+                                                'class': 'star-radio-input'
+                                            }}) }}
+                                            <span class="star-icon">★</span>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-actions-bar">
+            <a href="{{ path('app_home') }}" class="btn btn-secondary btn-lg">{{ 'app.cancel'|trans }}</a>
+            <button type="submit" class="btn btn-accent btn-lg">⭐ {{ 'app.save'|trans }}</button>
+        </div>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

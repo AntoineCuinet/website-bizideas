@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'app.edit_idea'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+<div class="form-container" 
+     data-controller="live-rating-preview" 
+     data-action="change->live-rating-preview#update"
+     data-live-rating-preview-weights-value="{{ app.user.preferences ? app.user.preferences|json_encode : '{}' }}">
+    
+    <div class="form-header">
+        <a href="{{ path('app_home') }}" class="btn-back">← Retour</a>
+        <h1>✏️ {{ 'app.edit_idea'|trans }}</h1>
+        <p class="form-subtitle">Mettez à jour les détails du concept et modifiez votre auto-évaluation.</p>
+    </div>
+
+    {{ form_start(form, {'attr': {'class': 'standard-form'}}) }}
+        <div class="form-card">
+            <h2>📝 Détails du projet</h2>
+            
+            <div class="form-group">
+                {{ form_label(form.title) }}
+                {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Ex: SaaS de facturation pour freelances'}}) }}
+                {{ form_errors(form.title) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control form-textarea', 'placeholder': 'Présentation détaillée du concept...', 'rows': 6}}) }}
+                {{ form_errors(form.description) }}
+            </div>
+
+            <div class="form-row-3">
+                <div class="form-group">
+                    {{ form_label(form.status) }}
+                    {{ form_widget(form.status, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.status) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.revenueModel) }}
+                    {{ form_widget(form.revenueModel, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.revenueModel) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.targetAudience) }}
+                    {{ form_widget(form.targetAudience, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.targetAudience) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <div class="rating-header-sticky">
+                <h2>⭐ {{ 'app.self_evaluation'|trans }}</h2>
+                <div class="live-score-preview-box">
+                    {{ 'app.rating_preview'|trans }} 
+                    <span class="preview-number" data-live-rating-preview-target="preview">-</span>
+                </div>
+            </div>
+            
+            <div class="criteria-form-list">
+                {% for child in form %}
+                    {% if child.vars.name starts with 'rating_' %}
+                        <div class="criterion-field-row">
+                            <div class="criterion-label-col">
+                                <label class="criterion-title-label">{{ child.vars.label|trans }}</label>
+                                <span class="criterion-help-text">{{ child.vars.help|trans }}</span>
+                            </div>
+                            <div class="criterion-input-col">
+                                <div class="stars-radio-group">
+                                    {% for radio in child %}
+                                        <label class="star-radio-label">
+                                            {{ form_widget(radio, {'attr': {
+                                                'data-action': 'change->live-rating-preview#update',
+                                                'data-criterion': child.vars.name|replace({'rating_': ''}),
+                                                'class': 'star-radio-input'
+                                            }}) }}
+                                            <span class="star-icon">★</span>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-actions-bar">
+            <a href="{{ path('app_home') }}" class="btn btn-secondary btn-lg">{{ 'app.cancel'|trans }}</a>
+            <button type="submit" class="btn btn-primary btn-lg">💾 {{ 'app.save'|trans }}</button>
+        </div>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

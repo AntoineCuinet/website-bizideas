@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'app.title'|trans }} - {{ 'app.subtitle'|trans }}{% endblock %}
+
+{% block body %}
+<div class="landing-container">
+    <div class="landing-content">
+        <h1 class="landing-logo">{{ 'app.title'|trans }}</h1>
+        <p class="landing-tagline">{{ 'app.subtitle'|trans }}</p>
+        
+        <div class="landing-features">
+            <div class="feature-card">
+                <div class="feature-icon">💡</div>
+                <h3 class="feature-title">Ajoutez vos idées</h3>
+                <p class="feature-desc">Renseignez vos idées de business et complétez votre auto-évaluation sur 9 critères clés.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <h3 class="feature-title">Collaborez</h3>
+                <p class="feature-desc">Votre collaborateur est notifié automatiquement pour noter vos idées et donner son avis.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚖️</div>
+                <h3 class="feature-title">Pondération personnalisée</h3>
+                <p class="feature-desc">Définissez l'importance de chaque critère pour adapter le classement global à votre profil.</p>
+            </div>
+        </div>
+
+        <div class="landing-actions">
+            <a href="{{ path('app_login') }}" class="btn btn-primary btn-large">
+                {{ 'app.login'|trans }}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

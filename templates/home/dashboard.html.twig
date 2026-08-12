@@ -1,0 +1,234 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'app.home'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+<div class="dashboard-container" data-controller="modal-manager">
+    <!-- Header/Navigation Bar -->
+    <header class="app-header">
+        <div class="header-logo">
+            <span class="logo-text">BizIdeas</span>
+        </div>
+        <div class="header-nav">
+            <button id="theme-toggle" class="btn btn-icon theme-btn" aria-label="Toggle theme">
+                <span class="theme-icon-light">☀️</span>
+                <span class="theme-icon-dark">🌙</span>
+            </button>
+            <a href="{{ path('app_account') }}" class="btn btn-secondary nav-link">
+                <span>👤 {{ 'app.account'|trans }}</span>
+            </a>
+            <a href="{{ path('app_logout') }}" class="btn btn-danger nav-link">
+                <span>🚪 {{ 'app.logout'|trans }}</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="dashboard-content">
+        <!-- Filter / Export Toolbar -->
+        <section class="toolbar-section">
+            <div class="toolbar-sort">
+                <label for="sort-select" class="sort-label">{{ 'app.sorting'|trans }} :</label>
+                <div class="select-wrapper">
+                    <select id="sort-select" class="sort-select" onchange="window.location.href = '?sort=' + this.value">
+                        <option value="global_score" {% if sortBy == 'global_score' %}selected{% endif %}>{{ 'app.sorting.global_score'|trans }}</option>
+                        <option value="last_added" {% if sortBy == 'last_added' %}selected{% endif %}>{{ 'app.sorting.last_added'|trans }}</option>
+                        <option value="created_by_me" {% if sortBy == 'created_by_me' %}selected{% endif %}>{{ 'app.sorting.created_by_me'|trans }}</option>
+                        <option value="created_by_other" {% if sortBy == 'created_by_other' %}selected{% endif %}>{{ 'app.sorting.created_by_other'|trans }}</option>
+                        <option value="status" {% if sortBy == 'status' %}selected{% endif %}>{{ 'app.sorting.status'|trans }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="toolbar-export">
+                <span class="export-label">📥 {{ 'app.export'|trans }} :</span>
+                <div class="export-buttons">
+                    <a href="?sort={{ sortBy }}&export=csv" class="btn btn-sm btn-outline">{{ 'app.export.csv'|trans }}</a>
+                    <a href="?sort={{ sortBy }}&export=markdown" class="btn btn-sm btn-outline">{{ 'app.export.md'|trans }}</a>
+                    <a href="?sort={{ sortBy }}&export=pdf" class="btn btn-sm btn-outline">{{ 'app.export.pdf'|trans }}</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ideas List Grid -->
+        <section class="ideas-section">
+            <div class="ideas-grid">
+                {% for item in rankedIdeas %}
+                    {% set idea = item.idea %}
+                    {% set globalScore = item.globalScore %}
+                    {% set rank = item.rank %}
+                    {% set isOwn = (idea.creator.id == app.user.id) %}
+
+                    <div class="idea-card {% if isOwn %}idea-card-own{% else %}idea-card-other{% endif %}" 
+                         data-action="click->modal-manager#open" 
+                         data-idea-id="{{ idea.id }}">
+                        
+                        <div class="idea-card-header">
+                            <span class="idea-badge-rank">#{{ rank }}</span>
+                            <span class="idea-badge-status badge-{{ idea.status }}">{{ ('status.' ~ idea.status)|trans }}</span>
+                        </div>
+
+                        <h2 class="idea-card-title">{{ idea.title }}</h2>
+                        
+                        <p class="idea-card-creator">
+                            {% if isOwn %}
+                                👤 {{ 'app.created_by'|trans({'%email%': 'Moi'}) }}
+                            {% else %}
+                                👥 {{ 'app.created_by'|trans({'%email%': idea.creator.email}) }}
+                            {% endif %}
+                        </p>
+
+                        <div class="idea-card-scores">
+                            <div class="score-block">
+                                <span class="score-title">{{ 'app.global_score'|trans }}</span>
+                                <span class="score-value">
+                                    {% if globalScore > 0 %}
+                                        ⭐ {{ globalScore }}/5
+                                    {% else %}
+                                        {{ 'app.not_rated'|trans }}
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="idea-card-meta">
+                            <span class="meta-tag">{{ ('revenue.' ~ idea.revenueModel)|trans }}</span>
+                            <span class="meta-tag">{{ ('audience.' ~ idea.targetAudience)|trans }}</span>
+                        </div>
+
+                        <div class="idea-card-actions" data-action="click->stop">
+                            {% if isOwn %}
+                                <a href="{{ path('app_idea_edit', {id: idea.id}) }}" class="btn btn-xs btn-primary">✏️ Modifier</a>
+                                <form action="{{ path('app_idea_delete', {id: idea.id}) }}" method="post" class="inline-form" onsubmit="return confirm('{{ 'app.delete_confirm'|trans }}')">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ idea.id) }}">
+                                    <button type="submit" class="btn btn-xs btn-danger">🗑️ Supprimer</button>
+                                </form>
+                            {% else %}
+                                {% set rating = idea.ratingByUser(app.user) %}
+                                <a href="{{ path('app_idea_rate', {id: idea.id}) }}" class="btn btn-xs btn-accent">
+                                    {% if rating %}⭐ Modifier note{% else %}⭐ Noter{% endif %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Idea Detail Modal Dialog -->
+                    <dialog id="modal-{{ idea.id }}" class="idea-modal" data-modal-manager-target="modal" data-auto-open="{{ openIdeaItem and openIdeaItem.idea.id == idea.id ? 'true' : 'false' }}">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <span class="modal-rank">Rang #{{ rank }}</span>
+                                <button class="btn-close" data-action="click->modal-manager#close" data-idea-id="{{ idea.id }}">✕</button>
+                            </div>
+                            
+                            <div class="modal-title-area">
+                                <span class="idea-badge-status badge-{{ idea.status }}">{{ ('status.' ~ idea.status)|trans }}</span>
+                                <h2>{{ idea.title }}</h2>
+                                <p class="modal-meta-text">
+                                    Créé par {{ idea.creator.email }} le {{ idea.createdAt|date("d/m/Y H:i") }}
+                                </p>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="modal-desc-box">
+                                    {{ idea.description|nl2br }}
+                                </div>
+
+                                <div class="modal-info-grid">
+                                    <div class="info-item">
+                                        <span class="info-label">{{ 'app.revenue_model'|trans }}</span>
+                                        <span class="info-val">{{ ('revenue.' ~ idea.revenueModel)|trans }}</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">{{ 'app.target_audience'|trans }}</span>
+                                        <span class="info-val">{{ ('audience.' ~ idea.targetAudience)|trans }}</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">{{ 'app.global_score'|trans }}</span>
+                                        <span class="info-val highlight">
+                                            {% if globalScore > 0 %}⭐ {{ globalScore }}/5{% else %}-{% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="modal-ratings-comparison">
+                                    <h3>📊 {{ 'app.self_evaluation'|trans }} vs {{ 'app.other_evaluations'|trans }}</h3>
+                                    
+                                    {% set creatorRating = idea.ratingByUser(idea.creator) %}
+                                    {# Find the other user rating #}
+                                    {% set otherRating = null %}
+                                    {% for r in idea.ratings %}
+                                        {% if r.user.id != idea.creator.id %}
+                                            {% set otherRating = r %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <div class="criteria-list">
+                                        {% for cKey, cConfig in criteria %}
+                                            {% set cCreatorScore = creatorRating ? creatorRating.scoreFor(cKey) : null %}
+                                            {% set cOtherScore = otherRating ? otherRating.scoreFor(cKey) : null %}
+                                            
+                                            <div class="criterion-row">
+                                                <div class="criterion-info">
+                                                    <span class="criterion-name">{{ cConfig.label|trans }}</span>
+                                                    <span class="criterion-desc">{{ cConfig.description|trans }}</span>
+                                                </div>
+                                                <div class="criterion-scores">
+                                                    <div class="score-line">
+                                                        <span class="score-line-label">Créateur :</span>
+                                                        <div class="stars-display">
+                                                            {% if cCreatorScore %}
+                                                                {% for i in 1..5 %}
+                                                                    <span class="star {% if i <= cCreatorScore %}star-filled{% endif %}">★</span>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <span class="star-none">-</span>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="score-line">
+                                                        <span class="score-line-label">Collaborateurs :</span>
+                                                        <div class="stars-display">
+                                                            {% if cOtherScore %}
+                                                                {% for i in 1..5 %}
+                                                                    <span class="star {% if i <= cOtherScore %}star-filled-other{% endif %}">★</span>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <span class="star-none">-</span>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                {% if isOwn %}
+                                    <a href="{{ path('app_idea_edit', {id: idea.id}) }}" class="btn btn-primary">✏️ Modifier l'idée</a>
+                                {% else %}
+                                    <a href="{{ path('app_idea_rate', {id: idea.id}) }}" class="btn btn-accent">
+                                        {% if otherRating %}⭐ Modifier mon évaluation{% else %}⭐ Évaluer cette idée{% endif %}
+                                    </a>
+                                {% endif %}
+                                <button class="btn btn-secondary" data-action="click->modal-manager#close" data-idea-id="{{ idea.id }}">{{ 'app.cancel'|trans }}</button>
+                            </div>
+                        </div>
+                    </dialog>
+                {% endfor %}
+            </div>
+
+            {% if rankedIdeas|length == 0 %}
+                <div class="no-ideas-card">
+                    <p>{{ 'app.no_ideas'|trans }}</p>
+                </div>
+            {% endif %}
+        </section>
+    </main>
+
+    <!-- Floating Action Button -->
+    <a href="{{ path('app_idea_new') }}" class="fab-btn" title="{{ 'app.add_idea'|trans }}">
+        <span class="fab-icon">➕</span>
+    </a>
+</div>
+{% endblock %}

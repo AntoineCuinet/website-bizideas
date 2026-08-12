@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'app.login_title'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h1 class="login-title">{{ 'app.title'|trans }}</h1>
+            <p class="login-subtitle">{{ 'app.login_intro'|trans }}</p>
+        </div>
+
+        <form method="post" action="{{ path('app_login') }}" class="login-form">
+            {% if error %}
+                <div class="alert alert-error">
+                    {{ 'app.login_error'|trans }}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="inputEmail" class="form-label">{{ 'app.email_label'|trans }}</label>
+                <input type="email" value="{{ last_username }}" name="_username" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="inputPassword" class="form-label">{{ 'app.password_label'|trans }}</label>
+                <input type="password" name="_password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="login-actions">
+                <button type="submit" class="btn btn-primary btn-block">
+                    {{ 'app.login_button'|trans }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
