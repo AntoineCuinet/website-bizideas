@@ -2,7 +2,7 @@
 
 /* 1. Landing Page */
 .landing-container {
-    min-height: 100vh;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -78,7 +78,7 @@
 
 /* 2. Login Page */
 .login-container {
-    min-height: 100vh;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -116,7 +116,7 @@
 
 /* 3. Dashboard */
 .dashboard-container {
-    min-height: 100vh;
+    flex: 1;
     display: flex;
     flex-direction: column;
 }
@@ -540,14 +540,16 @@
 .app-main-content {
     flex: 1 0 auto;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .app-footer-global {
+    margin-top: auto;
     flex-shrink: 0;
     background-color: var(--bg-secondary);
     border-top: 1px solid var(--border-color);
     padding: 1.5rem 1rem;
-    margin-top: 3rem;
 }
 
 .footer-container {
