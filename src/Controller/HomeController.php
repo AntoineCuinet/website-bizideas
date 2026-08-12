@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\BusinessIdeaRepository;
+use App\Repository\UserRepository;
 use App\Service\CriteriaManager;
 use App\Service\ExportService;
 use App\Service\RatingService;
@@ -18,6 +19,7 @@ class HomeController extends AbstractController
     public function index(
         Request $request,
         BusinessIdeaRepository $businessIdeaRepository,
+        UserRepository $userRepository,
         RatingService $ratingService,
         ExportService $exportService
     ): Response {
@@ -62,11 +64,21 @@ class HomeController extends AbstractController
             }
         }
 
+        // Fetch all other users
+        $allUsers = $userRepository->findAll();
+        $collaboratorEmails = [];
+        foreach ($allUsers as $u) {
+            if ($u->getId() !== $user->getId()) {
+                $collaboratorEmails[] = $u->getEmail();
+            }
+        }
+
         return $this->render('home/dashboard.html.twig', [
             'rankedIdeas' => $rankedIdeas,
             'sortBy' => $sortBy,
             'openIdeaItem' => $openIdeaItem,
             'criteria' => CriteriaManager::getRatedCriteria(),
+            'collaboratorEmails' => $collaboratorEmails,
         ]);
     }
 }

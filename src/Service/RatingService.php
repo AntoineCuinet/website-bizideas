@@ -84,9 +84,19 @@ class RatingService
         // First compute scores for all ideas relative to current user
         $scoredIdeas = [];
         foreach ($ideas as $idea) {
+            $ratingsData = [];
+            foreach ($idea->getRatings() as $rating) {
+                $ratingsData[] = [
+                    'email' => $rating->getUser()->getEmail(),
+                    'score' => $this->calculateRatingScore($rating, $currentUser),
+                    'isCreator' => ($rating->getUser()->getId() === $idea->getCreator()->getId()),
+                ];
+            }
+
             $scoredIdeas[] = [
                 'idea' => $idea,
                 'globalScore' => $this->calculateIdeaGlobalScore($idea, $currentUser),
+                'ratingsData' => $ratingsData,
             ];
         }
 
@@ -122,14 +132,14 @@ class RatingService
                     case 'last_added':
                         return $b['idea']->getCreatedAt() <=> $a['idea']->getCreatedAt();
                     case 'created_by_me':
-                        $aIsMe = ($a['idea']->getCreator() === $currentUser);
-                        $bIsMe = ($b['idea']->getCreator() === $currentUser);
+                        $aIsMe = ($a['idea']->getCreator()->getId() === $currentUser->getId());
+                        $bIsMe = ($b['idea']->getCreator()->getId() === $currentUser->getId());
                         if ($aIsMe && !$bIsMe) return -1;
                         if (!$aIsMe && $bIsMe) return 1;
                         return $b['idea']->getCreatedAt() <=> $a['idea']->getCreatedAt();
                     case 'created_by_other':
-                        $aIsMe = ($a['idea']->getCreator() === $currentUser);
-                        $bIsMe = ($b['idea']->getCreator() === $currentUser);
+                        $aIsMe = ($a['idea']->getCreator()->getId() === $currentUser->getId());
+                        $bIsMe = ($b['idea']->getCreator()->getId() === $currentUser->getId());
                         if (!$aIsMe && $bIsMe) return -1;
                         if ($aIsMe && !$bIsMe) return 1;
                         return $b['idea']->getCreatedAt() <=> $a['idea']->getCreatedAt();

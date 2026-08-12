@@ -33,7 +33,13 @@
                         <option value="global_score" {% if sortBy == 'global_score' %}selected{% endif %}>{{ 'app.sorting.global_score'|trans }}</option>
                         <option value="last_added" {% if sortBy == 'last_added' %}selected{% endif %}>{{ 'app.sorting.last_added'|trans }}</option>
                         <option value="created_by_me" {% if sortBy == 'created_by_me' %}selected{% endif %}>{{ 'app.sorting.created_by_me'|trans }}</option>
-                        <option value="created_by_other" {% if sortBy == 'created_by_other' %}selected{% endif %}>{{ 'app.sorting.created_by_other'|trans }}</option>
+                        <option value="created_by_other" {% if sortBy == 'created_by_other' %}selected{% endif %}>
+                            {% if collaboratorEmails|length == 1 %}
+                                {{ 'app.sorting.created_by_other_param'|trans({'%email%': collaboratorEmails[0]}) }}
+                            {% else %}
+                                {{ 'app.sorting.created_by_other'|trans }}
+                            {% endif %}
+                        </option>
                         <option value="status" {% if sortBy == 'status' %}selected{% endif %}>{{ 'app.sorting.status'|trans }}</option>
                     </select>
                 </div>
@@ -88,6 +94,25 @@
                                     {% endif %}
                                 </span>
                             </div>
+                            
+                            {% if item.ratingsData is not empty %}
+                                <div class="individual-scores-list">
+                                    {% for rData in item.ratingsData %}
+                                        <div class="score-block-individual">
+                                            <span class="score-title-individual">
+                                                {% if rData.email == app.user.email %}
+                                                    {{ 'app.user_score'|trans }}
+                                                {% else %}
+                                                    {{ 'app.other_score'|trans({'%email%': rData.email}) }}
+                                                {% endif %} :
+                                            </span>
+                                            <span class="score-value-individual">
+                                                ⭐ {{ rData.score }}/5
+                                            </span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
 
                         <div class="idea-card-meta">
@@ -172,30 +197,56 @@
                                                     <span class="criterion-desc">{{ cConfig.description|trans }}</span>
                                                 </div>
                                                 <div class="criterion-scores">
+                                                    {# Show creator rating #}
+                                                    {% set creatorRating = idea.ratingByUser(idea.creator) %}
+                                                    {% set creatorScore = creatorRating ? creatorRating.scoreFor(cKey) : null %}
+                                                    {% set creatorIsMe = (idea.creator.id == app.user.id) %}
                                                     <div class="score-line">
-                                                        <span class="score-line-label">Créateur :</span>
+                                                        <span class="score-line-label">{% if creatorIsMe %}Ma note :{% else %}Note de {{ idea.creator.email }} :{% endif %}</span>
                                                         <div class="stars-display">
-                                                            {% if cCreatorScore %}
+                                                            {% if creatorScore %}
                                                                 {% for i in 1..5 %}
-                                                                    <span class="star {% if i <= cCreatorScore %}star-filled{% endif %}">★</span>
+                                                                    <span class="star {% if i <= creatorScore %}star-filled{% endif %}">★</span>
                                                                 {% endfor %}
                                                             {% else %}
                                                                 <span class="star-none">-</span>
                                                             {% endif %}
                                                         </div>
                                                     </div>
-                                                    <div class="score-line">
-                                                        <span class="score-line-label">Collaborateurs :</span>
-                                                        <div class="stars-display">
-                                                            {% if cOtherScore %}
-                                                                {% for i in 1..5 %}
-                                                                    <span class="star {% if i <= cOtherScore %}star-filled-other{% endif %}">★</span>
-                                                                {% endfor %}
-                                                            {% else %}
-                                                                <span class="star-none">-</span>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
+                                                    
+                                                    {# Show other ratings #}
+                                                    {% set hasOther = false %}
+                                                    {% for r in idea.ratings %}
+                                                        {% if r.user.id != idea.creator.id %}
+                                                            {% set hasOther = true %}
+                                                            {% set oScore = r.scoreFor(cKey) %}
+                                                            {% set oIsMe = (r.user.id == app.user.id) %}
+                                                            <div class="score-line">
+                                                                <span class="score-line-label">{% if oIsMe %}Ma note :{% else %}Note de {{ r.user.email }} :{% endif %}</span>
+                                                                <div class="stars-display">
+                                                                    {% if oScore %}
+                                                                        {% for i in 1..5 %}
+                                                                            <span class="star {% if i <= oScore %}star-filled-other{% endif %}">★</span>
+                                                                        {% endfor %}
+                                                                    {% else %}
+                                                                        <span class="star-none">-</span>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    
+                                                    {# If no other ratings, show placeholder for the other user(s) #}
+                                                    {% if not hasOther %}
+                                                        {% for cEmail in collaboratorEmails %}
+                                                            <div class="score-line">
+                                                                <span class="score-line-label">Note de {{ cEmail }} :</span>
+                                                                <div class="stars-display">
+                                                                    <span class="star-none">-</span>
+                                                                </div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         {% endfor %}
