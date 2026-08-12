@@ -254,7 +254,6 @@
     
     &:hover {
         transform: translateY(-4px);
-        box-shadow: var(--shadow-card);
     }
 }
 
@@ -263,12 +262,22 @@
     background-color: var(--card-own-bg);
     border-color: var(--card-own-border);
     border-top: 4px solid var(--card-own-accent);
+    
+    &:hover {
+        background-color: var(--card-own-bg-hover);
+        box-shadow: var(--card-own-shadow-hover);
+    }
 }
 
 .idea-card-other {
     background-color: var(--card-other-bg);
     border-color: var(--card-other-border);
     border-top: 4px solid var(--card-other-accent);
+    
+    &:hover {
+        background-color: var(--card-other-bg-hover);
+        box-shadow: var(--card-other-shadow-hover);
+    }
 }
 
 .idea-card-header {
