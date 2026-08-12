@@ -1,5 +1,7 @@
 # 💡 Biz-Ideas
 
+Voir le site en ligne : [https://bizideas.acuinet.fr](https://bizideas.acuinet.fr)
+
 BizIdeas est une application web moderne, légère et performante, développée avec **Symfony 8**, **MySQL** et **Sass (SCSS)**. Elle permet d'organiser, de noter et de classer collaborativement des idées de business.
 
 L'application est conçue en approche **mobile-first** pour offrir une expérience fluide et responsive sur tous les appareils, avec une charte graphique intégrant un mode sombre natif.
