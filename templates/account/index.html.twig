@@ -63,5 +63,10 @@
             <button type="submit" class="btn btn-primary btn-lg">💾 {{ 'app.save'|trans }}</button>
         </div>
     {{ form_end(form) }}
+
+    <!-- Logout Option -->
+    <div class="account-logout-box">
+        <a href="{{ path('app_logout') }}" class="btn btn-danger btn-lg btn-logout-full">🚪 {{ 'app.logout'|trans }}</a>
+    </div>
 </div>
 {% endblock %}

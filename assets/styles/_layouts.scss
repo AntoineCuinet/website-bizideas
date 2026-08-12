@@ -517,3 +517,16 @@
         margin: 1.5rem auto;
     }
 }
+
+.account-logout-box {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-logout-full {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
