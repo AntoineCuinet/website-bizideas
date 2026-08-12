@@ -53,6 +53,7 @@ app:
     preferences_intro: "Personnalisez l'importance de chaque critère de notation. Vos préférences influencent directement le calcul de la note globale et le classement des idées."
     account_info: "Informations personnelles"
     email_label: "Adresse email"
+    pseudo_label: "Pseudo (optionnel)"
     password_label: "Nouveau mot de passe"
     password_confirm_label: "Confirmer le mot de passe"
     password_help: "Laissez vide pour conserver le mot de passe actuel."

@@ -136,4 +136,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
         return $this;
     }
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 50, maxMessage: 'Le pseudo ne peut pas dépasser 50 caractères.')]
+    private ?string $pseudo = null;
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(?string $pseudo): static
+    {
+        $this->pseudo = $pseudo;
+        return $this;
+    }
+
+    public function getDisplayName(): string
+    {
+        return $this->pseudo ?: $this->email;
+    }
 }

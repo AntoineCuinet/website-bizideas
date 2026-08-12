@@ -109,7 +109,7 @@
 <body>
     <h1>{{ 'app.title'|trans }} - Export des idées de business</h1>
     <div class="meta-info">
-        Généré le : {{ "now"|date("d/m/Y H:i") }} par {{ currentUser.email }}
+        Généré le : {{ "now"|date("d/m/Y H:i") }} par {{ currentUser.displayName }}
     </div>
 
     {% for item in rankedIdeas %}
@@ -127,7 +127,7 @@
                     <span class="badge badge-info">{{ ('revenue.' ~ idea.revenueModel)|trans }}</span>
                     <span class="badge badge-info">{{ ('audience.' ~ idea.targetAudience)|trans }}</span>
                     <span style="color: #94a3b8; font-size: 10px; margin-left: 10px;">
-                        Créé par {{ idea.creator.email }} le {{ idea.createdAt|date("d/m/Y H:i") }}
+                        Créé par {{ idea.creator.displayName }} le {{ idea.createdAt|date("d/m/Y H:i") }}
                     </span>
                 </div>
             </div>

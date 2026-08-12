@@ -62,7 +62,7 @@ class ExportService
                 $this->translator->trans('status.' . $idea->getStatus()),
                 $this->translator->trans('revenue.' . $idea->getRevenueModel()),
                 $this->translator->trans('audience.' . $idea->getTargetAudience()),
-                $idea->getCreator()->getEmail(),
+                $idea->getCreator()->getDisplayName(),
                 $idea->getCreatedAt()->format('Y-m-d H:i'),
                 $globalScore > 0 ? $globalScore . '/5' : 'N/A',
             ]);
@@ -86,7 +86,7 @@ class ExportService
     {
         $md = "# " . $this->translator->trans('app.title') . " - Export des idées\n\n";
         $md .= "Généré le : " . date('d/m/Y H:i') . "\n";
-        $md .= "Utilisateur : " . $currentUser->getEmail() . "\n\n";
+        $md .= "Utilisateur : " . $currentUser->getDisplayName() . "\n\n";
 
         // Summary table
         $md .= "| Rang | Titre | Statut | Modèle de revenus | Public cible | Créateur | Note globale |\n";
@@ -105,7 +105,7 @@ class ExportService
                 $this->translator->trans('status.' . $idea->getStatus()),
                 $this->translator->trans('revenue.' . $idea->getRevenueModel()),
                 $this->translator->trans('audience.' . $idea->getTargetAudience()),
-                $idea->getCreator()->getEmail(),
+                $idea->getCreator()->getDisplayName(),
                 $globalScore > 0 ? $globalScore . '/5' : 'N/A'
             );
         }
@@ -120,7 +120,7 @@ class ExportService
             $rank = $item['rank'];
 
             $md .= sprintf("## %d. %s (Rang #%d)\n\n", $rank, $idea->getTitle(), $rank);
-            $md .= "**Créateur :** " . $idea->getCreator()->getEmail() . " | ";
+            $md .= "**Créateur :** " . $idea->getCreator()->getDisplayName() . " | ";
             $md .= "**Créé le :** " . $idea->getCreatedAt()->format('d/m/Y H:i') . "\n";
             $md .= "**Statut :** " . $this->translator->trans('status.' . $idea->getStatus()) . "\n";
             $md .= "**Modèle de revenus :** " . $this->translator->trans('revenue.' . $idea->getRevenueModel()) . "\n";

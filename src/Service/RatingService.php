@@ -88,6 +88,7 @@ class RatingService
             foreach ($idea->getRatings() as $rating) {
                 $ratingsData[] = [
                     'email' => $rating->getUser()->getEmail(),
+                    'displayName' => $rating->getUser()->getDisplayName(),
                     'score' => $this->calculateRatingScore($rating),
                     'isCreator' => ($rating->getUser()->getId() === $idea->getCreator()->getId()),
                 ];

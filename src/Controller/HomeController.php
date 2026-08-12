@@ -66,10 +66,10 @@ class HomeController extends AbstractController
 
         // Fetch all other users
         $allUsers = $userRepository->findAll();
-        $collaboratorEmails = [];
+        $collaborators = [];
         foreach ($allUsers as $u) {
             if ($u->getId() !== $user->getId()) {
-                $collaboratorEmails[] = $u->getEmail();
+                $collaborators[] = $u;
             }
         }
 
@@ -78,7 +78,7 @@ class HomeController extends AbstractController
             'sortBy' => $sortBy,
             'openIdeaItem' => $openIdeaItem,
             'criteria' => CriteriaManager::getRatedCriteria(),
-            'collaboratorEmails' => $collaboratorEmails,
+            'collaborators' => $collaborators,
         ]);
     }
 }
