@@ -9,11 +9,12 @@ use App\Entity\User;
 class RatingService
 {
     /**
-     * Calculates the score of a single Rating using the preferences of a specific User.
+     * Calculates the score of a single Rating using the preferences of the user who made the rating.
      * Scale: 1.0 to 5.0. Returns 0.0 if no criteria are rated.
      */
-    public function calculateRatingScore(Rating $rating, User $preferenceUser): float
+    public function calculateRatingScore(Rating $rating): float
     {
+        $preferenceUser = $rating->getUser();
         $criteria = CriteriaManager::getRatedCriteria();
         $totalWeight = 0.0;
         $weightedSum = 0.0;
@@ -39,11 +40,10 @@ class RatingService
     }
 
     /**
-     * Calculates the global score of a BusinessIdea based on all its ratings,
-     * with each rating's score computed using the preferences of the specified User.
+     * Calculates the global score of a BusinessIdea based on all its ratings.
      * The global score is the simple average of all users' individual scores (50% each if 2 users).
      */
-    public function calculateIdeaGlobalScore(BusinessIdea $idea, User $preferenceUser): float
+    public function calculateIdeaGlobalScore(BusinessIdea $idea): float
     {
         $ratings = $idea->getRatings();
         if ($ratings->isEmpty()) {
@@ -54,7 +54,7 @@ class RatingService
         $count = 0;
 
         foreach ($ratings as $rating) {
-            $score = $this->calculateRatingScore($rating, $preferenceUser);
+            $score = $this->calculateRatingScore($rating);
             if ($score > 0.0) {
                 $sum += $score;
                 $count++;
@@ -88,14 +88,14 @@ class RatingService
             foreach ($idea->getRatings() as $rating) {
                 $ratingsData[] = [
                     'email' => $rating->getUser()->getEmail(),
-                    'score' => $this->calculateRatingScore($rating, $currentUser),
+                    'score' => $this->calculateRatingScore($rating),
                     'isCreator' => ($rating->getUser()->getId() === $idea->getCreator()->getId()),
                 ];
             }
 
             $scoredIdeas[] = [
                 'idea' => $idea,
-                'globalScore' => $this->calculateIdeaGlobalScore($idea, $currentUser),
+                'globalScore' => $this->calculateIdeaGlobalScore($idea),
                 'ratingsData' => $ratingsData,
             ];
         }
