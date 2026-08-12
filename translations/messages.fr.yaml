@@ -43,7 +43,7 @@ app:
     sorting.created_by_other: "Créé par l'autre"
     sorting.status: "Par statut"
     preferences: "Mes préférences d'importance"
-    preferences_intro: "Personnalisez l'importance de chaque critère de notation. Vos préférences influencent directement le calcul de la note globale et le classement des idées sur votre page d'accueil."
+    preferences_intro: "Personnalisez l'importance de chaque critère de notation. Vos préférences influencent directement le calcul de la note globale et le classement des idées."
     account_info: "Informations personnelles"
     email_label: "Adresse email"
     password_label: "Nouveau mot de passe"
@@ -65,12 +65,12 @@ status:
 revenue:
     single: "Paiement unique"
     recurring: "Récurrent / Abonnement"
-    both: "Les deux"
+    both: "Unique et récurrent"
 
 audience:
     b2b: "Entreprises (B2B)"
     b2c: "Particuliers (B2C)"
-    both: "Les deux"
+    both: "B2B et B2C"
 
 weight:
     low: "Faible"

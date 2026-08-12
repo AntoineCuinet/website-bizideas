@@ -61,11 +61,11 @@ class BusinessIdeaType extends AbstractType
                 'label' => $config['label'],
                 'help' => $config['description'],
                 'choices' => [
-                    '1' => 1,
-                    '2' => 2,
-                    '3' => 3,
-                    '4' => 4,
                     '5' => 5,
+                    '4' => 4,
+                    '3' => 3,
+                    '2' => 2,
+                    '1' => 1,
                 ],
                 'expanded' => true, // renders as radio buttons (easier to style as stars)
                 'multiple' => false,

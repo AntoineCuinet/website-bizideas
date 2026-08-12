@@ -71,9 +71,9 @@
                         
                         <p class="idea-card-creator">
                             {% if isOwn %}
-                                👤 {{ 'app.created_by'|trans({'%email%': 'Moi'}) }}
+                                {{ 'app.created_by'|trans({'%email%': 'Moi'}) }}
                             {% else %}
-                                👥 {{ 'app.created_by'|trans({'%email%': idea.creator.email}) }}
+                                {{ 'app.created_by'|trans({'%email%': idea.creator.email}) }}
                             {% endif %}
                         </p>
 
