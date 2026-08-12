@@ -2,10 +2,12 @@ app:
     title: "Biz-Ideas"
     description: "Biz-Ideas - Organisez, notez et classez vos idées de business en équipe."
     subtitle: "Organisez et classez vos idées de business à deux (ou plus) facilement"
+    back: "← Retour"
     login: "Se connecter"
     logout: "Se déconnecter"
     home: "Accueil"
     account: "Mon Compte"
+    account_header: "Gérez vos informations de connexion et personnalisez la pondération de vos critères."
     add_idea: "Ajouter une idée"
     edit_idea: "Modifier l'idée"
     delete_idea: "Supprimer l'idée"
@@ -23,6 +25,7 @@ app:
     global_score: "Note globale"
     user_score: "Ma note"
     other_score: "Note de %email%"
+    my_score: "Ma note :"
     not_rated: "Non noté"
     rank: "Classement"
     rank_number: "Rang #%rank%"
@@ -44,6 +47,7 @@ app:
     sorting.created_by_me: "Créé par moi"
     sorting.created_by_other: "Créé par les autres"
     sorting.created_by_other_param: "Créé par %email%"
+    sorting.created_by_and_date: "Créé par %email% le %date%"
     sorting.status: "Par statut"
     preferences: "Mes préférences d'importance"
     preferences_intro: "Personnalisez l'importance de chaque critère de notation. Vos préférences influencent directement le calcul de la note globale et le classement des idées."
@@ -59,6 +63,13 @@ app:
     success_rating_saved: "Votre évaluation a bien été enregistrée."
     self_evaluation: "Auto-évaluation"
     other_evaluations: "Évaluations des collaborateurs"
+    evaluation: "📊 Auto-évaluation et évaluations des collaborateurs"
+    global_score_display: "⭐ %score%/5"
+    button:
+        edit: "✏️ Modifier"
+        edit_note: "⭐ Modifier note"
+        delete: "🗑️ Supprimer"
+        rate: "⭐ Noter"
 
 status:
     draft: "Brouillon"
@@ -143,3 +154,26 @@ idea:
     target_audience:
         label: "Public ciblé"
         blank: "Le public cible est obligatoire."
+    details_project: "📝 Détails du projet"
+
+landing:
+    features:
+        add_ideas:
+            title: "Ajoutez vos idées"
+            desc: "Renseignez vos idées de business et complétez votre auto-évaluation sur 9 critères clés."
+        collaborate:
+            title: "Collaborez"
+            desc: "Votre collaborateur est notifié automatiquement pour noter vos idées et donner son avis."
+        weighting:
+            title: "Pondération personnalisée"
+            desc: "Définissez l'importance de chaque critère pour adapter le classement global à votre profil."
+
+rate:
+    subtitle: "Attribuez votre évaluation sur les critères suivants pour cette idée."
+    criteria_evaluation: "📊 Évaluation des critères"
+
+new_idea:
+    subtitle: "Décrivez votre idée et réalisez votre auto-évaluation."
+
+edit_idea:
+    subtitle: "Mettez à jour les détails du concept et modifiez votre auto-évaluation."

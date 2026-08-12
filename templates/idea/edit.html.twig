@@ -9,14 +9,14 @@
      data-live-rating-preview-weights-value="{{ app.user.preferences ? app.user.preferences|json_encode : '{}' }}">
     
     <div class="form-header">
-        <a href="{{ path('app_home') }}" class="btn-back">← Retour</a>
+        <a href="{{ path('app_home') }}" class="btn-back">{{ 'app.back'|trans }}</a>
         <h1>✏️ {{ 'app.edit_idea'|trans }}</h1>
-        <p class="form-subtitle">Mettez à jour les détails du concept et modifiez votre auto-évaluation.</p>
+        <p class="form-subtitle">{{ 'edit_idea.subtitle'|trans }}</p>
     </div>
 
     {{ form_start(form, {'attr': {'class': 'standard-form'}}) }}
         <div class="form-card">
-            <h2>📝 Détails du projet</h2>
+            <h2>{{ 'idea.details_project'|trans }}</h2>
             
             <div class="form-group">
                 {{ form_label(form.title) }}

@@ -85,7 +85,7 @@
                                 <span class="score-title">{{ 'app.global_score'|trans }}</span>
                                 <span class="score-value">
                                     {% if globalScore > 0 %}
-                                        ⭐ {{ globalScore }}/5
+                                        {{ 'app.global_score_display'|trans({'%score%': globalScore}) }}
                                     {% else %}
                                         {{ 'app.not_rated'|trans }}
                                     {% endif %}
@@ -104,7 +104,7 @@
                                                 {% endif %} :
                                             </span>
                                             <span class="score-value-individual">
-                                                ⭐ {{ rData.score }}/5
+                                                {{ 'app.global_score_display'|trans({'%score%': rData.score}) }}
                                             </span>
                                         </div>
                                     {% endfor %}
@@ -119,15 +119,15 @@
 
                         <div class="idea-card-actions" data-action="click->stop">
                             {% if isOwn %}
-                                <a href="{{ path('app_idea_edit', {id: idea.id}) }}" class="btn btn-xs btn-primary">✏️ Modifier</a>
+                                <a href="{{ path('app_idea_edit', {id: idea.id}) }}" class="btn btn-xs btn-primary">{{ 'app.button.edit'|trans }}</a>
                                 <form action="{{ path('app_idea_delete', {id: idea.id}) }}" method="post" class="inline-form" onsubmit="return confirm('{{ 'app.delete_confirm'|trans }}')">
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ idea.id) }}">
-                                    <button type="submit" class="btn btn-xs btn-danger">🗑️ Supprimer</button>
+                                    <button type="submit" class="btn btn-xs btn-danger">{{ 'app.button.delete'|trans }}</button>
                                 </form>
                             {% else %}
                                 {% set rating = idea.ratingByUser(app.user) %}
                                 <a href="{{ path('app_idea_rate', {id: idea.id}) }}" class="btn btn-xs btn-accent">
-                                    {% if rating %}⭐ Modifier note{% else %}⭐ Noter{% endif %}
+                                    {% if rating %}{{ 'app.button.edit_note'|trans }}{% else %}{{ 'app.button.rate'|trans }}{% endif %}
                                 </a>
                             {% endif %}
                         </div>
@@ -137,7 +137,7 @@
                     <dialog id="modal-{{ idea.id }}" class="idea-modal" data-modal-manager-target="modal" data-auto-open="{{ openIdeaItem and openIdeaItem.idea.id == idea.id ? 'true' : 'false' }}">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <span class="modal-rank">Rang #{{ rank }}</span>
+                                <span class="modal-rank">{{ 'app.rank_number'|trans({'%rank%': rank}) }}</span>
                                 <button class="btn-close" data-action="click->modal-manager#close" data-idea-id="{{ idea.id }}">✕</button>
                             </div>
                             
@@ -145,7 +145,7 @@
                                 <span class="idea-badge-status badge-{{ idea.status }}">{{ ('status.' ~ idea.status)|trans }}</span>
                                 <h2>{{ idea.title }}</h2>
                                 <p class="modal-meta-text">
-                                    Créé par {{ idea.creator.email }} le {{ idea.createdAt|date("d/m/Y H:i") }}
+                                    {{ 'app.sorting.created_by_and_date'|trans({'%email%': idea.creator.email, '%date%': idea.createdAt|date("d/m/Y")}) }}
                                 </p>
                             </div>
 
@@ -166,13 +166,13 @@
                                     <div class="info-item">
                                         <span class="info-label">{{ 'app.global_score'|trans }}</span>
                                         <span class="info-val highlight">
-                                            {% if globalScore > 0 %}⭐ {{ globalScore }}/5{% else %}-{% endif %}
+                                            {% if globalScore > 0 %}{{ 'app.global_score_display'|trans({'%score%': globalScore}) }}{% else %}-{% endif %}
                                         </span>
                                     </div>
                                 </div>
 
                                 <div class="modal-ratings-comparison">
-                                    <h3>📊 {{ 'app.self_evaluation'|trans }} vs {{ 'app.other_evaluations'|trans }}</h3>
+                                    <h3>{{ 'app.evaluation'|trans }}</h3>
                                     
                                     {% set creatorRating = idea.ratingByUser(idea.creator) %}
                                     {# Find the other user rating #}
@@ -199,7 +199,7 @@
                                                     {% set creatorScore = creatorRating ? creatorRating.scoreFor(cKey) : null %}
                                                     {% set creatorIsMe = (idea.creator.id == app.user.id) %}
                                                     <div class="score-line">
-                                                        <span class="score-line-label">{% if creatorIsMe %}Ma note :{% else %}Note de {{ idea.creator.email }} :{% endif %}</span>
+                                                        <span class="score-line-label">{% if creatorIsMe %}{{ 'app.my_score'|trans }}{% else %}{{ 'app.other_score'|trans({'%email%': idea.creator.email}) }} :{% endif %}</span>
                                                         <div class="stars-display">
                                                             {% if creatorScore %}
                                                                 {% for i in 1..5 %}
@@ -219,7 +219,7 @@
                                                             {% set oScore = r.scoreFor(cKey) %}
                                                             {% set oIsMe = (r.user.id == app.user.id) %}
                                                             <div class="score-line">
-                                                                <span class="score-line-label">{% if oIsMe %}Ma note :{% else %}Note de {{ r.user.email }} :{% endif %}</span>
+                                                                <span class="score-line-label">{% if oIsMe %}{{ 'app.my_score'|trans }}{% else %}{{ 'app.other_score'|trans({'%email%': r.user.email}) }} :{% endif %}</span>
                                                                 <div class="stars-display">
                                                                     {% if oScore %}
                                                                         {% for i in 1..5 %}
@@ -237,7 +237,7 @@
                                                     {% if not hasOther %}
                                                         {% for cEmail in collaboratorEmails %}
                                                             <div class="score-line">
-                                                                <span class="score-line-label">Note de {{ cEmail }} :</span>
+                                                                <span class="score-line-label">{{ 'app.other_score'|trans({'%email%': cEmail}) }} :</span>
                                                                 <div class="stars-display">
                                                                     <span class="star-none">-</span>
                                                                 </div>
@@ -253,10 +253,10 @@
 
                             <div class="modal-footer">
                                 {% if isOwn %}
-                                    <a href="{{ path('app_idea_edit', {id: idea.id}) }}" class="btn btn-primary">✏️ Modifier l'idée</a>
+                                    <a href="{{ path('app_idea_edit', {id: idea.id}) }}" class="btn btn-primary">✏️ {{ 'app.edit_idea'|trans }}</a>
                                 {% else %}
                                     <a href="{{ path('app_idea_rate', {id: idea.id}) }}" class="btn btn-accent">
-                                        {% if otherRating %}⭐ Modifier mon évaluation{% else %}⭐ Évaluer cette idée{% endif %}
+                                        {% if otherRating %}⭐ {{ 'app.edit_rating'|trans }}{% else %}⭐ {{ 'app.rate_this_idea'|trans }}{% endif %}
                                     </a>
                                 {% endif %}
                                 <button class="btn btn-secondary" data-action="click->modal-manager#close" data-idea-id="{{ idea.id }}">{{ 'app.cancel'|trans }}</button>
