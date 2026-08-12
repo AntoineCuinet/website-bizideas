@@ -1,5 +1,6 @@
 app:
     title: "Biz-Ideas"
+    description: "Biz-Ideas - Organisez, notez et classez vos idées de business en équipe."
     subtitle: "Organisez et classez vos idées de business à deux (ou plus) facilement"
     login: "Se connecter"
     logout: "Se déconnecter"
