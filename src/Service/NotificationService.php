@@ -18,7 +18,8 @@ class NotificationService
         private UserRepository $userRepository,
         private UrlGeneratorInterface $urlGenerator,
         private TranslatorInterface $translator,
-        private LoggerInterface $logger
+        private LoggerInterface $logger,
+        private string $replyToEmail
     ) {
     }
 
@@ -51,7 +52,8 @@ class NotificationService
         try {
             foreach ($recipientEmails as $emailAddress) {
                 $email = (new TemplatedEmail())
-                    ->from('noreply@bizideas.acuinet.fr')
+                    ->from($this->replyToEmail)
+                    ->replyTo($this->replyToEmail)
                     ->to($emailAddress)
                     ->subject($subject)
                     ->htmlTemplate('email/new_idea.html.twig')
