@@ -37,7 +37,15 @@
         </div>
 
         <div class="app-layout">
-            {% block body %}{% endblock %}
+            <main class="app-main-content">
+                {% block body %}{% endblock %}
+            </main>
+            
+            <footer class="app-footer-global">
+                <div class="footer-container">
+                    <p class="footer-text">{{ 'app.footer_text'|trans({'%year%': 'now'|date('Y')})|raw }}</p>
+                </div>
+            </footer>
         </div>
     </body>
 </html>

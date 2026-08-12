@@ -530,3 +530,34 @@
     justify-content: center;
     align-items: center;
 }
+
+.app-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-main-content {
+    flex: 1 0 auto;
+    width: 100%;
+}
+
+.app-footer-global {
+    flex-shrink: 0;
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    padding: 1.5rem 1rem;
+    margin-top: 3rem;
+}
+
+.footer-container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer-text {
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    margin: 0;
+}

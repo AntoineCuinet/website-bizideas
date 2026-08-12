@@ -15,6 +15,7 @@ app:
     export.csv: "Format CSV"
     export.md: "Format Markdown"
     export.pdf: "Format PDF"
+    footer_text: "© %year% <strong>Biz-Ideas</strong> — Organisez, notez et classez vos idées de business."
     no_ideas: "Aucune idée de business pour le moment."
     created_by: "Créé par %email%"
     created_at: "Le %date%"
