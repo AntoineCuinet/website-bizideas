@@ -174,20 +174,9 @@
                                 <div class="modal-ratings-comparison">
                                     <h3>{{ 'app.evaluation'|trans }}</h3>
                                     
-                                    {% set creatorRating = idea.ratingByUser(idea.creator) %}
-                                    {# Find the other user rating #}
-                                    {% set otherRating = null %}
-                                    {% for r in idea.ratings %}
-                                        {% if r.user.id != idea.creator.id %}
-                                            {% set otherRating = r %}
-                                        {% endif %}
-                                    {% endfor %}
-
+                                    {% set allUsers = [app.user]|merge(collaborators) %}
                                     <div class="criteria-list">
                                         {% for cKey, cConfig in criteria %}
-                                            {% set cCreatorScore = creatorRating ? creatorRating.scoreFor(cKey) : null %}
-                                            {% set cOtherScore = otherRating ? otherRating.scoreFor(cKey) : null %}
-                                            
                                             <div class="criterion-row">
                                                 <div class="criterion-info">
                                                     <span class="criterion-name">{{ cConfig.label|trans }}</span>
@@ -211,19 +200,18 @@
                                                         </div>
                                                     </div>
                                                     
-                                                    {# Show other ratings #}
-                                                    {% set hasOther = false %}
-                                                    {% for r in idea.ratings %}
-                                                        {% if r.user.id != idea.creator.id %}
-                                                            {% set hasOther = true %}
-                                                            {% set oScore = r.scoreFor(cKey) %}
-                                                            {% set oIsMe = (r.user.id == app.user.id) %}
+                                                    {# Show other ratings (everyone except the creator) #}
+                                                    {% for u in allUsers %}
+                                                        {% if u.id != idea.creator.id %}
+                                                            {% set r = idea.ratingByUser(u) %}
+                                                            {% set uScore = r ? r.scoreFor(cKey) : null %}
+                                                            {% set uIsMe = (u.id == app.user.id) %}
                                                             <div class="score-line">
-                                                                <span class="score-line-label">{% if oIsMe %}{{ 'app.my_score'|trans }}{% else %}{{ 'app.other_score'|trans({'%email%': r.user.displayName}) }} :{% endif %}</span>
+                                                                <span class="score-line-label">{% if uIsMe %}{{ 'app.my_score'|trans }}{% else %}{{ 'app.other_score'|trans({'%email%': u.displayName}) }} :{% endif %}</span>
                                                                 <div class="stars-display">
-                                                                    {% if oScore %}
+                                                                    {% if uScore %}
                                                                         {% for i in 1..5 %}
-                                                                            <span class="star {% if i <= oScore %}star-filled-other{% endif %}">★</span>
+                                                                            <span class="star {% if i <= uScore %}star-filled-other{% endif %}">★</span>
                                                                         {% endfor %}
                                                                     {% else %}
                                                                         <span class="star-none">-</span>
@@ -232,18 +220,6 @@
                                                             </div>
                                                         {% endif %}
                                                     {% endfor %}
-                                                    
-                                                    {# If no other ratings, show placeholder for the other user(s) #}
-                                                    {% if not hasOther %}
-                                                        {% for c in collaborators %}
-                                                            <div class="score-line">
-                                                                <span class="score-line-label">{{ 'app.other_score'|trans({'%email%': c.displayName}) }} :</span>
-                                                                <div class="stars-display">
-                                                                    <span class="star-none">-</span>
-                                                                </div>
-                                                            </div>
-                                                        {% endfor %}
-                                                    {% endif %}
                                                 </div>
                                             </div>
                                         {% endfor %}
@@ -257,7 +233,7 @@
                                     <a href="{{ path('app_idea_edit', {id: idea.id}) }}" class="btn btn-primary">✏️ {{ 'app.edit_idea'|trans }}</a>
                                 {% else %}
                                     <a href="{{ path('app_idea_rate', {id: idea.id}) }}" class="btn btn-accent">
-                                        {% if otherRating %}{{ 'app.button.edit_note'|trans }}{% else %}⭐ {{ 'app.rate_this_idea'|trans }}{% endif %}
+                                        {% if idea.ratingByUser(app.user) %}{{ 'app.button.edit_note'|trans }}{% else %}⭐ {{ 'app.rate_this_idea'|trans }}{% endif %}
                                     </a>
                                 {% endif %}
                             </div>
