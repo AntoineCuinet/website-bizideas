@@ -33,7 +33,7 @@ app:
     rate_title: "Noter : %title%"
     rating_preview: "Estimation de la note :"
     login_title: "Connexion"
-    login_intro: "Veuillez vous authentifier pour accéder à l'application BizIdeas"
+    login_intro: "Veuillez vous authentifier pour accéder à l'application Biz-Ideas"
     login_button: "Connexion"
     login_error: "Identifiants invalides."
     sorting: "Trier par"
@@ -109,12 +109,12 @@ criteria:
 
 email:
     new_idea:
-        subject: "[BizIdeas] Nouvelle idée : %title%"
+        subject: "[Biz-Ideas] Nouvelle idée : %title%"
         title: "Nouvelle idée de business"
         intro: "%creator% a ajouté une nouvelle idée de business sur l'application."
         call_to_action: "Vous pouvez la consulter et lui attribuer une note dès maintenant :"
         button: "Voir et Noter l'idée"
-    footer: "Cet email a été envoyé automatiquement depuis votre application BizIdeas."
+    footer: "Cet email a été envoyé automatiquement depuis votre application Biz-Ideas."
 
 security:
     email:
