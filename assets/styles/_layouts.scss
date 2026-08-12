@@ -260,15 +260,15 @@
 
 /* Accent differentiation */
 .idea-card-own {
-    border-top: 4px solid var(--card-own-accent);
     background-color: var(--card-own-bg);
     border-color: var(--card-own-border);
+    border-top: 4px solid var(--card-own-accent);
 }
 
 .idea-card-other {
-    border-top: 4px solid var(--card-other-accent);
     background-color: var(--card-other-bg);
     border-color: var(--card-other-border);
+    border-top: 4px solid var(--card-other-accent);
 }
 
 .idea-card-header {
