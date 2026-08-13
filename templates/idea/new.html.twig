@@ -20,7 +20,7 @@
             
             <div class="form-group">
                 {{ form_label(form.title) }}
-                {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Ex: SaaS de facturation pour freelances'}}) }}
+                {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'idea.title.placeholder'|trans}}) }}
                 {{ form_errors(form.title) }}
             </div>
 
@@ -28,7 +28,7 @@
                 {{ form_label(form.description) }}
                 {{ form_widget(form.description, {'attr': {
                     'class': 'form-control form-textarea',
-                    'placeholder': 'Présentation détaillée du concept...',
+                    'placeholder': 'idea.description.placeholder'|trans,
                     'rows': 6,
                     'data-controller': 'textarea-autogrow',
                     'data-action': 'input->textarea-autogrow#autogrow'

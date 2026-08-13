@@ -143,9 +143,11 @@ idea:
         label: "Titre de l'idée"
         blank: "Le titre de l'idée ne peut pas être vide."
         max_length: "Le titre de l'idée ne peut pas dépasser 255 caractères."
+        placeholder: "Ex: Site web de réservation de vacances"
     description:
         label: "Description"
         blank: "La description de l'idée ne peut pas être vide."
+        placeholder: "Présentation détaillée du concept..."
     status:
         label: "Statut"
         blank: "Le statut est obligatoire."
