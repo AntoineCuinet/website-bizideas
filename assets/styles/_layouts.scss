@@ -572,3 +572,198 @@
     color: var(--text-tertiary);
     margin: 0;
 }
+
+/* Collaborators Dropdown in Header Nav */
+.header-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.header-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    width: 320px;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: 1.25rem;
+    z-index: 100;
+    animation: slideDown var(--transition-fast) forwards;
+
+    &::before {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        right: 12px;
+        border: 8px solid transparent;
+        border-bottom-color: var(--border-color);
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        right: 13px;
+        border: 7px solid transparent;
+        border-bottom-color: var(--bg-secondary);
+    }
+
+    &.show {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-title {
+    font-size: var(--font-sm);
+    font-weight: 750;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+
+    .total-ideas-badge {
+        font-size: 10px;
+        background-color: var(--color-primary-glow);
+        color: var(--color-primary);
+        padding: 0.15rem 0.45rem;
+        border-radius: var(--radius-full);
+        font-weight: 600;
+    }
+}
+
+.dropdown-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.dropdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+
+    &:hover {
+        background-color: var(--bg-secondary);
+        border-color: var(--color-primary-glow);
+    }
+}
+
+.dropdown-item-current {
+    border-left: 3px solid var(--color-primary);
+}
+
+.dropdown-item-info {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.dropdown-item-avatar {
+    font-size: var(--font-sm);
+    flex-shrink: 0;
+}
+
+.dropdown-item-name {
+    font-size: var(--font-xs);
+    font-weight: 600;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    .current-user-tag {
+        font-size: 9px;
+        color: var(--text-tertiary);
+        margin-left: 0.2rem;
+        font-weight: normal;
+    }
+}
+
+.dropdown-item-stats-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-full);
+    font-weight: bold;
+    flex-shrink: 0;
+
+    .ideas-count-number {
+        font-size: 10px;
+        color: var(--color-accent);
+    }
+
+    .ideas-count-label {
+        font-size: 8px;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        letter-spacing: 0.02em;
+    }
+}
+
+/* Make collaborators toggle active state highlight */
+.collaborators-btn.active {
+    background-color: var(--border-color);
+    color: var(--color-primary);
+    border-color: var(--color-primary-glow);
+}
+
+/* Responsive refinements for mobile */
+@media (max-width: 576px) {
+    .header-dropdown-menu {
+        position: fixed;
+        top: calc(var(--header-height) + 0.5rem);
+        left: 1rem;
+        right: 1rem;
+        width: auto;
+        max-width: none;
+        box-shadow: var(--shadow-lg);
+
+        &::before, &::after {
+            display: none;
+        }
+    }
+
+    .nav-link {
+        padding: 0.5rem;
+        aspect-ratio: 1;
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-full);
+        justify-content: center;
+
+        .nav-text {
+            display: none;
+        }
+    }
+}

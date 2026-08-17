@@ -180,3 +180,11 @@ new_idea:
 
 edit_idea:
     subtitle: "Mettez à jour les détails du concept et modifiez votre auto-évaluation."
+
+collaborators:
+    title: "Collaborateurs"
+    total_ideas: "%count% idées au total"
+    ideas_created: "%count% idées"
+    ideas_label_plural: "idées"
+    ideas_label_singular: "idée"
+    me: "Moi"

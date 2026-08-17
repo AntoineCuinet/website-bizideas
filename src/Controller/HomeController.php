@@ -73,12 +73,48 @@ class HomeController extends AbstractController
             }
         }
 
+        // Calculate stats for all collaborators (including current user)
+        $ideasCountByUser = [];
+        foreach ($allUsers as $u) {
+            $ideasCountByUser[$u->getId()] = 0;
+        }
+        foreach ($ideas as $idea) {
+            $creator = $idea->getCreator();
+            if ($creator) {
+                $creatorId = $creator->getId();
+                if (isset($ideasCountByUser[$creatorId])) {
+                    $ideasCountByUser[$creatorId]++;
+                }
+            }
+        }
+
+        $collaboratorsStats = [];
+        foreach ($allUsers as $u) {
+            $collaboratorsStats[] = [
+                'user' => $u,
+                'ideasCount' => $ideasCountByUser[$u->getId()],
+                'isCurrentUser' => ($u->getId() === $user->getId()),
+            ];
+        }
+
+        // Sort by ideasCount DESC, then by displayName ASC
+        usort($collaboratorsStats, function ($a, $b) {
+            if ($b['ideasCount'] !== $a['ideasCount']) {
+                return $b['ideasCount'] <=> $a['ideasCount'];
+            }
+            return strcasecmp($a['user']->getDisplayName(), $b['user']->getDisplayName());
+        });
+
+        $totalIdeas = count($ideas);
+
         return $this->render('home/dashboard.html.twig', [
             'rankedIdeas' => $rankedIdeas,
             'sortBy' => $sortBy,
             'openIdeaItem' => $openIdeaItem,
             'criteria' => CriteriaManager::getRatedCriteria(),
             'collaborators' => $collaborators,
+            'collaboratorsStats' => $collaboratorsStats,
+            'totalIdeas' => $totalIdeas,
         ]);
     }
 }
