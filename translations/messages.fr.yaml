@@ -41,6 +41,7 @@ app:
     login_intro: "Veuillez vous authentifier pour accéder à l'application Biz-Ideas"
     login_button: "Connexion"
     login_error: "Identifiants invalides."
+    version: "Biz-Ideas - Version %version%"
     sorting: "Trier par"
     sorting.global_score: "Meilleure note"
     sorting.last_added: "Dernier ajout"

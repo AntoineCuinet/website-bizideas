@@ -540,6 +540,13 @@
     align-items: center;
 }
 
+.account-version-box {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: var(--font-md);
+    color: var(--text-tertiary);
+}
+
 .app-layout {
     display: flex;
     flex-direction: column;
@@ -571,6 +578,11 @@
     font-size: var(--font-sm);
     color: var(--text-tertiary);
     margin: 0;
+}
+
+.footer-version {
+    font-size: var(--font-xs);
+    color: var(--text-tertiary);
 }
 
 /* Collaborators Dropdown in Header Nav */

@@ -1,0 +1,19 @@
+{
+    "current": {
+        "version": "1.1.0",
+        "date": "2026-08-18",
+        "note": "Adding version.json file to track version history"
+    },
+    "history": [
+        {
+            "version": "1.0.1",
+            "date": "2026-08-16",
+            "note": "Adding team member view"
+        },
+        {
+            "version": "1.0.0",
+            "date": "2026-08-14",
+            "note": "Initial deployment of v1 with basic features"
+        }
+    ]
+}

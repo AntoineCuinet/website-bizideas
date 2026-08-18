@@ -74,5 +74,11 @@
     <div class="account-logout-box">
         <a href="{{ path('app_logout') }}" class="btn btn-danger btn-lg btn-logout-full">🚪 {{ 'app.logout'|trans }}</a>
     </div>
+
+    {% if app_version() %}
+        <div class="account-version-box">
+            {{ 'app.version'|trans({'%version%': app_version()}) }}
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
