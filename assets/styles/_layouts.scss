@@ -389,8 +389,8 @@
 
 .no-ideas-card {
     text-align: center;
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-color);
+    background-color: color-mix(in srgb, var(--bg-secondary) 40%, transparent);
+    border: 1px dashed var(--border-color);
     border-radius: var(--radius-md);
     padding: 4rem 2rem;
     color: var(--text-secondary);
