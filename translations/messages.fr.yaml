@@ -162,6 +162,7 @@ idea:
 
 landing:
     features:
+        title: "Fonctionnalités principales"
         add_ideas:
             title: "Ajoutez vos idées"
             desc: "Renseignez vos idées de business et complétez votre auto-évaluation sur plusieurs critères personnalisables."

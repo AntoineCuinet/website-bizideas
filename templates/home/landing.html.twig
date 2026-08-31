@@ -7,13 +7,15 @@
     <div class="landing-content">
         <h1 class="landing-logo">{{ 'app.title'|trans }}</h1>
 
+        <p class="landing-tagline">{{ 'app.subtitle'|trans }}</p>
+
         <div class="landing-actions">
-            <a href="{{ path('app_login') }}" class="btn btn-primary btn-large">
+            <a href="{{ path('app_login') }}" class="btn btn-primary btn-lg">
                 {{ 'app.login'|trans }}
             </a>
         </div>
 
-        <p class="landing-tagline">{{ 'app.subtitle'|trans }}</p>
+        <h2 class="landing-features-section-title">{{ 'landing.features.title'|trans }}</h2>
 
         <div class="landing-features">
             <div class="feature-card">

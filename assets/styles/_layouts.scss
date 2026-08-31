@@ -1,6 +1,4 @@
-/* Layout Styles */
 
-/* 1. Landing Page */
 .landing-container {
     flex: 1;
     display: flex;
@@ -30,9 +28,15 @@
     font-size: var(--font-lg);
     color: var(--text-secondary);
     margin-bottom: 3rem;
+    margin-top: 2rem;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.landing-features-section-title {
+    padding-top: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .landing-features {
@@ -73,10 +77,9 @@
 }
 
 .landing-actions {
-    margin-bottom: 2rem;
+    margin: 2rem 0;
 }
 
-/* 2. Login Page */
 .login-container {
     flex: 1;
     display: flex;
@@ -114,7 +117,6 @@
     color: var(--text-secondary);
 }
 
-/* 3. Dashboard */
 .dashboard-container {
     flex: 1;
     display: flex;
@@ -155,7 +157,6 @@
     padding: 2rem 1.5rem;
 }
 
-/* Toolbar sorting/exports */
 .toolbar-section {
     display: flex;
     justify-content: space-between;
