@@ -207,6 +207,40 @@
                                         {% endfor %}
                                     </div>
                                 </div>
+
+                                {% set hasComments = false %}
+                                {% for rData in item.ratingsData %}
+                                    {% if rData.comment is not empty %}
+                                        {% set hasComments = true %}
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if hasComments %}
+                                    <div class="modal-comments-section">
+                                        <h3>{{ 'app.comments'|trans }}</h3>
+                                        <div class="comments-list">
+                                            {% for rData in item.ratingsData %}
+                                                {% if rData.comment is not empty %}
+                                                    <div class="comment-item">
+                                                        <div class="comment-header">
+                                                            <strong>
+                                                                {% if rData.email == app.user.email %}
+                                                                    {{ 'app.user_comment_author'|trans }}
+                                                                {% else %}
+                                                                    {{ rData.displayName }}
+                                                                {% endif %}
+                                                            </strong>
+                                                            <span class="comment-score">
+                                                                {{ 'app.global_score_display'|trans({'%score%': rData.score}) }}
+                                                            </span>
+                                                        </div>
+                                                        <div class="comment-body">{{ rData.comment }}</div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
 
                             <div class="modal-footer">

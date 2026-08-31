@@ -91,6 +91,7 @@ class RatingService
                     'displayName' => $rating->getUser()->getDisplayName(),
                     'score' => $this->calculateRatingScore($rating),
                     'isCreator' => ($rating->getUser()->getId() === $idea->getCreator()->getId()),
+                    'comment' => $rating->getComment(),
                 ];
             }
 

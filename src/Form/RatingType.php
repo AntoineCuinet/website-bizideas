@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Service\CriteriaManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -37,12 +38,24 @@ class RatingType extends AbstractType
                 ],
             ]);
         }
+
+        $builder->add('comment', TextareaType::class, [
+            'label' => 'app.comment_label',
+            'required' => false,
+            'data' => $options['existing_comment'] ?? null,
+            'attr' => [
+                'placeholder' => 'app.comment_placeholder',
+                'rows' => 4,
+                'class' => 'form-control form-textarea',
+            ],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'existing_scores' => [],
+            'existing_comment' => null,
             'translation_domain' => 'messages',
         ]);
     }

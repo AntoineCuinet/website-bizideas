@@ -140,9 +140,11 @@ class BusinessIdeaController extends AbstractController
         ]);
 
         $existingScores = $rating ? $rating->getScores() : [];
+        $existingComment = $rating ? $rating->getComment() : null;
 
         $form = $this->createForm(RatingType::class, null, [
             'existing_scores' => $existingScores,
+            'existing_comment' => $existingComment,
         ]);
         $form->handleRequest($request);
 
@@ -159,6 +161,9 @@ class BusinessIdeaController extends AbstractController
                 $score = (int) $form->get('rating_' . $key)->getData();
                 $rating->setScoreFor($key, $score);
             }
+
+            $comment = $form->get('comment')->getData();
+            $rating->setComment($comment);
 
             $this->entityManager->flush();
 

@@ -68,6 +68,20 @@ class Rating
         return $this;
     }
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $comment = null;
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): static
+    {
+        $this->comment = $comment;
+        return $this;
+    }
+
     public function getScoreFor(string $criterion): ?int
     {
         return isset($this->scores[$criterion]) ? (int) $this->scores[$criterion] : null;

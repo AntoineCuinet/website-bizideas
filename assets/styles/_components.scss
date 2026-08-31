@@ -688,3 +688,63 @@
     margin-bottom: 1.5rem;
     line-height: 1.5;
 }
+
+/* Rating comment input group */
+.rating-comment-group {
+    margin-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.5rem;
+}
+
+/* Comments Section in Modals */
+.modal-comments-section {
+    margin-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.5rem;
+
+    h3 {
+        font-size: var(--font-md);
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.comment-item {
+    background-color: var(--bg-tertiary);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: var(--font-sm);
+
+    strong {
+        color: var(--text-primary);
+    }
+}
+
+.comment-score {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.comment-body {
+    font-size: var(--font-md);
+    color: var(--text-secondary);
+    white-space: pre-wrap;
+}
+
+/* Account Preferences Form margin */
+.preferences-form {
+    margin-top: 2rem;
+}
