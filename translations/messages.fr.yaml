@@ -95,7 +95,7 @@ status:
 revenue:
     single: "Paiement unique"
     recurring: "Récurrent / Abonnement"
-    both: "Unique et récurrent"
+    both: "Initial et récurrent"
 
 audience:
     b2b: "Entreprises (B2B)"
