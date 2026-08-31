@@ -137,7 +137,7 @@
 }
 
 .logo-text {
-    font-size: var(--font-lg);
+    font-size: var(--font-2xl);
     font-weight: 800;
     color: var(--color-primary);
     letter-spacing: -0.02em;
@@ -245,16 +245,16 @@
     border-radius: var(--radius-md);
     padding: 1.5rem;
     box-shadow: var(--shadow-sm);
-    transition: all var(--transition-normal);
     cursor: pointer;
     display: flex;
     flex-direction: column;
     position: relative;
     overflow: hidden;
     animation: fadeIn var(--transition-normal) forwards;
-    
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+
     &:hover {
-        transform: translateY(-4px);
+        transform: translateY(-4px) !important;
     }
 }
 
@@ -263,9 +263,8 @@
     background-color: var(--card-own-bg);
     border-color: var(--card-own-border);
     border-top: 4px solid var(--card-own-accent);
-    
+
     &:hover {
-        background-color: var(--card-own-bg-hover);
         box-shadow: var(--card-own-shadow-hover);
     }
 }
@@ -274,9 +273,8 @@
     background-color: var(--card-other-bg);
     border-color: var(--card-other-border);
     border-top: 4px solid var(--card-other-accent);
-    
+
     &:hover {
-        background-color: var(--card-other-bg-hover);
         box-shadow: var(--card-other-shadow-hover);
     }
 }
