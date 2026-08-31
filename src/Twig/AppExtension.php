@@ -41,7 +41,7 @@ class AppExtension extends AbstractExtension
     public function getNavbarStats(): array
     {
         $user = $this->security->getUser();
-        if (!$user) {
+        if (!$user instanceof \App\Entity\User) {
             return [
                 'totalIdeas' => 0,
                 'collaboratorsStats' => [],
