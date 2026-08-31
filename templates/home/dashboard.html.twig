@@ -145,11 +145,30 @@
                                         <span class="info-label">{{ 'app.target_audience'|trans }}</span>
                                         <span class="info-val">{{ ('audience.' ~ idea.targetAudience)|trans }}</span>
                                     </div>
-                                    <div class="info-item">
+                                    <div class="info-item info-item-global">
                                         <span class="info-label">{{ 'app.global_score'|trans }}</span>
                                         <span class="info-val highlight">
                                             {% if globalScore > 0 %}{{ 'app.global_score_display'|trans({'%score%': globalScore}) }}{% else %}-{% endif %}
                                         </span>
+
+                                        {% if item.ratingsData is not empty %}
+                                            <div class="individual-scores-list">
+                                                {% for rData in item.ratingsData %}
+                                                    <div class="individual-score-row">
+                                                        <span class="indiv-name">
+                                                            {% if rData.email == app.user.email %}
+                                                                {{ 'app.user_comment_author'|trans }}
+                                                            {% else %}
+                                                                {{ rData.displayName }}
+                                                            {% endif %}
+                                                        </span>
+                                                        <span class="indiv-score">
+                                                            {{ 'app.global_score_display'|trans({'%score%': rData.score}) }}
+                                                        </span>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
 
