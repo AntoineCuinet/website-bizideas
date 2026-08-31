@@ -133,7 +133,7 @@
             </div>
 
             <div class="idea-desc">
-                {{ idea.description|nl2br }}
+                {{ idea.description|app_markdown }}
             </div>
 
             <h4 style="margin-bottom: 5px; color: #1e293b;">Détail des évaluations (Note globale: {% if globalScore > 0 %}{{ globalScore }}/5{% else %}N/A{% endif %})</h4>

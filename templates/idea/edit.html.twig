@@ -26,6 +26,14 @@
 
             <div class="form-group">
                 {{ form_label(form.description) }}
+                
+                <div class="markdown-toolbar" data-controller="markdown-toolbar" data-markdown-toolbar-target-value="business_idea_description">
+                    <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertHeading1" title="{{ 'app.toolbar.h1'|trans }}">{{ 'app.toolbar.h1'|trans }}</button>
+                    <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertHeading2" title="{{ 'app.toolbar.h2'|trans }}">{{ 'app.toolbar.h2'|trans }}</button>
+                    <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertBold" title="{{ 'app.toolbar.bold'|trans }}">{{ 'app.toolbar.bold'|trans }}</button>
+                    <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertList" title="{{ 'app.toolbar.list'|trans }}">{{ 'app.toolbar.list'|trans }}</button>
+                </div>
+
                 {{ form_widget(form.description, {'attr': {
                     'class': 'form-control form-textarea',
                     'placeholder': 'idea.description.placeholder'|trans,

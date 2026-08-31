@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Twig\TwigFilter;
 
 class AppExtension extends AbstractExtension
 {
@@ -22,6 +23,13 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFunction('app_version', [$this, 'getAppVersion']),
             new TwigFunction('app_navbar_stats', [$this, 'getNavbarStats']),
+        ];
+    }
+
+    public function getFilters(): array
+    {
+        return [
+            new TwigFilter('app_markdown', [$this, 'parseMarkdown'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -85,5 +93,57 @@ class AppExtension extends AbstractExtension
             'totalIdeas' => count($ideas),
             'collaboratorsStats' => $collaboratorsStats,
         ];
+    }
+
+    public function parseMarkdown(?string $text): string
+    {
+        if ($text === null || $text === '') {
+            return '';
+        }
+
+        $lines = explode("\n", $text);
+        $parsedLines = [];
+        $inList = false;
+
+        foreach ($lines as $line) {
+            $line = htmlspecialchars($line, ENT_QUOTES, 'UTF-8');
+            $line = trim($line);
+
+            if (preg_match('/^#\s+(.+)$/', $line, $matches)) {
+                if ($inList) { $parsedLines[] = '</ul>'; $inList = false; }
+                $parsedLines[] = '<h3 class="markdown-h1">' . $matches[1] . '</h3>';
+            } elseif (preg_match('/^##\s+(.+)$/', $line, $matches)) {
+                if ($inList) { $parsedLines[] = '</ul>'; $inList = false; }
+                $parsedLines[] = '<h4 class="markdown-h2">' . $matches[1] . '</h4>';
+            } elseif (preg_match('/^###\s+(.+)$/', $line, $matches)) {
+                if ($inList) { $parsedLines[] = '</ul>'; $inList = false; }
+                $parsedLines[] = '<h5 class="markdown-h3">' . $matches[1] . '</h5>';
+            } elseif (preg_match('/^[-*]\s+(.+)$/', $line, $matches)) {
+                if (!$inList) { $parsedLines[] = '<ul class="markdown-list">'; $inList = true; }
+                $itemText = preg_replace('/\*\*(.+?)\*\*/', '<strong>$1</strong>', $matches[1]);
+                $parsedLines[] = '<li>' . $itemText . '</li>';
+            } else {
+                if ($inList) { $parsedLines[] = '</ul>'; $inList = false; }
+                if ($line === '') {
+                    $parsedLines[] = '<br>';
+                } else {
+                    $line = preg_replace('/\*\*(.+?)\*\*/', '<strong>$1</strong>', $line);
+                    $parsedLines[] = $line;
+                }
+            }
+        }
+        if ($inList) { $parsedLines[] = '</ul>'; }
+
+        $html = '';
+        foreach ($parsedLines as $parsedLine) {
+            $tag = substr($parsedLine, 0, 4);
+            if (in_array($tag, ['<h3 ', '<h4 ', '<h5 ', '<ul>', '</ul', '<li ', '<li>', '<br>'])) {
+                $html .= $parsedLine;
+            } else {
+                $html .= '<p class="markdown-p">' . $parsedLine . '</p>';
+            }
+        }
+
+        return $html;
     }
 }

@@ -19,7 +19,7 @@
         <h3>{{ idea.title }}</h3>
         <p class="summary-creator">{{ 'app.created_by'|trans({'%email%': idea.creator.email}) }}</p>
         <div class="summary-desc">
-            {{ idea.description|nl2br }}
+            {{ idea.description|app_markdown }}
         </div>
         <div class="summary-meta-tags">
             <span class="meta-tag">{{ ('revenue.' ~ idea.revenueModel)|trans }}</span>

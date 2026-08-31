@@ -78,7 +78,7 @@
         
         <div class="idea-box">
             <div class="idea-title">{{ idea.title }}</div>
-            <div>{{ idea.description|nl2br }}</div>
+            <div>{{ idea.description|app_markdown }}</div>
         </div>
         
         <p>{{ 'email.new_idea.call_to_action'|trans }}</p>
