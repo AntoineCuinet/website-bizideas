@@ -115,9 +115,6 @@ class AppExtension extends AbstractExtension
             } elseif (preg_match('/^##\s+(.+)$/', $line, $matches)) {
                 if ($inList) { $parsedLines[] = '</ul>'; $inList = false; }
                 $parsedLines[] = '<h4 class="markdown-h2">' . $matches[1] . '</h4>';
-            } elseif (preg_match('/^###\s+(.+)$/', $line, $matches)) {
-                if ($inList) { $parsedLines[] = '</ul>'; $inList = false; }
-                $parsedLines[] = '<h5 class="markdown-h3">' . $matches[1] . '</h5>';
             } elseif (preg_match('/^[-*]\s+(.+)$/', $line, $matches)) {
                 if (!$inList) { $parsedLines[] = '<ul class="markdown-list">'; $inList = true; }
                 $itemText = preg_replace('/\*\*(.+?)\*\*/', '<strong>$1</strong>', $matches[1]);
