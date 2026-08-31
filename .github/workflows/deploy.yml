@@ -25,10 +25,14 @@ jobs:
           tools: composer:v2
 
       - name: Install production dependencies
+        env:
+          APP_ENV: prod
         run: |
           composer install --no-dev --optimize-autoloader --no-interaction
 
       - name: Compile assets
+        env:
+          APP_ENV: prod
         run: |
           php bin/console asset-map:compile
 
