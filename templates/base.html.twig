@@ -4,12 +4,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="{{ 'app.description'|trans }}">
-        
         <title>{% block title %}{{ 'app.title'|trans }}{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>💡</text></svg>">
 
         <script>
-            // Inline script to prevent theme flashing on load
             (function() {
                 const savedTheme = localStorage.getItem('theme') || 'light';
                 document.documentElement.setAttribute('data-theme', savedTheme);
@@ -48,20 +46,18 @@
                         <!-- Collaborators Stats Dropdown -->
                         <div class="header-dropdown-container">
                             <button id="collaborators-toggle" class="btn btn-icon collaborators-btn" aria-label="{{ 'collaborators.title'|trans }}">
-                                <span>ℹ️</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M196 220h64v172" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="40px"/><path d="M187 396h138" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="40px"/><path d="M256 160a32 32 0 1 1 32-32 32 32 0 0 1-32 32" fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="15px"/></svg>
                             </button>
                             <div class="header-dropdown-menu">
                                 <h4 class="dropdown-title">
-                                    <span>👥 {{ 'collaborators.title'|trans }}</span>
+                                    <span>{{ 'collaborators.title'|trans }}</span>
                                     <span class="total-ideas-badge">{{ 'collaborators.total_ideas'|trans({'%count%': nav_stats.totalIdeas}) }}</span>
                                 </h4>
                                 <div class="dropdown-list">
                                     {% for stat in nav_stats.collaboratorsStats %}
                                         <div class="dropdown-item {% if stat.isCurrentUser %}dropdown-item-current{% endif %}">
                                             <div class="dropdown-item-info">
-                                                <span class="dropdown-item-avatar">
-                                                    {% if stat.isCurrentUser %}👤{% else %}✉️{% endif %}
-                                                </span>
+                                                <span class="dropdown-item-avatar"></span>
                                                 <span class="dropdown-item-name" title="{{ stat.user.email }}">
                                                     {{ stat.user.displayName }}
                                                     {% if stat.isCurrentUser %}
@@ -86,11 +82,12 @@
                         </div>
 
                         <button id="theme-toggle" class="btn btn-icon theme-btn" aria-label="Toggle theme">
-                            <span class="theme-icon-light">☀️</span>
-                            <span class="theme-icon-dark">🌙</span>
+                            <svg class="theme-icon-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 48v48M256 416v48M403.08 108.92l-33.94 33.94M142.86 369.14l-33.94 33.94M464 256h-48M96 256H48M403.08 403.08l-33.94-33.94M142.86 142.86l-33.94-33.94" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="256" r="80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32px"/></svg>
+                            <svg class="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M160 136c0-30.62 4.51-61.61 16-88C99.57 81.27 48 159.32 48 248c0 119.29 96.71 216 216 216 88.68 0 166.73-51.57 200-128-26.39 11.49-57.38 16-88 16-119.29 0-216-96.71-216-216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/></svg>
                         </button>
                         <a href="{{ path('app_account') }}" class="btn btn-secondary nav-link">
-                            <span class="nav-icon">👤</span>
+                            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/><path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304Z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg>
+                            {# <span class="nav-icon">👤</span> #}
                             <span class="nav-text">{{ 'app.account'|trans }}</span>
                         </a>
                     </div>
@@ -100,7 +97,7 @@
             <main class="app-main-content">
                 {% block body %}{% endblock %}
             </main>
-            
+
             <footer class="app-footer-global">
                 <div class="footer-container">
                     <p class="footer-text">{{ 'app.footer_text'|trans({'%year%': 'now'|date('Y')})|raw }}</p>
@@ -112,4 +109,3 @@
         </div>
     </body>
 </html>
-
