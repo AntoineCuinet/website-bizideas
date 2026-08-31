@@ -6,32 +6,33 @@
 <div class="landing-container">
     <div class="landing-content">
         <h1 class="landing-logo">{{ 'app.title'|trans }}</h1>
+
+        <div class="landing-actions">
+            <a href="{{ path('app_login') }}" class="btn btn-primary btn-large">
+                {{ 'app.login'|trans }}
+            </a>
+        </div>
+
         <p class="landing-tagline">{{ 'app.subtitle'|trans }}</p>
-        
+
         <div class="landing-features">
             <div class="feature-card">
                 <div class="feature-icon">💡</div>
                 <h3 class="feature-title">{{ 'landing.features.add_ideas.title'|trans }}</h3>
                 <p class="feature-desc">{{ 'landing.features.add_ideas.desc'|trans }}</p>
             </div>
-            
+
             <div class="feature-card">
                 <div class="feature-icon">🤝</div>
                 <h3 class="feature-title">{{ 'landing.features.collaborate.title'|trans }}</h3>
                 <p class="feature-desc">{{ 'landing.features.collaborate.desc'|trans }}</p>
             </div>
-            
+
             <div class="feature-card">
                 <div class="feature-icon">⚖️</div>
                 <h3 class="feature-title">{{ 'landing.features.weighting.title'|trans }}</h3>
                 <p class="feature-desc">{{ 'landing.features.weighting.desc'|trans }}</p>
             </div>
-        </div>
-
-        <div class="landing-actions">
-            <a href="{{ path('app_login') }}" class="btn btn-primary btn-large">
-                {{ 'app.login'|trans }}
-            </a>
         </div>
     </div>
 </div>
