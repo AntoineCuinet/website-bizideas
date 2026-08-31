@@ -1,5 +1,4 @@
 import './stimulus_bootstrap.js';
-import './styles/app.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
     const toggleBtn = document.getElementById('theme-toggle');
