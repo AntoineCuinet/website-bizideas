@@ -38,6 +38,65 @@
         </div>
 
         <div class="app-layout">
+            {% if app.user %}
+                {% set nav_stats = app_navbar_stats() %}
+                <header class="app-header">
+                    <div class="header-logo">
+                        <span class="logo-text"><a href="{{ path('app_home') }}">💡 {{ 'app.title'|trans }}</a></span>
+                    </div>
+                    <div class="header-nav">
+                        <!-- Collaborators Stats Dropdown -->
+                        <div class="header-dropdown-container">
+                            <button id="collaborators-toggle" class="btn btn-icon collaborators-btn" aria-label="{{ 'collaborators.title'|trans }}">
+                                <span>ℹ️</span>
+                            </button>
+                            <div class="header-dropdown-menu">
+                                <h4 class="dropdown-title">
+                                    <span>👥 {{ 'collaborators.title'|trans }}</span>
+                                    <span class="total-ideas-badge">{{ 'collaborators.total_ideas'|trans({'%count%': nav_stats.totalIdeas}) }}</span>
+                                </h4>
+                                <div class="dropdown-list">
+                                    {% for stat in nav_stats.collaboratorsStats %}
+                                        <div class="dropdown-item {% if stat.isCurrentUser %}dropdown-item-current{% endif %}">
+                                            <div class="dropdown-item-info">
+                                                <span class="dropdown-item-avatar">
+                                                    {% if stat.isCurrentUser %}👤{% else %}✉️{% endif %}
+                                                </span>
+                                                <span class="dropdown-item-name" title="{{ stat.user.email }}">
+                                                    {{ stat.user.displayName }}
+                                                    {% if stat.isCurrentUser %}
+                                                        <span class="current-user-tag">({{ 'collaborators.me'|trans }})</span>
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                            <div class="dropdown-item-stats-badge" title="{{ 'collaborators.ideas_created'|trans({'%count%': stat.ideasCount}) }}">
+                                                <span class="ideas-count-number">{{ stat.ideasCount }}</span>
+                                                <span class="ideas-count-label">
+                                                    {% if stat.ideasCount > 1 %}
+                                                        {{ 'collaborators.ideas_label_plural'|trans }}
+                                                    {% else %}
+                                                        {{ 'collaborators.ideas_label_singular'|trans }}
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="theme-toggle" class="btn btn-icon theme-btn" aria-label="Toggle theme">
+                            <span class="theme-icon-light">☀️</span>
+                            <span class="theme-icon-dark">🌙</span>
+                        </button>
+                        <a href="{{ path('app_account') }}" class="btn btn-secondary nav-link">
+                            <span class="nav-icon">👤</span>
+                            <span class="nav-text">{{ 'app.account'|trans }}</span>
+                        </a>
+                    </div>
+                </header>
+            {% endif %}
+
             <main class="app-main-content">
                 {% block body %}{% endblock %}
             </main>
