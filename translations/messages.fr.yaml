@@ -198,4 +198,9 @@ collaborators:
     ideas_created: "%count% idées"
     ideas_label_plural: "idées"
     ideas_label_singular: "idée"
+
+error:
+    cannot_edit_others_idea: "Vous ne pouvez modifier que vos propres idées."
+    creator_cannot_comment: "Le créateur de l'idée ne peut pas ajouter ou modifier de commentaire."
+    cannot_delete_others_idea: "Vous ne pouvez supprimer que vos propres idées."
     me: "Moi"

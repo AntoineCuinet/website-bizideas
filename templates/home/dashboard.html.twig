@@ -168,6 +168,7 @@
                                                     {# Show creator rating #}
                                                     {% set creatorRating = idea.ratingByUser(idea.creator) %}
                                                     {% set creatorScore = creatorRating ? creatorRating.scoreFor(cKey) : null %}
+                                                    {% set creatorComment = creatorRating ? creatorRating.getCommentFor(cKey) : null %}
                                                     {% set creatorIsMe = (idea.creator.id == app.user.id) %}
                                                     <div class="score-line">
                                                         <span class="score-line-label">{% if creatorIsMe %}{{ 'app.my_score'|trans }}{% else %}{{ 'app.other_score'|trans({'%email%': idea.creator.displayName}) }} :{% endif %}</span>
@@ -181,12 +182,18 @@
                                                             {% endif %}
                                                         </div>
                                                     </div>
+                                                    {% if creatorComment is not empty %}
+                                                        <div class="criterion-comment-text">
+                                                            « {{ creatorComment }} »
+                                                        </div>
+                                                    {% endif %}
 
                                                     {# Show other ratings (everyone except the creator) #}
                                                     {% for u in allUsers %}
                                                         {% if u.id != idea.creator.id %}
                                                             {% set r = idea.ratingByUser(u) %}
                                                             {% set uScore = r ? r.scoreFor(cKey) : null %}
+                                                            {% set uComment = r ? r.getCommentFor(cKey) : null %}
                                                             {% set uIsMe = (u.id == app.user.id) %}
                                                             <div class="score-line">
                                                                 <span class="score-line-label">{% if uIsMe %}{{ 'app.my_score'|trans }}{% else %}{{ 'app.other_score'|trans({'%email%': u.displayName}) }} :{% endif %}</span>
@@ -200,6 +207,11 @@
                                                                     {% endif %}
                                                                 </div>
                                                             </div>
+                                                            {% if uComment is not empty %}
+                                                                <div class="criterion-comment-text">
+                                                                    « {{ uComment }} »
+                                                                </div>
+                                                            {% endif %}
                                                         {% endif %}
                                                     {% endfor %}
                                                 </div>

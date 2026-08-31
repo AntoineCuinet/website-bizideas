@@ -12,6 +12,7 @@ use App\Service\CriteriaManager;
 use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,7 +25,8 @@ class BusinessIdeaController extends AbstractController
     public function __construct(
         private EntityManagerInterface $entityManager,
         private RatingRepository $ratingRepository,
-        private NotificationService $notificationService
+        private NotificationService $notificationService,
+        private TranslatorInterface $translator
     ) {
     }
 
@@ -55,6 +57,9 @@ class BusinessIdeaController extends AbstractController
             foreach ($criteria as $key => $config) {
                 $score = (int) $form->get('rating_' . $key)->getData();
                 $rating->setScoreFor($key, $score);
+
+                $critComment = $form->get('comment_' . $key)->getData();
+                $rating->setCommentFor($key, $critComment);
             }
 
             $this->entityManager->persist($rating);
@@ -83,7 +88,7 @@ class BusinessIdeaController extends AbstractController
         }
 
         if ($idea->getCreator()->getId() !== $user->getId()) {
-            throw $this->createAccessDeniedException('Vous ne pouvez modifier que vos propres idées.');
+            throw $this->createAccessDeniedException($this->translator->trans('error.cannot_edit_others_idea'));
         }
 
         $rating = $this->ratingRepository->findOneBy([
@@ -92,9 +97,11 @@ class BusinessIdeaController extends AbstractController
         ]);
 
         $existingScores = $rating ? $rating->getScores() : [];
+        $existingComments = $rating ? $rating->getCriterionComments() : [];
 
         $form = $this->createForm(BusinessIdeaType::class, $idea, [
             'existing_scores' => $existingScores,
+            'existing_comments' => $existingComments,
         ]);
         $form->handleRequest($request);
 
@@ -110,6 +117,9 @@ class BusinessIdeaController extends AbstractController
             foreach ($criteria as $key => $config) {
                 $score = (int) $form->get('rating_' . $key)->getData();
                 $rating->setScoreFor($key, $score);
+
+                $critComment = $form->get('comment_' . $key)->getData();
+                $rating->setCommentFor($key, $critComment);
             }
 
             $this->entityManager->flush();
@@ -133,6 +143,11 @@ class BusinessIdeaController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
+        // Prevent the creator of the idea from accessing the rating/commenting page
+        if ($idea->getCreator()->getId() === $user->getId()) {
+            throw $this->createAccessDeniedException($this->translator->trans('error.creator_cannot_comment'));
+        }
+
         // Allow user to rate another person's idea or modify their existing rating
         $rating = $this->ratingRepository->findOneBy([
             'businessIdea' => $idea,
@@ -141,10 +156,12 @@ class BusinessIdeaController extends AbstractController
 
         $existingScores = $rating ? $rating->getScores() : [];
         $existingComment = $rating ? $rating->getComment() : null;
+        $existingComments = $rating ? $rating->getCriterionComments() : [];
 
         $form = $this->createForm(RatingType::class, null, [
             'existing_scores' => $existingScores,
             'existing_comment' => $existingComment,
+            'existing_comments' => $existingComments,
         ]);
         $form->handleRequest($request);
 
@@ -160,6 +177,9 @@ class BusinessIdeaController extends AbstractController
             foreach ($criteria as $key => $config) {
                 $score = (int) $form->get('rating_' . $key)->getData();
                 $rating->setScoreFor($key, $score);
+
+                $critComment = $form->get('comment_' . $key)->getData();
+                $rating->setCommentFor($key, $critComment);
             }
 
             $comment = $form->get('comment')->getData();
@@ -187,7 +207,7 @@ class BusinessIdeaController extends AbstractController
         }
 
         if ($idea->getCreator()->getId() !== $user->getId()) {
-            throw $this->createAccessDeniedException('Vous ne pouvez supprimer que vos propres idées.');
+            throw $this->createAccessDeniedException($this->translator->trans('error.cannot_delete_others_idea'));
         }
 
         if ($this->isCsrfTokenValid('delete' . $idea->getId(), $request->request->get('_token'))) {
