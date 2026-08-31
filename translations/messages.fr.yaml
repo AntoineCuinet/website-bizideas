@@ -69,13 +69,13 @@ app:
     success_rating_saved: "Votre évaluation a bien été enregistrée."
     self_evaluation: "Auto-évaluation"
     other_evaluations: "Évaluations des collaborateurs"
-    evaluation: "📊 Auto-évaluation et évaluations des collaborateurs"
+    evaluation: "Auto-évaluation et évaluations des collaborateurs"
     global_score_display: "⭐ %score%/5"
     button:
-        edit: "✏️ Modifier"
-        edit_note: "⭐ Modifier note"
-        delete: "🗑️ Supprimer"
-        rate: "⭐ Noter"
+        edit: "Modifier"
+        edit_note: "Modifier note"
+        delete: "Supprimer"
+        rate: "Noter"
 
 status:
     draft: "Brouillon"
@@ -162,7 +162,7 @@ idea:
     target_audience:
         label: "Public ciblé"
         blank: "Le public cible est obligatoire."
-    details_project: "📝 Détails du projet"
+    details_project: "Détails du projet"
 
 landing:
     features:
@@ -179,7 +179,7 @@ landing:
 
 rate:
     subtitle: "Attribuez votre évaluation sur les critères suivants pour cette idée."
-    criteria_evaluation: "📊 Évaluation des critères"
+    criteria_evaluation: "Évaluation des critères"
 
 new_idea:
     subtitle: "Décrivez votre idée et réalisez votre auto-évaluation."

@@ -10,7 +10,7 @@
     
     <div class="form-header">
         <a href="{{ path('app_home') }}" class="btn-back">{{ 'app.back'|trans }}</a>
-        <h1>💡 {{ 'app.add_idea'|trans }}</h1>
+        <h1>{{ 'app.add_idea'|trans }}</h1>
         <p class="form-subtitle">{{ 'new_idea.subtitle'|trans }}</p>
     </div>
 
@@ -57,13 +57,13 @@
 
         <div class="form-card">
             <div class="rating-header-sticky">
-                <h2>⭐ {{ 'app.self_evaluation'|trans }}</h2>
+                <h2>{{ 'app.self_evaluation'|trans }}</h2>
                 <div class="live-score-preview-box">
                     {{ 'app.rating_preview'|trans }} 
                     <span class="preview-number" data-live-rating-preview-target="preview">-</span>
                 </div>
             </div>
-            
+
             <div class="criteria-form-list">
                 {% for child in form %}
                     {% if child.vars.name starts with 'rating_' %}
@@ -94,7 +94,7 @@
 
         <div class="form-actions-bar">
             <a href="{{ path('app_home') }}" class="btn btn-secondary btn-lg">{{ 'app.cancel'|trans }}</a>
-            <button type="submit" class="btn btn-primary btn-lg">💾 {{ 'app.save'|trans }}</button>
+            <button type="submit" class="btn btn-primary btn-lg">{{ 'app.save'|trans }}</button>
         </div>
     {{ form_end(form) }}
 </div>

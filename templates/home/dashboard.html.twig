@@ -5,7 +5,6 @@
 {% block body %}
 <div class="dashboard-container" data-controller="modal-manager">
     <main class="dashboard-content">
-        <!-- Filter / Export Toolbar -->
         <section class="toolbar-section">
             <div class="toolbar-sort">
                 <label for="sort-select" class="sort-label">{{ 'app.sorting'|trans }} :</label>
@@ -27,7 +26,7 @@
             </div>
 
             <div class="toolbar-export">
-                <span class="export-label">📥 {{ 'app.export'|trans }} :</span>
+                <span class="export-label">{{ 'app.export'|trans }} :</span>
                 <div class="export-buttons">
                     <a href="?sort={{ sortBy }}&export=csv" class="btn btn-sm btn-outline">{{ 'app.export.csv'|trans }}</a>
                     <a href="?sort={{ sortBy }}&export=markdown" class="btn btn-sm btn-outline">{{ 'app.export.md'|trans }}</a>
@@ -36,7 +35,6 @@
             </div>
         </section>
 
-        <!-- Ideas List Grid -->
         <section class="ideas-section">
             <div class="ideas-grid">
                 {% for item in rankedIdeas %}
@@ -48,14 +46,14 @@
                     <div class="idea-card {% if isOwn %}idea-card-own{% else %}idea-card-other{% endif %}" 
                          data-action="click->modal-manager#open" 
                          data-idea-id="{{ idea.id }}">
-                        
+
                         <div class="idea-card-header">
                             <span class="idea-badge-rank">#{{ rank }}</span>
                             <span class="idea-badge-status badge-{{ idea.status }}">{{ ('status.' ~ idea.status)|trans }}</span>
                         </div>
 
                         <h2 class="idea-card-title">{{ idea.title }}</h2>
-                        
+
                         <p class="idea-card-creator">
                             {% if isOwn %}
                                 {{ 'app.created_by'|trans({'%email%': 'Moi'}) }}
@@ -75,7 +73,7 @@
                                     {% endif %}
                                 </span>
                             </div>
-                            
+
                             {% if item.ratingsData is not empty %}
                                 <div class="individual-scores-list">
                                     {% for rData in item.ratingsData %}
@@ -124,7 +122,7 @@
                                 <span class="modal-rank">{{ 'app.rank_number'|trans({'%rank%': rank}) }}</span>
                                 <button class="btn-close" data-action="click->modal-manager#close" data-idea-id="{{ idea.id }}">✕</button>
                             </div>
-                            
+
                             <div class="modal-title-area">
                                 <span class="idea-badge-status badge-{{ idea.status }}">{{ ('status.' ~ idea.status)|trans }}</span>
                                 <h2>{{ idea.title }}</h2>
@@ -157,7 +155,7 @@
 
                                 <div class="modal-ratings-comparison">
                                     <h3>{{ 'app.evaluation'|trans }}</h3>
-                                    
+
                                     {% set allUsers = [app.user]|merge(collaborators) %}
                                     <div class="criteria-list">
                                         {% for cKey, cConfig in criteria %}
@@ -183,7 +181,7 @@
                                                             {% endif %}
                                                         </div>
                                                     </div>
-                                                    
+
                                                     {# Show other ratings (everyone except the creator) #}
                                                     {% for u in allUsers %}
                                                         {% if u.id != idea.creator.id %}
