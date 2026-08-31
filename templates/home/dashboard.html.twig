@@ -265,7 +265,7 @@
                                                                 {{ 'app.global_score_display'|trans({'%score%': rData.score}) }}
                                                             </span>
                                                         </div>
-                                                        <div class="comment-body">{{ rData.comment }}</div>
+                                                        <div class="comment-body">{{ rData.comment|app_markdown }}</div>
                                                     </div>
                                                 {% endif %}
                                             {% endfor %}

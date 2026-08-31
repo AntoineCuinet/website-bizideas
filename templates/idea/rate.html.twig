@@ -73,6 +73,14 @@
 
             <div class="form-group rating-comment-group">
                 {{ form_label(form.comment) }}
+
+                <div class="markdown-toolbar" data-controller="markdown-toolbar" data-markdown-toolbar-target-value="rating_comment">
+                    <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertHeading1" title="{{ 'app.toolbar.h1'|trans }}">{{ 'app.toolbar.h1'|trans }}</button>
+                    <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertHeading2" title="{{ 'app.toolbar.h2'|trans }}">{{ 'app.toolbar.h2'|trans }}</button>
+                    <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertBold" title="{{ 'app.toolbar.bold'|trans }}">{{ 'app.toolbar.bold'|trans }}</button>
+                    <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertList" title="{{ 'app.toolbar.list'|trans }}">{{ 'app.toolbar.list'|trans }}</button>
+                </div>
+
                 {{ form_widget(form.comment) }}
                 {{ form_errors(form.comment) }}
             </div>
