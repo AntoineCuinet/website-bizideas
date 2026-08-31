@@ -82,6 +82,39 @@ class Rating
         return $this;
     }
 
+    #[ORM\Column(nullable: true)]
+    private ?array $criterionComments = [];
+
+    public function getCriterionComments(): array
+    {
+        return $this->criterionComments ?? [];
+    }
+
+    public function setCriterionComments(?array $criterionComments): static
+    {
+        $this->criterionComments = $criterionComments ?? [];
+        return $this;
+    }
+
+    public function getCommentFor(string $criterion): ?string
+    {
+        return ($this->criterionComments ?? [])[$criterion] ?? null;
+    }
+
+    public function setCommentFor(string $criterion, ?string $comment): static
+    {
+        if ($this->criterionComments === null) {
+            $this->criterionComments = [];
+        }
+
+        if ($comment === null || $comment === '') {
+            unset($this->criterionComments[$criterion]);
+        } else {
+            $this->criterionComments[$criterion] = $comment;
+        }
+        return $this;
+    }
+
     public function getScoreFor(string $criterion): ?int
     {
         return isset($this->scores[$criterion]) ? (int) $this->scores[$criterion] : null;

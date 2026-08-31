@@ -748,3 +748,21 @@
 .preferences-form {
     margin-top: 2rem;
 }
+
+/* Criterion comment box and text styles */
+.criterion-comment-box {
+    margin-top: 0.75rem;
+}
+
+.criterion-comment-textarea {
+    resize: none;
+}
+
+.criterion-comment-text {
+    font-size: var(--font-sm);
+    color: var(--text-tertiary);
+    font-style: italic;
+    margin-left: 1rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+}

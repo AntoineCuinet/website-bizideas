@@ -55,6 +55,7 @@ class BusinessIdeaType extends AbstractType
         // Add rated criteria fields (unmapped) for self-evaluation
         $criteria = CriteriaManager::getRatedCriteria();
         $existingScores = $options['existing_scores'] ?? [];
+        $existingComments = $options['existing_comments'] ?? [];
 
         foreach ($criteria as $key => $config) {
             $builder->add('rating_' . $key, ChoiceType::class, [
@@ -77,6 +78,20 @@ class BusinessIdeaType extends AbstractType
                     'data-criterion' => $key,
                 ],
             ]);
+
+            $builder->add('comment_' . $key, TextareaType::class, [
+                'label' => false,
+                'required' => false,
+                'mapped' => false,
+                'data' => $existingComments[$key] ?? null,
+                'attr' => [
+                    'placeholder' => 'app.criterion_comment_placeholder',
+                    'rows' => 2,
+                    'class' => 'form-control criterion-comment-textarea',
+                    'data-controller' => 'textarea-autogrow',
+                    'data-action' => 'input->textarea-autogrow#autogrow',
+                ],
+            ]);
         }
     }
 
@@ -85,6 +100,7 @@ class BusinessIdeaType extends AbstractType
         $resolver->setDefaults([
             'data_class' => BusinessIdea::class,
             'existing_scores' => [],
+            'existing_comments' => [],
             'translation_domain' => 'messages',
         ]);
     }

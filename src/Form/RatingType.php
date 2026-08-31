@@ -15,6 +15,7 @@ class RatingType extends AbstractType
     {
         $criteria = CriteriaManager::getRatedCriteria();
         $existingScores = $options['existing_scores'] ?? [];
+        $existingComments = $options['existing_comments'] ?? [];
 
         foreach ($criteria as $key => $config) {
             $builder->add('rating_' . $key, ChoiceType::class, [
@@ -37,6 +38,20 @@ class RatingType extends AbstractType
                     'data-criterion' => $key,
                 ],
             ]);
+
+            $builder->add('comment_' . $key, TextareaType::class, [
+                'label' => false,
+                'required' => false,
+                'mapped' => false,
+                'data' => $existingComments[$key] ?? null,
+                'attr' => [
+                    'placeholder' => 'app.criterion_comment_placeholder',
+                    'rows' => 2,
+                    'class' => 'form-control criterion-comment-textarea',
+                    'data-controller' => 'textarea-autogrow',
+                    'data-action' => 'input->textarea-autogrow#autogrow',
+                ],
+            ]);
         }
 
         $builder->add('comment', TextareaType::class, [
@@ -47,6 +62,8 @@ class RatingType extends AbstractType
                 'placeholder' => 'app.comment_placeholder',
                 'rows' => 4,
                 'class' => 'form-control form-textarea',
+                'data-controller' => 'textarea-autogrow',
+                'data-action' => 'input->textarea-autogrow#autogrow',
             ],
         ]);
     }
@@ -56,6 +73,7 @@ class RatingType extends AbstractType
         $resolver->setDefaults([
             'existing_scores' => [],
             'existing_comment' => null,
+            'existing_comments' => [],
             'translation_domain' => 'messages',
         ]);
     }

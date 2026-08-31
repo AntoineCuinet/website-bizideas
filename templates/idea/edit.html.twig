@@ -85,6 +85,13 @@
                                         </label>
                                     {% endfor %}
                                 </div>
+
+                                {% set criterionKey = child.vars.name|replace({'rating_': ''}) %}
+                                {% set commentField = attribute(form, 'comment_' ~ criterionKey) %}
+                                <div class="criterion-comment-box">
+                                    {{ form_widget(commentField) }}
+                                    {{ form_errors(commentField) }}
+                                </div>
                             </div>
                         </div>
                     {% endif %}

@@ -16,6 +16,7 @@ app:
     cancel: "Annuler"
     comment_label: "Commentaire / Remarques (optionnel)"
     comment_placeholder: "Ajoutez un commentaire ou des remarques sur cette idée..."
+    criterion_comment_placeholder: "Remarques sur ce critère (facultatif)..."
     comments: "Commentaires"
     user_comment_author: "Moi"
     export: "Exporter"
