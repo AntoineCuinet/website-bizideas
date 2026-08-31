@@ -145,6 +145,13 @@
     }
 }
 
+.btn-account {
+    margin-top: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Form Controls */
 .standard-form {
     display: flex;
@@ -166,6 +173,10 @@
         border-bottom: 1px solid var(--border-color);
         padding-bottom: 0.5rem;
     }
+}
+
+.form-card-account {
+    margin-bottom: 2rem;
 }
 
 .form-group {

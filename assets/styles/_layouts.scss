@@ -444,6 +444,13 @@
     box-shadow: var(--shadow-sm);
 }
 
+.form-actions-account {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
 .idea-summary-card {
     background-color: var(--bg-secondary);
     border: 1px solid var(--border-color);

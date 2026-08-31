@@ -6,48 +6,56 @@
 <div class="form-container">
     <div class="form-header">
         <a href="{{ path('app_home') }}" class="btn-back">← Retour</a>
-        <h1>👤 {{ 'app.account'|trans }}</h1>
+        <h1>{{ 'app.account'|trans }}</h1>
         <p class="form-subtitle">{{ 'app.account_header'|trans }}</p>
     </div>
 
-    {{ form_start(form, {'attr': {'class': 'standard-form'}}) }}
-        <!-- Personal Information Card -->
-        <div class="form-card">
+    {{ form_start(infoForm, {'attr': {'class': 'standard-form'}}) }}
+        <div class="form-card form-card-account">
             <h2>🔒 {{ 'app.account_info'|trans }}</h2>
-            
+
             <div class="form-group">
-                {{ form_label(form.email) }}
-                {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.email) }}
+                <p>{{ 'app.role'|trans }}: {% if 'ROLE_ADMIN' in app.user.roles %}{{ 'app.role_admin'|trans }}{% else %}{{ 'app.role_user'|trans }}{% endif %}</p>
             </div>
 
             <div class="form-group">
-                {{ form_label(form.pseudo) }}
-                {{ form_widget(form.pseudo, {'attr': {'class': 'form-control', 'placeholder': 'Votre pseudo public...'}}) }}
-                {{ form_errors(form.pseudo) }}
+                {{ form_label(infoForm.email) }}
+                {{ form_widget(infoForm.email, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(infoForm.email) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(infoForm.pseudo) }}
+                {{ form_widget(infoForm.pseudo, {'attr': {'class': 'form-control', 'placeholder': 'Votre pseudo public...'}}) }}
+                {{ form_errors(infoForm.pseudo) }}
             </div>
 
             <div class="form-row-2">
                 <div class="form-group">
-                    {{ form_label(form.plainPassword.first) }}
-                    {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control', 'autocomplete': 'new-password'}}) }}
-                    {{ form_errors(form.plainPassword.first) }}
+                    {{ form_label(infoForm.plainPassword.first) }}
+                    {{ form_widget(infoForm.plainPassword.first, {'attr': {'class': 'form-control', 'autocomplete': 'new-password'}}) }}
+                    {{ form_errors(infoForm.plainPassword.first) }}
                 </div>
                 <div class="form-group">
-                    {{ form_label(form.plainPassword.second) }}
-                    {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control', 'autocomplete': 'new-password'}}) }}
-                    {{ form_errors(form.plainPassword.second) }}
+                    {{ form_label(infoForm.plainPassword.second) }}
+                    {{ form_widget(infoForm.plainPassword.second, {'attr': {'class': 'form-control', 'autocomplete': 'new-password'}}) }}
+                    {{ form_errors(infoForm.plainPassword.second) }}
                 </div>
             </div>
-        </div>
 
-        <!-- Preferences Card -->
+            <div class="form-actions-account">
+                <button type="submit" class="btn btn-primary btn-lg">{{ 'app.save'|trans }}</button>
+            </div>
+        </div>
+    {{ form_end(infoForm) }}
+
+    {{ form_start(prefForm, {'attr': {'class': 'standard-form'}}) }}
         <div class="form-card">
             <h2>⚖️ {{ 'app.preferences'|trans }}</h2>
             <p class="section-help-text">{{ 'app.preferences_intro'|trans }}</p>
 
             <div class="preferences-grid">
-                {% for child in form %}
+                {% for child in prefForm %}
                     {% if child.vars.name starts with 'pref_' %}
                         <div class="preference-field-row">
                             <div class="preference-info">
@@ -61,18 +69,15 @@
                     {% endif %}
                 {% endfor %}
             </div>
-        </div>
 
-        <!-- Form Actions -->
-        <div class="form-actions-bar">
-            <a href="{{ path('app_home') }}" class="btn btn-secondary btn-lg">{{ 'app.cancel'|trans }}</a>
-            <button type="submit" class="btn btn-primary btn-lg">💾 {{ 'app.save'|trans }}</button>
+            <div class="form-actions-account">
+                <button type="submit" class="btn btn-primary btn-lg">{{ 'app.save'|trans }}</button>
+            </div>
         </div>
-    {{ form_end(form) }}
+    {{ form_end(prefForm) }}
 
-    <!-- Logout Option -->
     <div class="account-logout-box">
-        <a href="{{ path('app_logout') }}" class="btn btn-danger btn-lg btn-logout-full">🚪 {{ 'app.logout'|trans }}</a>
+        <a href="{{ path('app_logout') }}" class="btn btn-danger btn-lg btn-logout-full">{{ 'app.logout'|trans }}</a>
     </div>
 
     {% if app_version() %}

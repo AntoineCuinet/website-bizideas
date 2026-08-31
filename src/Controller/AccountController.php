@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\AccountType;
+use App\Form\UserPreferencesType;
 use App\Service\CriteriaManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,21 +25,15 @@ class AccountController extends AbstractController
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
-        $form = $this->createForm(AccountType::class, $user, [
+        // 1. Form for account info
+        $infoForm = $this->createForm(AccountType::class, $user, [
             'user' => $user,
         ]);
-        $form->handleRequest($request);
+        $infoForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Update preferences
-            $criteria = CriteriaManager::getRatedCriteria();
-            foreach ($criteria as $key => $config) {
-                $weight = $form->get('pref_' . $key)->getData();
-                $user->setPreferenceWeight($key, $weight);
-            }
-
+        if ($infoForm->isSubmitted() && $infoForm->isValid()) {
             // Update password if provided
-            $plainPassword = $form->get('plainPassword')->getData();
+            $plainPassword = $infoForm->get('plainPassword')->getData();
             if (!empty($plainPassword)) {
                 $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
                 $user->setPassword($hashedPassword);
@@ -51,8 +46,30 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('app_account');
         }
 
+        // 2. Form for preferences
+        $prefForm = $this->createForm(UserPreferencesType::class, $user, [
+            'user' => $user,
+        ]);
+        $prefForm->handleRequest($request);
+
+        if ($prefForm->isSubmitted() && $prefForm->isValid()) {
+            // Update preferences
+            $criteria = CriteriaManager::getRatedCriteria();
+            foreach ($criteria as $key => $config) {
+                $weight = $prefForm->get('pref_' . $key)->getData();
+                $user->setPreferenceWeight($key, $weight);
+            }
+
+            $entityManager->flush();
+
+            $this->addFlash('success', 'app.success_preferences_updated');
+
+            return $this->redirectToRoute('app_account');
+        }
+
         return $this->render('account/index.html.twig', [
-            'form' => $form->createView(),
+            'infoForm' => $infoForm->createView(),
+            'prefForm' => $prefForm->createView(),
         ]);
     }
 }
