@@ -12,7 +12,6 @@ use Twig\Environment;
 class ExportService
 {
     public function __construct(
-        private RatingService $ratingService,
         private TranslatorInterface $translator,
         private Environment $twig
     ) {

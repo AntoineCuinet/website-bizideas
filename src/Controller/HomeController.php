@@ -26,7 +26,7 @@ class HomeController extends AbstractController
         $user = $this->getUser();
 
         // 1. If not authenticated, show landing/presentation page
-        if (!$user) {
+        if (!$user instanceof \App\Entity\User) {
             return $this->render('home/landing.html.twig');
         }
 

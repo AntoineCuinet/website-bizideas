@@ -23,7 +23,6 @@ class BusinessIdeaController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private BusinessIdeaRepository $businessIdeaRepository,
         private RatingRepository $ratingRepository,
         private NotificationService $notificationService
     ) {
@@ -32,8 +31,13 @@ class BusinessIdeaController extends AbstractController
     #[Route('/new', name: 'app_idea_new')]
     public function new(Request $request): Response
     {
+        $user = $this->getUser();
+        if (!$user instanceof \App\Entity\User) {
+            throw $this->createAccessDeniedException();
+        }
+
         $idea = new BusinessIdea();
-        $idea->setCreator($this->getUser());
+        $idea->setCreator($user);
 
         $form = $this->createForm(BusinessIdeaType::class, $idea);
         $form->handleRequest($request);
@@ -45,7 +49,7 @@ class BusinessIdeaController extends AbstractController
             // Save self-evaluation rating
             $rating = new Rating();
             $rating->setBusinessIdea($idea);
-            $rating->setUser($this->getUser());
+            $rating->setUser($user);
 
             $criteria = CriteriaManager::getRatedCriteria();
             foreach ($criteria as $key => $config) {
@@ -57,7 +61,7 @@ class BusinessIdeaController extends AbstractController
             $this->entityManager->flush();
 
             // Send notification emails
-            $this->notificationService->notifyNewIdea($idea, $this->getUser());
+            $this->notificationService->notifyNewIdea($idea, $user);
 
             $this->addFlash('success', 'app.success_idea_created');
 
@@ -73,13 +77,18 @@ class BusinessIdeaController extends AbstractController
     #[Route('/{id}/edit', name: 'app_idea_edit')]
     public function edit(Request $request, BusinessIdea $idea): Response
     {
-        if ($idea->getCreator()->getId() !== $this->getUser()->getId()) {
+        $user = $this->getUser();
+        if (!$user instanceof \App\Entity\User) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if ($idea->getCreator()->getId() !== $user->getId()) {
             throw $this->createAccessDeniedException('Vous ne pouvez modifier que vos propres idées.');
         }
 
         $rating = $this->ratingRepository->findOneBy([
             'businessIdea' => $idea,
-            'user' => $this->getUser(),
+            'user' => $user,
         ]);
 
         $existingScores = $rating ? $rating->getScores() : [];
@@ -93,7 +102,7 @@ class BusinessIdeaController extends AbstractController
             if (!$rating) {
                 $rating = new Rating();
                 $rating->setBusinessIdea($idea);
-                $rating->setUser($this->getUser());
+                $rating->setUser($user);
                 $this->entityManager->persist($rating);
             }
 
@@ -119,10 +128,15 @@ class BusinessIdeaController extends AbstractController
     #[Route('/{id}/rate', name: 'app_idea_rate')]
     public function rate(Request $request, BusinessIdea $idea): Response
     {
+        $user = $this->getUser();
+        if (!$user instanceof \App\Entity\User) {
+            throw $this->createAccessDeniedException();
+        }
+
         // Allow user to rate another person's idea or modify their existing rating
         $rating = $this->ratingRepository->findOneBy([
             'businessIdea' => $idea,
-            'user' => $this->getUser(),
+            'user' => $user,
         ]);
 
         $existingScores = $rating ? $rating->getScores() : [];
@@ -136,7 +150,7 @@ class BusinessIdeaController extends AbstractController
             if (!$rating) {
                 $rating = new Rating();
                 $rating->setBusinessIdea($idea);
-                $rating->setUser($this->getUser());
+                $rating->setUser($user);
                 $this->entityManager->persist($rating);
             }
 
@@ -162,7 +176,12 @@ class BusinessIdeaController extends AbstractController
     #[Route('/{id}/delete', name: 'app_idea_delete', methods: ['POST'])]
     public function delete(Request $request, BusinessIdea $idea): Response
     {
-        if ($idea->getCreator()->getId() !== $this->getUser()->getId()) {
+        $user = $this->getUser();
+        if (!$user instanceof \App\Entity\User) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if ($idea->getCreator()->getId() !== $user->getId()) {
             throw $this->createAccessDeniedException('Vous ne pouvez supprimer que vos propres idées.');
         }
 
