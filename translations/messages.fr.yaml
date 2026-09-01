@@ -203,6 +203,7 @@ collaborators:
     ideas_created: "%count% idées"
     ideas_label_plural: "idées"
     ideas_label_singular: "idée"
+    me: "Moi"
 
 error:
     cannot_edit_others_idea: "Vous ne pouvez modifier que vos propres idées."
