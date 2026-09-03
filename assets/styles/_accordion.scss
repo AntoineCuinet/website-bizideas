@@ -1,0 +1,205 @@
+.accordion {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-secondary);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.accordion-item {
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.accordion-header {
+    margin: 0;
+    padding: 0;
+}
+
+.accordion-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.9rem 1.25rem;
+    font-size: var(--font-sm);
+    font-weight: 600;
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+    text-align: left;
+    background-color: var(--bg-secondary);
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+    gap: 0.75rem;
+
+    &:hover {
+        background-color: var(--bg-tertiary);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--border-focus);
+        outline-offset: -2px;
+        z-index: 1;
+    }
+
+    &:not(.collapsed) {
+        color: var(--color-primary);
+        background-color: var(--bg-tertiary);
+        border-bottom: 1px solid var(--border-color);
+
+        .accordion-chevron {
+            transform: rotate(-180deg);
+            color: var(--color-primary);
+        }
+    }
+
+    &.collapsed {
+        .accordion-chevron {
+            transform: rotate(0deg);
+        }
+    }
+}
+
+.accordion-header-content {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-grow: 1;
+}
+
+.accordion-header-title {
+    font-size: var(--font-sm);
+    font-weight: 600;
+}
+
+.accordion-header-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-full);
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    margin-left: 0.25rem;
+
+    .accordion-button:not(.collapsed) & {
+        background-color: rgba(59, 130, 246, 0.12);
+        color: var(--color-primary);
+        border-color: rgba(59, 130, 246, 0.25);
+    }
+}
+
+.accordion-chevron {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+    transition: transform var(--transition-normal), color var(--transition-fast);
+    color: var(--text-tertiary);
+
+    svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+}
+
+.accordion-collapse {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--transition-normal);
+
+    > .accordion-body {
+        min-height: 0;
+        overflow: hidden;
+        padding: 0 1.25rem;
+        transition: padding var(--transition-normal);
+    }
+
+    &.show {
+        grid-template-rows: 1fr;
+
+        > .accordion-body {
+            padding: 1.25rem;
+        }
+    }
+}
+
+.accordion-body {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+
+    .modal-desc-box {
+        margin: 0;
+    }
+
+    .modal-info-grid {
+        margin: 0;
+    }
+
+    .criteria-list {
+        margin: 0;
+    }
+
+    .comments-list {
+        margin: 0;
+    }
+}
+
+.accordion-empty-state {
+    padding: 1.25rem;
+    text-align: center;
+    color: var(--text-tertiary);
+    font-size: var(--font-sm);
+    font-style: italic;
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 1px dashed var(--border-color);
+
+    p {
+        margin: 0;
+    }
+}
+
+/* Mobile Responsive Styles (Accordion takes full width of the modal) */
+@media (max-width: 768px) {
+    .idea-modal {
+        width: 95%;
+        max-width: 95%;
+        border-radius: var(--radius-md);
+
+        .modal-content {
+            padding: 1.25rem 1rem;
+        }
+
+        .accordion {
+            /* Full width of the modal on mobile */
+            margin-left: -1rem;
+            margin-right: -1rem;
+            border-left: none;
+            border-right: none;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .accordion-button {
+            padding: 0.85rem 1rem;
+        }
+
+        .accordion-collapse > .accordion-body {
+            padding: 0 1rem;
+        }
+
+        .accordion-collapse.show > .accordion-body {
+            padding: 1rem;
+        }
+    }
+}
+
