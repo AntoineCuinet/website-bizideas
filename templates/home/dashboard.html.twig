@@ -132,155 +132,239 @@
                             </div>
 
                             <div class="modal-body">
-                                <div class="modal-desc-box">
-                                    {{ idea.description|app_markdown }}
-                                </div>
-
-                                <div class="modal-info-grid">
-                                    <div class="info-item">
-                                        <span class="info-label">{{ 'app.revenue_model'|trans }}</span>
-                                        <span class="info-val">{{ ('revenue.' ~ idea.revenueModel)|trans }}</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="info-label">{{ 'app.target_audience'|trans }}</span>
-                                        <span class="info-val">{{ ('audience.' ~ idea.targetAudience)|trans }}</span>
-                                    </div>
-                                    <div class="info-item info-item-global">
-                                        <span class="info-label">{{ 'app.global_score'|trans }}</span>
-                                        <span class="info-val highlight">
-                                            {% if globalScore > 0 %}{{ 'app.global_score_display'|trans({'%score%': globalScore}) }}{% else %}-{% endif %}
-                                        </span>
-
-                                        {% if item.ratingsData is not empty %}
-                                            <div class="individual-scores-list">
-                                                {% for rData in item.ratingsData %}
-                                                    <div class="individual-score-row">
-                                                        <span class="indiv-name">
-                                                            {% if rData.email == app.user.email %}
-                                                                {{ 'app.user_comment_author'|trans }}
-                                                            {% else %}
-                                                                {{ rData.displayName }}
-                                                            {% endif %}
-                                                        </span>
-                                                        <span class="indiv-score">
-                                                            {{ 'app.global_score_display'|trans({'%score%': rData.score}) }}
-                                                        </span>
-                                                    </div>
-                                                {% endfor %}
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-
-                                <div class="modal-ratings-comparison">
-                                    <h3>{{ 'app.evaluation'|trans }}</h3>
-
-                                    {% set allUsers = [app.user]|merge(collaborators) %}
-                                    <div class="criteria-list">
-                                        {% for cKey, cConfig in criteria %}
-                                            <div class="criterion-row">
-                                                <div class="criterion-info">
-                                                    <span class="criterion-name">{{ cConfig.label|trans }}</span>
-                                                    <span class="criterion-desc">{{ cConfig.description|trans }}</span>
+                                <div class="accordion" data-controller="accordion" data-accordion-always-open-value="true">
+                                    <div class="accordion-item">
+                                        <h3 class="accordion-header">
+                                            <button type="button" 
+                                                    class="accordion-button" 
+                                                    data-accordion-target="collapse-desc-{{ idea.id }}"
+                                                    aria-expanded="true" 
+                                                    aria-controls="collapse-desc-{{ idea.id }}"
+                                                    data-action="click->accordion#toggle">
+                                                <span class="accordion-header-content">
+                                                    <span class="accordion-header-title">{{ 'app.modal_accordion.description'|trans }}</span>
+                                                </span>
+                                                <span class="accordion-chevron">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                </span>
+                                            </button>
+                                        </h3>
+                                        <div id="collapse-desc-{{ idea.id }}" class="accordion-collapse show">
+                                            <div class="accordion-body">
+                                                <div class="modal-desc-box">
+                                                    {{ idea.description|app_markdown }}
                                                 </div>
-                                                <div class="criterion-scores">
-                                                    {# Show creator rating #}
-                                                    {% set creatorRating = idea.ratingByUser(idea.creator) %}
-                                                    {% set creatorScore = creatorRating ? creatorRating.scoreFor(cKey) : null %}
-                                                    {% set creatorComment = creatorRating ? creatorRating.getCommentFor(cKey) : null %}
-                                                    {% set creatorIsMe = (idea.creator.id == app.user.id) %}
-                                                    <div class="score-line">
-                                                        <span class="score-line-label">{% if creatorIsMe %}{{ 'app.my_score'|trans }}{% else %}{{ 'app.other_score'|trans({'%email%': idea.creator.displayName}) }} :{% endif %}</span>
-                                                        <div class="stars-display">
-                                                            {% if creatorScore %}
-                                                                {% for i in 1..5 %}
-                                                                    <span class="star {% if i <= creatorScore %}star-filled{% endif %}">★</span>
-                                                                {% endfor %}
-                                                            {% else %}
-                                                                <span class="star-none">-</span>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                    {% if creatorComment is not empty %}
-                                                        <div class="criterion-comment-text">
-                                                            « {{ creatorComment }} »
-                                                        </div>
-                                                    {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                                    {# Show other ratings (everyone except the creator) #}
-                                                    {% for u in allUsers %}
-                                                        {% if u.id != idea.creator.id %}
-                                                            {% set r = idea.ratingByUser(u) %}
-                                                            {% set uScore = r ? r.scoreFor(cKey) : null %}
-                                                            {% set uComment = r ? r.getCommentFor(cKey) : null %}
-                                                            {% set uIsMe = (u.id == app.user.id) %}
-                                                            <div class="score-line">
-                                                                <span class="score-line-label">{% if uIsMe %}{{ 'app.my_score'|trans }}{% else %}{{ 'app.other_score'|trans({'%email%': u.displayName}) }} :{% endif %}</span>
-                                                                <div class="stars-display">
-                                                                    {% if uScore %}
-                                                                        {% for i in 1..5 %}
-                                                                            <span class="star {% if i <= uScore %}star-filled-other{% endif %}">★</span>
-                                                                        {% endfor %}
-                                                                    {% else %}
-                                                                        <span class="star-none">-</span>
-                                                                    {% endif %}
-                                                                </div>
+                                    <div class="accordion-item">
+                                        <h3 class="accordion-header">
+                                            <button type="button" 
+                                                    class="accordion-button" 
+                                                    data-accordion-target="collapse-info-{{ idea.id }}"
+                                                    aria-expanded="true" 
+                                                    aria-controls="collapse-info-{{ idea.id }}"
+                                                    data-action="click->accordion#toggle">
+                                                <span class="accordion-header-content">
+                                                    <span class="accordion-header-title">{{ 'app.modal_accordion.business_model'|trans }}</span>
+                                                </span>
+                                                <span class="accordion-chevron">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                </span>
+                                            </button>
+                                        </h3>
+                                        <div id="collapse-info-{{ idea.id }}" class="accordion-collapse show">
+                                            <div class="accordion-body">
+                                                <div class="modal-info-grid">
+                                                    <div class="info-item">
+                                                        <span class="info-label">{{ 'app.revenue_model'|trans }}</span>
+                                                        <span class="info-val">{{ ('revenue.' ~ idea.revenueModel)|trans }}</span>
+                                                    </div>
+                                                    <div class="info-item">
+                                                        <span class="info-label">{{ 'app.target_audience'|trans }}</span>
+                                                        <span class="info-val">{{ ('audience.' ~ idea.targetAudience)|trans }}</span>
+                                                    </div>
+                                                    <div class="info-item info-item-global">
+                                                        <span class="info-label">{{ 'app.global_score'|trans }}</span>
+                                                        <span class="info-val highlight">
+                                                            {% if globalScore > 0 %}{{ 'app.global_score_display'|trans({'%score%': globalScore}) }}{% else %}-{% endif %}
+                                                        </span>
+
+                                                        {% if item.ratingsData is not empty %}
+                                                            <div class="individual-scores-list">
+                                                                {% for rData in item.ratingsData %}
+                                                                    <div class="individual-score-row">
+                                                                        <span class="indiv-name">
+                                                                            {% if rData.email == app.user.email %}
+                                                                                {{ 'app.user_comment_author'|trans }}
+                                                                            {% else %}
+                                                                                {{ rData.displayName }}
+                                                                            {% endif %}
+                                                                        </span>
+                                                                        <span class="indiv-score">
+                                                                            {{ 'app.global_score_display'|trans({'%score%': rData.score}) }}
+                                                                        </span>
+                                                                    </div>
+                                                                {% endfor %}
                                                             </div>
-                                                            {% if uComment is not empty %}
-                                                                <div class="criterion-comment-text">
-                                                                    « {{ uComment }} »
-                                                                </div>
-                                                            {% endif %}
                                                         {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="accordion-item">
+                                        <h3 class="accordion-header">
+                                            <button type="button" 
+                                                    class="accordion-button collapsed" 
+                                                    data-accordion-target="collapse-eval-{{ idea.id }}"
+                                                    aria-expanded="false" 
+                                                    aria-controls="collapse-eval-{{ idea.id }}"
+                                                    data-action="click->accordion#toggle">
+                                                <span class="accordion-header-content">
+                                                    <span class="accordion-header-title">{{ 'app.modal_accordion.criteria'|trans }}</span>
+                                                </span>
+                                                <span class="accordion-chevron">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                </span>
+                                            </button>
+                                        </h3>
+                                        <div id="collapse-eval-{{ idea.id }}" class="accordion-collapse">
+                                            <div class="accordion-body">
+                                                {% set allUsers = [app.user]|merge(collaborators) %}
+                                                <div class="criteria-list">
+                                                    {% for cKey, cConfig in criteria %}
+                                                        <div class="criterion-row">
+                                                            <div class="criterion-info">
+                                                                <span class="criterion-name">{{ cConfig.label|trans }}</span>
+                                                                <span class="criterion-desc">{{ cConfig.description|trans }}</span>
+                                                            </div>
+                                                            <div class="criterion-scores">
+                                                                {# Show creator rating #}
+                                                                {% set creatorRating = idea.ratingByUser(idea.creator) %}
+                                                                {% set creatorScore = creatorRating ? creatorRating.scoreFor(cKey) : null %}
+                                                                {% set creatorComment = creatorRating ? creatorRating.getCommentFor(cKey) : null %}
+                                                                {% set creatorIsMe = (idea.creator.id == app.user.id) %}
+                                                                <div class="score-line">
+                                                                    <span class="score-line-label">{% if creatorIsMe %}{{ 'app.my_score'|trans }}{% else %}{{ 'app.other_score'|trans({'%email%': idea.creator.displayName}) }} :{% endif %}</span>
+                                                                    <div class="stars-display">
+                                                                        {% if creatorScore %}
+                                                                            {% for i in 1..5 %}
+                                                                                <span class="star {% if i <= creatorScore %}star-filled{% endif %}">★</span>
+                                                                            {% endfor %}
+                                                                        {% else %}
+                                                                            <span class="star-none">-</span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                                {% if creatorComment is not empty %}
+                                                                    <div class="criterion-comment-text">
+                                                                        « {{ creatorComment }} »
+                                                                    </div>
+                                                                {% endif %}
+
+                                                                {# Show other ratings (everyone except the creator) #}
+                                                                {% for u in allUsers %}
+                                                                    {% if u.id != idea.creator.id %}
+                                                                        {% set r = idea.ratingByUser(u) %}
+                                                                        {% set uScore = r ? r.scoreFor(cKey) : null %}
+                                                                        {% set uComment = r ? r.getCommentFor(cKey) : null %}
+                                                                        {% set uIsMe = (u.id == app.user.id) %}
+                                                                        <div class="score-line">
+                                                                            <span class="score-line-label">{% if uIsMe %}{{ 'app.my_score'|trans }}{% else %}{{ 'app.other_score'|trans({'%email%': u.displayName}) }} :{% endif %}</span>
+                                                                            <div class="stars-display">
+                                                                                {% if uScore %}
+                                                                                    {% for i in 1..5 %}
+                                                                                        <span class="star {% if i <= uScore %}star-filled-other{% endif %}">★</span>
+                                                                                    {% endfor %}
+                                                                                {% else %}
+                                                                                    <span class="star-none">-</span>
+                                                                                {% endif %}
+                                                                            </div>
+                                                                        </div>
+                                                                        {% if uComment is not empty %}
+                                                                            <div class="criterion-comment-text">
+                                                                                « {{ uComment }} »
+                                                                            </div>
+                                                                        {% endif %}
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
                                                     {% endfor %}
                                                 </div>
                                             </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-
-                                {% set hasComments = false %}
-                                {% for rData in item.ratingsData %}
-                                    {% if rData.comment is not empty %}
-                                        {% set hasComments = true %}
-                                    {% endif %}
-                                {% endfor %}
-
-                                {% if hasComments %}
-                                    <div class="modal-comments-section">
-                                        <h3>{{ 'app.comments'|trans }}</h3>
-                                        <div class="comments-list">
-                                            {% for rData in item.ratingsData %}
-                                                {% if rData.comment is not empty %}
-                                                    <div class="comment-item">
-                                                        <div class="comment-header">
-                                                            <strong>
-                                                                {% if rData.email == app.user.email %}
-                                                                    {{ 'app.user_comment_author'|trans }}
-                                                                {% else %}
-                                                                    {{ rData.displayName }}
-                                                                {% endif %}
-                                                            </strong>
-                                                            <span class="comment-score">
-                                                                {{ 'app.global_score_display'|trans({'%score%': rData.score}) }}
-                                                            </span>
-                                                        </div>
-                                                        <div class="comment-body">{{ rData.comment|app_markdown }}</div>
-                                                    </div>
-                                                {% endif %}
-                                            {% endfor %}
                                         </div>
                                     </div>
-                                {% endif %}
+
+                                    {% set commentsList = [] %}
+                                    {% for rData in item.ratingsData %}
+                                        {% if rData.comment is not empty %}
+                                            {% set commentsList = commentsList|merge([rData]) %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <div class="accordion-item">
+                                        <h3 class="accordion-header">
+                                            <button type="button" 
+                                                    class="accordion-button collapsed" 
+                                                    data-accordion-target="collapse-comments-{{ idea.id }}"
+                                                    aria-expanded="false" 
+                                                    aria-controls="collapse-comments-{{ idea.id }}"
+                                                    data-action="click->accordion#toggle">
+                                                <span class="accordion-header-content">
+                                                    <span class="accordion-header-title">{{ 'app.modal_accordion.comments'|trans }}</span>
+                                                    {% if commentsList|length > 0 %}
+                                                        <span class="accordion-header-badge">{{ commentsList|length }}</span>
+                                                    {% endif %}
+                                                </span>
+                                                <span class="accordion-chevron">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                </span>
+                                            </button>
+                                        </h3>
+                                        <div id="collapse-comments-{{ idea.id }}" class="accordion-collapse">
+                                            <div class="accordion-body">
+                                                {% if commentsList is not empty %}
+                                                    <div class="comments-list">
+                                                        {% for rData in commentsList %}
+                                                            <div class="comment-item">
+                                                                <div class="comment-header">
+                                                                    <strong>
+                                                                        {% if rData.email == app.user.email %}
+                                                                            {{ 'app.user_comment_author'|trans }}
+                                                                        {% else %}
+                                                                            {{ rData.displayName }}
+                                                                        {% endif %}
+                                                                    </strong>
+                                                                    <span class="comment-score">
+                                                                        {{ 'app.global_score_display'|trans({'%score%': rData.score}) }}
+                                                                    </span>
+                                                                </div>
+                                                                <div class="comment-body">{{ rData.comment|app_markdown }}</div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% else %}
+                                                    <div class="accordion-empty-state">
+                                                        <p>{{ 'app.modal_accordion.no_comments'|trans }}</p>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="modal-footer">
                                 <button class="btn btn-secondary" data-action="click->modal-manager#close" data-idea-id="{{ idea.id }}">{{ 'app.cancel'|trans }}</button>
                                 {% if isOwn %}
-                                    <a href="{{ path('app_idea_edit', {id: idea.id}) }}" class="btn btn-primary">✏️ {{ 'app.edit_idea'|trans }}</a>
+                                    <a href="{{ path('app_idea_edit', {id: idea.id}) }}" class="btn btn-primary">{{ 'app.edit_idea'|trans }}</a>
                                 {% else %}
                                     <a href="{{ path('app_idea_rate', {id: idea.id}) }}" class="btn btn-accent">
-                                        {% if idea.ratingByUser(app.user) %}{{ 'app.button.edit_note'|trans }}{% else %}⭐ {{ 'app.rate_this_idea'|trans }}{% endif %}
+                                        {% if idea.ratingByUser(app.user) %}{{ 'app.button.edit_note'|trans }}{% else %}{{ 'app.rate_this_idea'|trans }}{% endif %}
                                     </a>
                                 {% endif %}
                             </div>

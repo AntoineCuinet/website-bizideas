@@ -87,6 +87,12 @@ app:
         edit_note: "Modifier note"
         delete: "Supprimer"
         rate: "Noter"
+    modal_accordion:
+        description: "Description du concept"
+        business_model: "Modèle économique & Cible"
+        criteria: "Évaluation détaillée des critères"
+        comments: "Commentaires & Remarques"
+        no_comments: "Aucun commentaire pour cette idée pour le moment."
 
 status:
     draft: "Brouillon"
