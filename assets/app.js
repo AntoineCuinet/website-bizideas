@@ -4,6 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleBtn = document.getElementById('theme-toggle');
     const collaToggle = document.getElementById('collaborators-toggle');
     const collaMenu = document.querySelector('.header-dropdown-menu');
+    const sortSelect = document.getElementById('sort-select');
+
+    if (sortSelect) {
+        sortSelect.addEventListener('change', (e) => {
+            window.location.href = '?sort=' + e.target.value;
+        });
+    }
 
     if (toggleBtn) {
         toggleBtn.addEventListener('click', () => {

@@ -9,7 +9,7 @@
             <div class="toolbar-sort">
                 <label for="sort-select" class="sort-label">{{ 'app.sorting'|trans }} :</label>
                 <div class="select-wrapper">
-                    <select id="sort-select" class="sort-select" onchange="window.location.href = '?sort=' + this.value">
+                    <select id="sort-select" class="sort-select">
                         <option value="global_score" {% if sortBy == 'global_score' %}selected{% endif %}>{{ 'app.sorting.global_score'|trans }}</option>
                         <option value="last_added" {% if sortBy == 'last_added' %}selected{% endif %}>{{ 'app.sorting.last_added'|trans }}</option>
                         <option value="created_by_me" {% if sortBy == 'created_by_me' %}selected{% endif %}>{{ 'app.sorting.created_by_me'|trans }}</option>
