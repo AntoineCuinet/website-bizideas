@@ -56,7 +56,7 @@ class AppExtension extends AbstractExtension
             ];
         }
 
-        $ideas = $this->businessIdeaRepository->findAll();
+        $ideas = $this->businessIdeaRepository->findVisibleForUser($user);
         $allUsers = $this->userRepository->findAll();
 
         $ideasCountByUser = [];

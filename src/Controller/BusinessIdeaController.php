@@ -65,10 +65,13 @@ class BusinessIdeaController extends AbstractController
             $this->entityManager->persist($rating);
             $this->entityManager->flush();
 
-            // Send notification emails
-            $this->notificationService->notifyNewIdea($idea, $user);
-
-            $this->addFlash('success', 'app.success_idea_created');
+            // Send notification emails if not a draft
+            if (!$idea->isDraft()) {
+                $this->notificationService->notifyNewIdea($idea, $user);
+                $this->addFlash('success', 'app.success_idea_created');
+            } else {
+                $this->addFlash('success', 'app.success_idea_created_draft');
+            }
 
             return $this->redirectToRoute('app_home');
         }
@@ -90,6 +93,8 @@ class BusinessIdeaController extends AbstractController
         if ($idea->getCreator()->getId() !== $user->getId()) {
             throw $this->createAccessDeniedException($this->translator->trans('error.cannot_edit_others_idea'));
         }
+
+        $wasDraft = $idea->isDraft();
 
         $rating = $this->ratingRepository->findOneBy([
             'businessIdea' => $idea,
@@ -124,6 +129,11 @@ class BusinessIdeaController extends AbstractController
 
             $this->entityManager->flush();
 
+            // If the idea was a draft and is now published, notify collaborators
+            if ($wasDraft && !$idea->isDraft()) {
+                $this->notificationService->notifyNewIdea($idea, $user);
+            }
+
             $this->addFlash('success', 'app.success_idea_updated');
 
             return $this->redirectToRoute('app_home');
@@ -141,6 +151,11 @@ class BusinessIdeaController extends AbstractController
         $user = $this->getUser();
         if (!$user instanceof \App\Entity\User) {
             throw $this->createAccessDeniedException();
+        }
+
+        // Draft ideas can only be viewed and edited by their creator
+        if ($idea->isDraft()) {
+            throw $this->createAccessDeniedException($this->translator->trans('error.cannot_view_draft'));
         }
 
         // Prevent the creator of the idea from accessing the rating/commenting page

@@ -74,6 +74,7 @@ app:
     success_preferences_updated: "Vos préférences ont bien été mises à jour."
     success_account_updated: "Votre compte a bien été mis à jour."
     success_idea_created: "L'idée de business a été créée et vos collaborateurs ont été notifiés."
+    success_idea_created_draft: "Le brouillon d'idée de business a bien été enregistré."
     success_idea_updated: "L'idée de business a bien été modifiée."
     success_idea_deleted: "L'idée de business a bien été supprimée."
     success_rating_saved: "Votre évaluation a bien été enregistrée."
@@ -209,4 +210,5 @@ error:
     cannot_edit_others_idea: "Vous ne pouvez modifier que vos propres idées."
     creator_cannot_comment: "Le créateur de l'idée ne peut pas ajouter ou modifier de commentaire."
     cannot_delete_others_idea: "Vous ne pouvez supprimer que vos propres idées."
+    cannot_view_draft: "Vous ne pouvez pas accéder à un brouillon créé par un autre utilisateur."
     me: "Moi"

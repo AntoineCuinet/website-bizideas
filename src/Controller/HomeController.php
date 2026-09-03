@@ -30,8 +30,8 @@ class HomeController extends AbstractController
             return $this->render('home/landing.html.twig');
         }
 
-        // 2. Fetch all ideas
-        $ideas = $businessIdeaRepository->findAll();
+        // 2. Fetch all visible ideas for the current user (drafts from other users are hidden)
+        $ideas = $businessIdeaRepository->findVisibleForUser($user);
 
         // 3. Get sorting criteria
         $sortBy = $request->query->get('sort', 'global_score');

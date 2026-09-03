@@ -110,6 +110,30 @@ class BusinessIdea
         return $this;
     }
 
+    public function isDraft(): bool
+    {
+        return $this->status === self::STATUS_DRAFT;
+    }
+
+    public function isAdopted(): bool
+    {
+        return $this->status === self::STATUS_ADOPTED;
+    }
+
+    public function isAbandoned(): bool
+    {
+        return $this->status === self::STATUS_ABANDONED;
+    }
+
+    public function isVisibleTo(User $user): bool
+    {
+        if (!$this->isDraft()) {
+            return true;
+        }
+
+        return $this->creator !== null && $this->creator->getId() === $user->getId();
+    }
+
     public function getRevenueModel(): ?string
     {
         return $this->revenueModel;

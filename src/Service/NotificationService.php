@@ -28,6 +28,10 @@ class NotificationService
      */
     public function notifyNewIdea(BusinessIdea $idea, User $creator): void
     {
+        if ($idea->isDraft()) {
+            return;
+        }
+
         $users = $this->userRepository->findAll();
         $recipientEmails = [];
 
