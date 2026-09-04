@@ -83,14 +83,21 @@ class WhatsNewController extends AbstractController
             return new JsonResponse(['success' => false, 'error' => 'Version is required'], Response::HTTP_BAD_REQUEST);
         }
 
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+
         $releaseNote = $releaseNoteRepository->findOneBy(['version' => $version]);
         if (!$releaseNote) {
             $releaseNote = new ReleaseNote();
             $releaseNote->setVersion($version);
+            $releaseNote->setCreatedBy($currentUser);
+            $releaseNote->setCreatedAt(new \DateTimeImmutable());
             $entityManager->persist($releaseNote);
         }
 
         $releaseNote->setContent($content);
+        $releaseNote->setUpdatedBy($currentUser);
+        $releaseNote->setUpdatedAt(new \DateTimeImmutable());
         $entityManager->flush();
 
         $parsedHtml = $markdownParser->parse($content);
@@ -100,6 +107,8 @@ class WhatsNewController extends AbstractController
             'version' => $version,
             'raw' => $content,
             'html' => $parsedHtml,
+            'updatedBy' => $currentUser->getDisplayName(),
+            'updatedAt' => $releaseNote->getUpdatedAt()?->format('d/m/Y H:i'),
         ]);
     }
 
