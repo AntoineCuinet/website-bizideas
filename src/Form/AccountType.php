@@ -30,7 +30,7 @@ class AccountType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'first_options' => [
-                    'label' => 'app.password_label',
+                    'label' => 'app.new_password_label',
                     'help' => 'app.password_help',
                 ],
                 'second_options' => [

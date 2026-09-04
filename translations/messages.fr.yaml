@@ -27,9 +27,9 @@ app:
     comments: "Commentaires"
     user_comment_author: "Moi"
     export: "Exporter"
-    export.csv: "Format CSV"
-    export.md: "Format Markdown"
-    export.pdf: "Format PDF"
+    export.csv: "CSV"
+    export.md: "Markdown"
+    export.pdf: "PDF"
     footer_text: "© %year% <strong>Biz-Ideas</strong> — Organisez, notez et classez vos idées de business."
     no_ideas: "Aucune idée de business pour le moment."
     created_by: "Créé par %email%"
@@ -50,7 +50,7 @@ app:
     rate_title: "Noter : %title%"
     rating_preview: "Estimation de la note :"
     login_title: "Connexion"
-    login_intro: "Veuillez vous authentifier pour accéder à l'application Biz-Ideas"
+    login_intro: "Veuillez vous authentifier pour accéder à l'application."
     login_button: "Connexion"
     login_error: "Identifiants invalides."
     version: "Biz-Ideas - Version %version%"
@@ -66,8 +66,9 @@ app:
     preferences_intro: "Personnalisez l'importance de chaque critère de notation. Vos préférences influencent directement le calcul de la note globale et le classement des idées."
     account_info: "Informations personnelles"
     email_label: "Adresse email"
-    pseudo_label: "Pseudo (optionnel)"
-    password_label: "Nouveau mot de passe"
+    pseudo_label: "Pseudo"
+    password_label: "Mot de passe"
+    new_password_label: "Nouveau mot de passe"
     password_confirm_label: "Confirmer le mot de passe"
     password_help: "Laissez vide pour conserver le mot de passe actuel."
     role: "Rôle"
@@ -134,31 +135,31 @@ weight:
 criteria:
     profitability:
         label: "Rentabilité"
-        description: "Potentiel de marge ou de revenus élevés"
+        description: "Potentiel de marge ou de revenus."
     feasibility:
         label: "Faisabilité"
-        description: "Facilité de mise en œuvre avec vos compétences actuelles"
+        description: "Facilité de mise en œuvre avec vos compétences actuelles."
     market:
         label: "Marché"
-        description: "Volume et potentiel de clients touchés"
+        description: "Volume et potentiel de clients touchés."
     originality:
         label: "Originalité"
-        description: "Facteur de différenciation par rapport à la concurrence"
+        description: "Facteur de différenciation par rapport à la concurrence."
     scalability:
         label: "Croissance"
-        description: "Potentiel d'évolution et de scalabilité dans le temps"
+        description: "Potentiel d'évolution et de scalabilité dans le temps."
     development_time:
         label: "Temps de développement"
-        description: "Combien de temps faut-il pour sortir un MVP"
+        description: "Temps nécessaire pour sortir une première version fonctionnelle."
     pleasure:
-        label: "Plaisir / Envie"
-        description: "Est-ce que l'idée est motivante et agréable à développer"
+        label: "Envie"
+        description: "Envie, plaisir et motivation à développer l'idée."
     launch_cost:
         label: "Coût de lancement"
-        description: "Budget initial nécessaire pour démarrer"
+        description: "Budget initial nécessaire pour démarrer."
     legal_complexity:
         label: "Complexité juridique"
-        description: "Niveau de risque ou de règles à respecter"
+        description: "Niveau de risque ou de règles à respecter."
 
 email:
     new_idea:
