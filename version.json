@@ -1,39 +1,44 @@
 {
     "current": {
-        "version": "1.1.5",
-        "date": "2026-09-03",
-        "note": "Adding accordion system in modal. Ony us can see draft"
+        "version": "1.2.0",
+        "date": "2026-09-04",
+        "note": "Addition of a 'New Arrivals' page."
     },
     "history": [
         {
+            "version": "1.1.5",
+            "date": "2026-09-03",
+            "note": "Adding accordion system in modal. Ony us can see draft. Updated texts."
+        },
+        {
             "version": "1.1.4",
             "date": "2026-08-31",
-            "note": "front-end improvement"
+            "note": "Front-end improvement."
         },
         {
             "version": "1.1.3",
             "date": "2026-08-31",
-            "note": "Adding Mark-Down in text. Added the ability to add comments for each criterion."
+            "note": "Adding Mark-Down in text. Add the ability to add comments for each criterion."
         },
         {
             "version": "1.1.2",
-            "date": "2026-08-31",
+            "date": "2026-08-30",
             "note": "Removing emoji and adding Role."
         },
         {
             "version": "1.1.1",
-            "date": "2026-08-31",
-            "note": "Adding deploy file"
+            "date": "2026-08-26",
+            "note": "Adding deploy file."
         },
         {
             "version": "1.1.0",
             "date": "2026-08-18",
-            "note": "Adding version.json file to track version history"
+            "note": "Adding version.json file to track version history."
         },
         {
             "version": "1.0.1",
             "date": "2026-08-16",
-            "note": "Adding team member view"
+            "note": "Adding team member view."
         },
         {
             "version": "1.0.0",
