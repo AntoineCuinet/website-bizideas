@@ -19,7 +19,9 @@ export default class extends Controller {
         this.editContainerTarget.style.display = 'block';
         this.textareaTarget.focus();
 
-        // Trigger input event to adjust textarea autogrow if controller is attached
+        // Trigger input event and immediately adjust height
+        this.textareaTarget.style.height = 'auto';
+        this.textareaTarget.style.height = `${this.textareaTarget.scrollHeight + 3}px`;
         this.textareaTarget.dispatchEvent(new Event('input', { bubbles: true }));
     }
 

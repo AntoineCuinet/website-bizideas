@@ -5,7 +5,7 @@ export default class extends Controller {
         target: String
     }
 
-    insertText(before, after = '') {
+    insertText(before, after = '', defaultText = '') {
         const textarea = document.getElementById(this.targetValue);
         if (!textarea) return;
 
@@ -14,12 +14,19 @@ export default class extends Controller {
         const text = textarea.value;
         const selectedText = text.substring(start, end);
         
-        const replacement = before + selectedText + after;
+        const contentToInsert = selectedText || defaultText;
+        const replacement = before + contentToInsert + after;
         textarea.value = text.substring(0, start) + replacement + text.substring(end);
         
         // Focus and select the inserted text
         textarea.focus();
-        textarea.setSelectionRange(start + before.length, start + before.length + selectedText.length);
+        if (selectedText) {
+            textarea.setSelectionRange(start + before.length, start + before.length + selectedText.length);
+        } else if (defaultText) {
+            textarea.setSelectionRange(start + before.length, start + before.length + defaultText.length);
+        } else {
+            textarea.setSelectionRange(start + replacement.length, start + replacement.length);
+        }
         
         // Trigger input event to update autogrow and any other listeners
         textarea.dispatchEvent(new Event('input', { bubbles: true }));
@@ -34,19 +41,18 @@ export default class extends Controller {
     }
 
     insertBold() {
-        this.insertText('**', '**');
+        this.insertText('**', '**', 'texte en gras');
     }
 
     insertList() {
-        this.insertText('- ');
+        this.insertText('- ', '', 'élément de liste');
     }
 
     insertImage() {
-        this.insertText('![Description de l\'image](', ')');
+        this.insertText('![', '](https://)', 'description de l\'image');
     }
 
     insertLink() {
-        this.insertText('[Titre du lien](', ')');
+        this.insertText('[', '](https://)', 'titre du lien');
     }
 }
-

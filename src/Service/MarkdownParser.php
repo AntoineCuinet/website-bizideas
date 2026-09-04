@@ -20,13 +20,13 @@ class MarkdownParser
 
             if (preg_match('/^#\s+(.+)$/', $line, $matches)) {
                 if ($inList) { $parsedLines[] = '</ul>'; $inList = false; }
-                $parsedLines[] = '<h3 class="markdown-h1">' . $matches[1] . '</h3>';
+                $parsedLines[] = '<h3 class="markdown-h1">' . $this->parseInline($matches[1]) . '</h3>';
             } elseif (preg_match('/^##\s+(.+)$/', $line, $matches)) {
                 if ($inList) { $parsedLines[] = '</ul>'; $inList = false; }
-                $parsedLines[] = '<h4 class="markdown-h2">' . $matches[1] . '</h4>';
+                $parsedLines[] = '<h4 class="markdown-h2">' . $this->parseInline($matches[1]) . '</h4>';
             } elseif (preg_match('/^###\s+(.+)$/', $line, $matches)) {
                 if ($inList) { $parsedLines[] = '</ul>'; $inList = false; }
-                $parsedLines[] = '<h5 class="markdown-h3">' . $matches[1] . '</h5>';
+                $parsedLines[] = '<h5 class="markdown-h3">' . $this->parseInline($matches[1]) . '</h5>';
             } elseif (preg_match('/^!\[(.*?)\]\((.+?)\)$/', $line, $matches)) {
                 if ($inList) { $parsedLines[] = '</ul>'; $inList = false; }
                 $caption = $matches[1];
@@ -63,12 +63,24 @@ class MarkdownParser
 
     private function parseInline(string $text): string
     {
+        // Links: [text](url)
+        $text = (string) preg_replace_callback('/\[(.*?)\]\((.*?)\)/', function ($matches) {
+            $title = $matches[1];
+            $url = trim($matches[2]);
+            if (str_starts_with($url, 'www.')) {
+                $href = 'https://' . $url;
+            } elseif (preg_match('/^(https?:\/\/|\/|mailto:)/i', $url)) {
+                $href = $url;
+            } else {
+                $href = 'https://' . $url;
+            }
+            return '<a href="' . $href . '" target="_blank" rel="noopener noreferrer" class="markdown-link">' . $title . '</a>';
+        }, $text);
+
         // Bold: **text**
         $text = (string) preg_replace('/\*\*(.+?)\*\*/', '<strong>$1</strong>', $text);
         // Italic: *text*
         $text = (string) preg_replace('/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/', '<em>$1</em>', $text);
-        // Links: [text](url)
-        $text = (string) preg_replace('/\[(.*?)\]\((https?:\/\/[^\s\)]+|\/[^\s\)]+)\)/', '<a href="$2" target="_blank" rel="noopener noreferrer" class="markdown-link">$1</a>', $text);
 
         return $text;
     }

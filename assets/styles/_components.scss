@@ -815,14 +815,20 @@
 /* Markdown editing toolbar */
 .markdown-toolbar {
     display: flex;
-    gap: 0.5rem;
+    flex-wrap: wrap;
+    gap: 0.4rem;
     background-color: var(--bg-tertiary);
     border: 1px solid var(--border-color);
     border-bottom: none;
     border-top-left-radius: var(--radius-md);
     border-top-right-radius: var(--radius-md);
-    padding: 0.5rem;
+    padding: 0.4rem 0.5rem;
     align-items: center;
+
+    @media (max-width: 576px) {
+        gap: 0.3rem;
+        padding: 0.35rem 0.4rem;
+    }
 }
 
 .toolbar-btn {
@@ -835,14 +841,24 @@
     cursor: pointer;
     font-weight: 500;
     transition: background-color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
         background-color: var(--border-color);
         border-color: var(--text-tertiary);
     }
+
+    @media (max-width: 576px) {
+        font-size: var(--font-xs);
+        padding: 0.2rem 0.45rem;
+    }
 }
 
-.markdown-toolbar + textarea {
+.markdown-toolbar + textarea,
+.markdown-toolbar + .form-control {
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
 }
@@ -851,8 +867,8 @@
 .markdown-h1 {
     font-size: var(--font-lg);
     font-weight: 700;
-    margin-top: .25rem;
-    margin-bottom: 0.15rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
     color: var(--text-primary);
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.2rem;
@@ -865,9 +881,21 @@
 .markdown-h2 {
     font-size: var(--font-md);
     font-weight: 600;
-    margin-top: 0.2rem;
-    margin-bottom: 0.1rem;
-    color: var(--text-primary);
+    margin-top: 0.4rem;
+    margin-bottom: 0.2rem;
+    color: var(--color-primary);
+
+    &:first-child {
+        margin-top: 0;
+    }
+}
+
+.markdown-h3 {
+    font-size: var(--font-sm);
+    font-weight: 600;
+    margin-top: 0.3rem;
+    margin-bottom: 0.15rem;
+    color: var(--text-secondary);
 
     &:first-child {
         margin-top: 0;
@@ -876,15 +904,58 @@
 
 .markdown-p {
     line-height: 1.6;
+    margin-bottom: 0.4rem;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.markdown-link {
+    color: var(--color-primary);
+    text-decoration: underline;
+    font-weight: 500;
+    transition: color var(--transition-fast);
+
+    &:hover {
+        color: var(--color-primary-hover);
+    }
 }
 
 .markdown-list {
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.4rem;
     padding-left: 1.5rem;
     list-style-type: disc;
 
     li {
         margin-bottom: 0.2rem;
         line-height: 1.6;
+    }
+}
+
+.markdown-img-box {
+    margin: 0.75rem 0 1rem 0;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.75rem;
+    text-align: center;
+    overflow: hidden;
+
+    .markdown-img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow-sm);
+        display: block;
+        margin: 0 auto;
+    }
+
+    .markdown-img-caption {
+        display: block;
+        font-size: var(--font-xs);
+        color: var(--text-tertiary);
+        margin-top: 0.5rem;
+        font-style: italic;
     }
 }

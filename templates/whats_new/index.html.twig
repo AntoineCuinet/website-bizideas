@@ -68,10 +68,13 @@
                         <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertBold" title="{{ 'app.toolbar.bold'|trans }}">{{ 'app.toolbar.bold'|trans }}</button>
                         <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertList" title="{{ 'app.toolbar.list'|trans }}">{{ 'app.toolbar.list'|trans }}</button>
                         <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertLink" title="{{ 'app.toolbar.link'|trans }}">{{ 'app.toolbar.link'|trans }}</button>
-                        {# <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertImage" title="{{ 'app.toolbar.image'|trans }}">{{ 'app.toolbar.image'|trans }}</button> #}
+                        <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertImage" title="{{ 'app.toolbar.image'|trans }}">{{ 'app.toolbar.image'|trans }}</button>
                     </div>
                     <textarea id="editor-textarea-current" 
-                              class="whats-new-editor-textarea" 
+                              class="form-control form-textarea whats-new-editor-textarea" 
+                              rows="6"
+                              data-controller="textarea-autogrow"
+                              data-action="input->textarea-autogrow#autogrow"
                               data-whats-new-editor-target="textarea">{{ currentRawContent }}</textarea>
                     <div class="whats-new-editor-actions">
                         <button type="button" class="btn btn-primary btn-sm" data-whats-new-editor-target="saveBtn" data-action="click->whats-new-editor#save">
@@ -131,10 +134,13 @@
                                 <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertBold" title="{{ 'app.toolbar.bold'|trans }}">{{ 'app.toolbar.bold'|trans }}</button>
                                 <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertList" title="{{ 'app.toolbar.list'|trans }}">{{ 'app.toolbar.list'|trans }}</button>
                                 <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertLink" title="{{ 'app.toolbar.link'|trans }}">{{ 'app.toolbar.link'|trans }}</button>
-                                {# <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertImage" title="{{ 'app.toolbar.image'|trans }}">{{ 'app.toolbar.image'|trans }}</button> #}
+                                <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertImage" title="{{ 'app.toolbar.image'|trans }}">{{ 'app.toolbar.image'|trans }}</button>
                             </div>
                             <textarea id="editor-textarea-{{ itemVersionSafe }}" 
-                                      class="whats-new-editor-textarea" 
+                                      class="form-control form-textarea whats-new-editor-textarea" 
+                                      rows="4"
+                                      data-controller="textarea-autogrow"
+                                      data-action="input->textarea-autogrow#autogrow"
                                       data-whats-new-editor-target="textarea">{{ itemRawContent }}</textarea>
                             <div class="whats-new-editor-actions">
                                 <button type="button" class="btn btn-primary btn-sm" data-whats-new-editor-target="saveBtn" data-action="click->whats-new-editor#save">
