@@ -40,4 +40,13 @@ export default class extends Controller {
     insertList() {
         this.insertText('- ');
     }
+
+    insertImage() {
+        this.insertText('![Description de l\'image](', ')');
+    }
+
+    insertLink() {
+        this.insertText('[Titre du lien](', ')');
+    }
 }
+

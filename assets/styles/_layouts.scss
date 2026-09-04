@@ -405,20 +405,20 @@
     animation: fadeIn var(--transition-normal) forwards;
 }
 
+.btn-back {
+    display: inline-block;
+    font-size: var(--font-lg);
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+
+    &:hover {
+        color: var(--text-primary);
+    }
+}
+
 .form-header {
     margin-bottom: 2rem;
-    
-    .btn-back {
-        display: inline-block;
-        font-size: var(--font-lg);
-        margin-bottom: 0.75rem;
-        color: var(--text-secondary);
-        
-        &:hover {
-            color: var(--text-primary);
-        }
-    }
-    
+
     h1 {
         font-size: var(--font-2xl);
         margin-bottom: 0.25rem;

@@ -19,6 +19,8 @@ app:
         h2: "Sous-titre"
         bold: "Gras"
         list: "Liste"
+        image: "Image"
+        link: "Lien"
     comment_label: "Commentaire / Remarques (optionnel)"
     comment_placeholder: "Ajoutez un commentaire ou des remarques sur cette idée..."
     criterion_comment_placeholder: "Remarques sur ce critère (facultatif)"
@@ -87,12 +89,27 @@ app:
         edit_note: "Modifier note"
         delete: "Supprimer"
         rate: "Noter"
+    whats_new: "Nouveautés"
+    whats_new_see: "Voir les nouveautés"
+    whats_new_dismiss: "Masquer les nouveautés pour cette version"
+    back_to_site: "Retour sur le site"
+    success_version_notified: "L'email d'information sur la nouvelle version a été envoyé avec succès à tous les collaborateurs."
+    notify_version_button: "Informer les collaborateurs par email"
+    notify_version_confirm: "Êtes-vous sûr de vouloir envoyer un email d'information sur la version actuelle à tous les collaborateurs ?"
+    edit_release_note: "Modifier"
     modal_accordion:
         description: "Description du concept"
         business_model: "Modèle économique & Cible"
         criteria: "Évaluation détaillée des critères"
         comments: "Commentaires & Remarques"
         no_comments: "Aucun commentaire pour cette idée pour le moment."
+
+whats_new:
+    title: "Nouveautés & Mises à jour"
+    subtitle: "Découvrez les dernières fonctionnalités et améliorations apportées à Biz-Ideas."
+    current_version: "Version actuelle"
+    released_on: "Publié le %date%"
+    history_title: "Versions précédentes"
 
 status:
     draft: "Brouillon"
@@ -150,6 +167,12 @@ email:
         intro: "%creator% a ajouté une nouvelle idée de business sur l'application."
         call_to_action: "Vous pouvez la consulter et lui attribuer une note dès maintenant :"
         button: "Voir et Noter l'idée"
+    new_version:
+        subject: "[Biz-Ideas] Nouvelle version disponible : v%version%"
+        title: "Nouvelle version disponible"
+        intro: "Une nouvelle version de l'application (v%version%) est disponible."
+        call_to_action: "Rendez-vous sur le site pour découvrir les nouveautés et améliorations :"
+        button: "Accéder à l'application"
     footer: "Cet email a été envoyé automatiquement depuis votre application Biz-Ideas."
 
 security:

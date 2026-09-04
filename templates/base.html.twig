@@ -39,8 +39,28 @@
             {% if app.user %}
                 {% set nav_stats = app_navbar_stats() %}
                 <header class="app-header">
-                    <div class="header-logo">
-                        <span class="logo-text"><a href="{{ path('app_home') }}">{{ 'app.title'|trans }}</a></span>
+                    <div class="header-logo-area">
+                        <div class="header-logo">
+                            <span class="logo-text"><a href="{{ path('app_home') }}">{{ 'app.title'|trans }}</a></span>
+                        </div>
+                        {% if app_version() %}
+                            <div class="whats-new-badge-container" 
+                                 data-controller="whats-new-banner" 
+                                 data-whats-new-banner-version-value="{{ app_version() }}"
+                                 style="display: none;">
+                                <a href="{{ path('app_whats_new') }}" class="whats-new-btn">
+                                    <span class="whats-new-icon">✨</span>
+                                    <span class="whats-new-text">{{ 'app.whats_new'|trans }}</span>
+                                </a>
+                                <button type="button" 
+                                        class="whats-new-dismiss" 
+                                        data-action="click->whats-new-banner#dismiss" 
+                                        aria-label="{{ 'app.whats_new_dismiss'|trans }}"
+                                        title="{{ 'app.whats_new_dismiss'|trans }}">
+                                    ✕
+                                </button>
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="header-nav">
                         <!-- Collaborators Stats Dropdown -->

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{{ 'email.new_idea.title'|trans }}</title>
+    <title>{{ 'email.new_version.title'|trans }}</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -34,17 +34,21 @@
             font-size: 20px;
             margin-top: 0;
         }
-        .idea-box {
+        .version-box {
             background-color: #f1f5f9;
             border-left: 4px solid #3b82f6;
             padding: 15px;
             border-radius: 0 8px 8px 0;
             margin: 20px 0;
         }
-        .idea-title {
+        .version-badge {
+            display: inline-block;
+            background-color: #3b82f6;
+            color: #ffffff;
             font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 8px;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 14px;
         }
         .btn {
             display: inline-block;
@@ -74,16 +78,15 @@
         </div>
         
         <h1>Bonjour,</h1>
-        <p>{{ 'email.new_idea.intro'|trans({'%creator%': creator.email}) }}</p>
+        <p>{{ 'email.new_version.intro'|trans({'%version%': version}) }}</p>
         
-        <div class="idea-box">
-            <div class="idea-title">{{ idea.title }}</div>
-            <div>{{ idea.description|app_markdown }}</div>
+        <div class="version-box">
+            <span class="version-badge">Version {{ version }}</span>
         </div>
         
-        <p>{{ 'email.new_idea.call_to_action'|trans }}</p>
+        <p>{{ 'email.new_version.call_to_action'|trans }}</p>
         
-        <a href="{{ rateUrl }}" class="btn">{{ 'email.new_idea.button'|trans }}</a>
+        <a href="{{ whatsNewUrl }}" class="btn">{{ 'email.new_version.button'|trans }}</a>
         
         <div class="footer">
             <p>{{ 'email.footer'|trans }}</p>

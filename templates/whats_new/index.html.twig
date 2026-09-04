@@ -1,0 +1,161 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'whats_new.title'|trans }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+<div class="whats-new-container">
+    <div class="whats-new-header">
+        <div class="btn-back-wrap">
+            <a href="{{ path('app_home') }}" class="btn-back">{{ 'app.back'|trans }}</a>
+        </div>
+        <h1>✨ {{ 'whats_new.title'|trans }}</h1>
+        <p class="whats-new-intro">{{ 'whats_new.subtitle'|trans }}</p>
+    </div>
+
+    <!-- Admin Notification Action Bar -->
+    {% if isAdmin and current is defined and current is not null %}
+        <div class="whats-new-admin-bar">
+            <form action="{{ path('app_whats_new_notify') }}" method="post" onsubmit="return confirm('{{ 'app.notify_version_confirm'|trans }}')">
+                <input type="hidden" name="_token" value="{{ csrf_token('whats_new_notify') }}">
+                <button type="submit" class="btn btn-primary btn-sm btn-notify-users">
+                    {{ 'app.notify_version_button'|trans }}
+                </button>
+            </form>
+        </div>
+    {% endif %}
+
+    <!-- Current Version Showcase Card -->
+    {% if current is defined and current is not null %}
+        {% set currentRawContent = (dbNotes[current.version] is defined and dbNotes[current.version].content is not empty) 
+            ? dbNotes[current.version].content : (current.note ?? '') %}
+
+        <div class="whats-new-card is-current" 
+            {% if isAdmin %}
+                data-controller="whats-new-editor"
+                data-whats-new-editor-version-value="{{ current.version }}"
+                data-whats-new-editor-url-value="{{ path('app_whats_new_update') }}"
+                data-whats-new-editor-token-value="{{ csrf_token('whats_new_update') }}"
+            {% endif %}>
+
+            <div class="whats-new-card-header">
+                <div class="whats-new-version-meta">
+                    <span class="whats-new-version-badge">v{{ current.version }}</span>
+                    <span class="whats-new-current-tag">{{ 'whats_new.current_version'|trans }}</span>
+                </div>
+                <div class="whats-new-card-actions">
+                    <span class="whats-new-date">{{ 'whats_new.released_on'|trans({'%date%': current.date|date("d/m/Y")}) }}</span>
+                    {% if isAdmin %}
+                        <button type="button" class="btn btn-secondary btn-sm btn-edit-note" data-action="click->whats-new-editor#startEdit">
+                            {{ 'app.edit_release_note'|trans }}
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- View mode -->
+            <div data-whats-new-editor-target="viewContainer">
+                <div class="markdown-rendered-content" data-whats-new-editor-target="renderedContent">
+                    {{ currentRawContent|app_markdown }}
+                </div>
+            </div>
+
+            <!-- Edit mode -->
+            {% if isAdmin %}
+                <div class="whats-new-edit-form" data-whats-new-editor-target="editContainer">
+                    <div class="markdown-toolbar" data-controller="markdown-toolbar" data-markdown-toolbar-target-value="editor-textarea-current">
+                        <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertHeading1" title="{{ 'app.toolbar.h1'|trans }}">{{ 'app.toolbar.h1'|trans }}</button>
+                        <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertHeading2" title="{{ 'app.toolbar.h2'|trans }}">{{ 'app.toolbar.h2'|trans }}</button>
+                        <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertBold" title="{{ 'app.toolbar.bold'|trans }}">{{ 'app.toolbar.bold'|trans }}</button>
+                        <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertList" title="{{ 'app.toolbar.list'|trans }}">{{ 'app.toolbar.list'|trans }}</button>
+                        <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertLink" title="{{ 'app.toolbar.link'|trans }}">{{ 'app.toolbar.link'|trans }}</button>
+                        {# <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertImage" title="{{ 'app.toolbar.image'|trans }}">{{ 'app.toolbar.image'|trans }}</button> #}
+                    </div>
+                    <textarea id="editor-textarea-current" 
+                              class="whats-new-editor-textarea" 
+                              data-whats-new-editor-target="textarea">{{ currentRawContent }}</textarea>
+                    <div class="whats-new-editor-actions">
+                        <button type="button" class="btn btn-primary btn-sm" data-whats-new-editor-target="saveBtn" data-action="click->whats-new-editor#save">
+                            {{ 'app.save'|trans }}
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-action="click->whats-new-editor#cancelEdit">
+                            {{ 'app.cancel'|trans }}
+                        </button>
+                        <span class="editor-status" data-whats-new-editor-target="status"></span>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if history is defined and history|length > 0 %}
+        <div class="whats-new-separator">
+            <span class="separator-badge">{{ 'whats_new.history_title'|trans }}</span>
+        </div>
+        <div class="whats-new-history-list">
+            {% for item in history %}
+                {% set itemVersionSafe = item.version|replace({'.': '_'}) %}
+                {% set itemRawContent = (dbNotes[item.version] is defined and dbNotes[item.version].content is not empty) 
+                    ? dbNotes[item.version].content : (item.note ?? '') %}
+
+                <div class="whats-new-history-card"
+                    {% if isAdmin %}
+                        data-controller="whats-new-editor"
+                        data-whats-new-editor-version-value="{{ item.version }}"
+                        data-whats-new-editor-url-value="{{ path('app_whats_new_update') }}"
+                        data-whats-new-editor-token-value="{{ csrf_token('whats_new_update') }}"
+                    {% endif %}>
+
+                    <div class="history-card-header">
+                        <div class="history-meta">
+                            <span class="history-version-name">v{{ item.version }}</span>
+                            <span class="history-date">{{ item.date|date("d/m/Y") }}</span>
+                        </div>
+                        {% if isAdmin %}
+                            <button type="button" class="btn btn-secondary btn-sm btn-edit-note" data-action="click->whats-new-editor#startEdit">
+                                {{ 'app.edit_release_note'|trans }}
+                            </button>
+                        {% endif %}
+                    </div>
+
+                    <div data-whats-new-editor-target="viewContainer">
+                        <div class="markdown-rendered-content history-content" data-whats-new-editor-target="renderedContent">
+                            {{ itemRawContent|app_markdown }}
+                        </div>
+                    </div>
+
+                    {% if isAdmin %}
+                        <div class="whats-new-edit-form" data-whats-new-editor-target="editContainer">
+                            <div class="markdown-toolbar" data-controller="markdown-toolbar" data-markdown-toolbar-target-value="editor-textarea-{{ itemVersionSafe }}">
+                                <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertHeading1" title="{{ 'app.toolbar.h1'|trans }}">{{ 'app.toolbar.h1'|trans }}</button>
+                                <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertHeading2" title="{{ 'app.toolbar.h2'|trans }}">{{ 'app.toolbar.h2'|trans }}</button>
+                                <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertBold" title="{{ 'app.toolbar.bold'|trans }}">{{ 'app.toolbar.bold'|trans }}</button>
+                                <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertList" title="{{ 'app.toolbar.list'|trans }}">{{ 'app.toolbar.list'|trans }}</button>
+                                <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertLink" title="{{ 'app.toolbar.link'|trans }}">{{ 'app.toolbar.link'|trans }}</button>
+                                {# <button type="button" class="toolbar-btn" data-action="click->markdown-toolbar#insertImage" title="{{ 'app.toolbar.image'|trans }}">{{ 'app.toolbar.image'|trans }}</button> #}
+                            </div>
+                            <textarea id="editor-textarea-{{ itemVersionSafe }}" 
+                                      class="whats-new-editor-textarea" 
+                                      data-whats-new-editor-target="textarea">{{ itemRawContent }}</textarea>
+                            <div class="whats-new-editor-actions">
+                                <button type="button" class="btn btn-primary btn-sm" data-whats-new-editor-target="saveBtn" data-action="click->whats-new-editor#save">
+                                    {{ 'app.save'|trans }}
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-sm" data-action="click->whats-new-editor#cancelEdit">
+                                    {{ 'app.cancel'|trans }}
+                                </button>
+                                <span class="editor-status" data-whats-new-editor-target="status"></span>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="whats-new-footer">
+        <a href="{{ path('app_home') }}" class="btn btn-primary btn-lg btn-back-home">
+            {{ 'app.back_to_site'|trans }}
+        </a>
+    </div>
+</div>
+{% endblock %}
