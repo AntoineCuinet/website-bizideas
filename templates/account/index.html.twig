@@ -76,6 +76,12 @@
         </div>
     {{ form_end(prefForm) }}
 
+    <div class="account-whats-new-box">
+        <a href="{{ path('app_whats_new') }}" class="btn btn-outline btn-lg btn-whats-new-account">
+            {{ 'app.whats_new_see'|trans }}
+        </a>
+    </div>
+
     <div class="account-logout-box">
         <a href="{{ path('app_logout') }}" class="btn btn-danger btn-lg btn-logout-full">{{ 'app.logout'|trans }}</a>
     </div>

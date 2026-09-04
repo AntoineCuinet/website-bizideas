@@ -76,4 +76,52 @@ class NotificationService
             ]);
         }
     }
+
+    /**
+     * Sends a generic email notification to all users when a new version is released.
+     */
+    public function notifyNewVersion(string $version, User $sender): void
+    {
+        $users = $this->userRepository->findAll();
+        $recipientEmails = [];
+
+        foreach ($users as $user) {
+            $recipientEmails[] = $user->getEmail();
+        }
+
+        if (empty($recipientEmails)) {
+            return;
+        }
+
+        $whatsNewUrl = $this->urlGenerator->generate(
+            'app_whats_new',
+            [],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+
+        $subject = $this->translator->trans('email.new_version.subject', ['%version%' => $version]);
+
+        try {
+            foreach ($recipientEmails as $emailAddress) {
+                $email = (new TemplatedEmail())
+                    ->from($this->replyToEmail)
+                    ->replyTo($this->replyToEmail)
+                    ->to($emailAddress)
+                    ->subject($subject)
+                    ->htmlTemplate('email/new_version.html.twig')
+                    ->context([
+                        'version' => $version,
+                        'sender' => $sender,
+                        'whatsNewUrl' => $whatsNewUrl,
+                    ]);
+
+                $this->mailer->send($email);
+            }
+        } catch (\Exception $e) {
+            $this->logger->error(sprintf('Failed to send version notification emails: %s', $e->getMessage()), [
+                'exception' => $e,
+            ]);
+        }
+    }
 }
+
