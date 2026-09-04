@@ -37,9 +37,26 @@ class WhatsNewController extends AbstractController
         $current = $versionData['current'] ?? null;
         $history = $versionData['history'] ?? [];
 
+        // Filter versions to only keep those from the last 3 months
+        $threeMonthsAgo = (new \DateTimeImmutable('today'))->modify('-3 months');
+
+        $filteredHistory = [];
+        foreach ($history as $item) {
+            if (!empty($item['date'])) {
+                try {
+                    $itemDate = new \DateTimeImmutable($item['date']);
+                    if ($itemDate >= $threeMonthsAgo) {
+                        $filteredHistory[] = $item;
+                    }
+                } catch (\Exception) {
+                    // Ignore malformed dates
+                }
+            }
+        }
+
         // Limit to 10 most recent versions total (current + previous)
         $maxHistory = $current ? 9 : 10;
-        $limitedHistory = array_slice($history, 0, $maxHistory);
+        $limitedHistory = array_slice($filteredHistory, 0, $maxHistory);
 
         // Collect all version strings to fetch from database
         $versionKeys = [];
