@@ -23,10 +23,29 @@ class ExportService
      */
     public function export(array $rankedIdeas, User $currentUser, string $format): array
     {
+        // Exclude drafts and abandoned ideas from all exports
+        $filteredIdeas = array_values(array_filter($rankedIdeas, function (array $item): bool {
+            /** @var BusinessIdea $idea */
+            $idea = $item['idea'];
+            return $idea->getStatus() === BusinessIdea::STATUS_ADOPTED;
+        }));
+
+        // Re-calculate sequential ranks for the exported list
+        $currentRank = 1;
+        $previousScore = null;
+        foreach ($filteredIdeas as $index => &$item) {
+            if ($previousScore !== null && $item['globalScore'] < $previousScore) {
+                $currentRank = $index + 1;
+            }
+            $item['rank'] = $currentRank;
+            $previousScore = $item['globalScore'];
+        }
+        unset($item);
+
         return match ($format) {
-            'csv' => $this->exportCsv($rankedIdeas, $currentUser),
-            'markdown' => $this->exportMarkdown($rankedIdeas, $currentUser),
-            'pdf' => $this->exportPdf($rankedIdeas, $currentUser),
+            'csv' => $this->exportCsv($filteredIdeas, $currentUser),
+            'markdown' => $this->exportMarkdown($filteredIdeas, $currentUser),
+            'pdf' => $this->exportPdf($filteredIdeas, $currentUser),
             default => throw new \InvalidArgumentException('Unsupported format: ' . $format),
         };
     }

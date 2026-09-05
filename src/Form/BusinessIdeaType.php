@@ -9,12 +9,35 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BusinessIdeaType extends AbstractType
 {
+    public function __construct(
+        private TranslatorInterface $translator
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var BusinessIdea|null $idea */
+        $idea = $options['data'] ?? null;
+        $isCurrentlyAdopted = $idea instanceof BusinessIdea && $idea->getStatus() === BusinessIdea::STATUS_ADOPTED;
+        $isCurrentlyAbandoned = $idea instanceof BusinessIdea && $idea->getStatus() === BusinessIdea::STATUS_ABANDONED;
+
+        $statusChoices = [
+            'status.draft' => BusinessIdea::STATUS_DRAFT,
+            'status.adopted' => BusinessIdea::STATUS_ADOPTED,
+        ];
+
+        if ($isCurrentlyAdopted || $isCurrentlyAbandoned) {
+            $statusChoices['status.abandoned'] = BusinessIdea::STATUS_ABANDONED;
+        }
+
         $builder
             ->add('title', TextType::class, [
                 'label' => 'idea.title.label',
@@ -26,13 +49,19 @@ class BusinessIdeaType extends AbstractType
             ])
             ->add('status', ChoiceType::class, [
                 'label' => 'idea.status.label',
-                'choices' => [
-                    'status.draft' => BusinessIdea::STATUS_DRAFT,
-                    'status.adopted' => BusinessIdea::STATUS_ADOPTED,
-                    'status.abandoned' => BusinessIdea::STATUS_ABANDONED,
-                ],
+                'choices' => $statusChoices,
                 'required' => true,
             ])
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($isCurrentlyAdopted, $isCurrentlyAbandoned) {
+                $submittedIdea = $event->getData();
+                if ($submittedIdea instanceof BusinessIdea && $submittedIdea->getStatus() === BusinessIdea::STATUS_ABANDONED) {
+                    if (!$isCurrentlyAdopted && !$isCurrentlyAbandoned) {
+                        $event->getForm()->get('status')->addError(
+                            new FormError($this->translator->trans('idea.status.cannot_abandon_unless_adopted'))
+                        );
+                    }
+                }
+            })
             ->add('revenueModel', ChoiceType::class, [
                 'label' => 'idea.revenue_model.label',
                 'choices' => [

@@ -197,6 +197,7 @@ idea:
     status:
         label: "Statut"
         blank: "Le statut est obligatoire."
+        cannot_abandon_unless_adopted: "Un projet ne peut être marqué comme abandonné que s'il est actuellement adopté."
     revenue_model:
         label: "Modèle de revenus"
         blank: "Le modèle de revenus est obligatoire."
