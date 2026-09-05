@@ -33,11 +33,11 @@ export default class extends Controller {
     }
 
     insertHeading1() {
-        this.insertText('# ');
+        this.insertText('# ', '', 'Titre');
     }
 
     insertHeading2() {
-        this.insertText('## ');
+        this.insertText('## ', '', 'Sous-titre');
     }
 
     insertBold() {
