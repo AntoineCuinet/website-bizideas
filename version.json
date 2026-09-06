@@ -1,14 +1,19 @@
 {
     "current": {
         "version": "1.2.0",
-        "date": "2026-09-04",
+        "date": "2026-09-06",
         "note": "Addition of a 'New Arrivals' page."
     },
     "history": [
         {
+            "version": "1.1.6",
+            "date": "2026-09-04",
+            "note": "Redesign of the card front-end."
+        },
+        {
             "version": "1.1.5",
             "date": "2026-09-03",
-            "note": "Adding accordion system in modal. Ony us can see draft. Updated texts."
+            "note": "Adding accordion system in modal. Only users who create a new entry can see the draft. Updated texts."
         },
         {
             "version": "1.1.4",
