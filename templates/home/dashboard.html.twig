@@ -28,9 +28,9 @@
             <div class="toolbar-export">
                 <span class="export-label">{{ 'app.export'|trans }} :</span>
                 <div class="export-buttons">
-                    <a href="?sort={{ sortBy }}&export=csv" class="btn btn-sm btn-outline">{{ 'app.export.csv'|trans }}</a>
-                    <a href="?sort={{ sortBy }}&export=markdown" class="btn btn-sm btn-outline">{{ 'app.export.md'|trans }}</a>
                     <a href="?sort={{ sortBy }}&export=pdf" class="btn btn-sm btn-outline">{{ 'app.export.pdf'|trans }}</a>
+                    <a href="?sort={{ sortBy }}&export=markdown" class="btn btn-sm btn-outline">{{ 'app.export.md'|trans }}</a>
+                    <a href="?sort={{ sortBy }}&export=csv" class="btn btn-sm btn-outline">{{ 'app.export.csv'|trans }}</a>
                 </div>
             </div>
         </section>
@@ -43,7 +43,7 @@
                     {% set rank = item.rank %}
                     {% set isOwn = (idea.creator.id == app.user.id) %}
 
-                    <div class="idea-card {% if isOwn %}idea-card-own{% else %}idea-card-other{% endif %}" 
+                    <div class="idea-card idea-card-{{ idea.status }} {% if isOwn %}idea-card-own{% else %}idea-card-other{% endif %}" 
                          data-action="click->modal-manager#open" 
                          data-idea-id="{{ idea.id }}">
 
@@ -73,25 +73,6 @@
                                     {% endif %}
                                 </span>
                             </div>
-
-                            {% if item.ratingsData is not empty %}
-                                <div class="individual-scores-list">
-                                    {% for rData in item.ratingsData %}
-                                        <div class="score-block-individual">
-                                            <span class="score-title-individual">
-                                                {% if rData.email == app.user.email %}
-                                                    {{ 'app.user_score'|trans }}
-                                                {% else %}
-                                                    {{ 'app.other_score'|trans({'%email%': rData.displayName}) }}
-                                                {% endif %} :
-                                            </span>
-                                            <span class="score-value-individual">
-                                                {{ 'app.global_score_display'|trans({'%score%': rData.score}) }}
-                                            </span>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
                         </div>
 
                         <div class="idea-card-meta">
