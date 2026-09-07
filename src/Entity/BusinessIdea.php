@@ -53,6 +53,9 @@ class BusinessIdea
     #[Assert\Choice(choices: [self::AUDIENCE_B2B, self::AUDIENCE_B2C, self::AUDIENCE_BOTH])]
     private ?string $targetAudience = null;
 
+    #[ORM\Column(type: Types::JSON)]
+    private ?array $attachmentFilenames = [];
+
     #[ORM\ManyToOne(inversedBy: 'businessIdeas')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $creator = null;
@@ -216,6 +219,33 @@ class BusinessIdea
             }
         }
         return null;
+    }
+
+    public function getAttachmentFilenames(): array
+    {
+        return $this->attachmentFilenames ?? [];
+    }
+
+    public function setAttachmentFilenames(array $attachmentFilenames): static
+    {
+        $this->attachmentFilenames = $attachmentFilenames;
+        return $this;
+    }
+
+    public function addAttachmentFilename(string $filename): static
+    {
+        if (!in_array($filename, $this->attachmentFilenames, true)) {
+            $this->attachmentFilenames[] = $filename;
+        }
+        return $this;
+    }
+
+    public function removeAttachmentFilename(string $filename): static
+    {
+        $this->attachmentFilenames = array_values(
+            array_filter($this->attachmentFilenames, fn(string $f) => $f !== $filename)
+        );
+        return $this;
     }
 
 }

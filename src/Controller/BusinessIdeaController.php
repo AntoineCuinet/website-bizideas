@@ -9,9 +9,11 @@ use App\Form\RatingType;
 use App\Repository\BusinessIdeaRepository;
 use App\Repository\RatingRepository;
 use App\Service\CriteriaManager;
+use App\Service\FileUploadService;
 use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +28,8 @@ class BusinessIdeaController extends AbstractController
         private EntityManagerInterface $entityManager,
         private RatingRepository $ratingRepository,
         private NotificationService $notificationService,
-        private TranslatorInterface $translator
+        private TranslatorInterface $translator,
+        private FileUploadService $fileUploadService
     ) {
     }
 
@@ -45,6 +48,14 @@ class BusinessIdeaController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Handle file uploads
+            /** @var UploadedFile[] $attachmentFiles */
+            $attachmentFiles = $form->get('attachmentFiles')->getData();
+            foreach ($attachmentFiles as $file) {
+                $filename = $this->fileUploadService->upload($file);
+                $idea->addAttachmentFilename($filename);
+            }
+
             // Save business idea
             $this->entityManager->persist($idea);
 
@@ -111,6 +122,24 @@ class BusinessIdeaController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Handle file uploads
+            /** @var UploadedFile[] $attachmentFiles */
+            $attachmentFiles = $form->get('attachmentFiles')->getData();
+            foreach ($attachmentFiles as $file) {
+                $filename = $this->fileUploadService->upload($file);
+                $idea->addAttachmentFilename($filename);
+            }
+
+            // Handle individual file removals
+            $allPostData = $request->request->all();
+            $removeAttachments = $allPostData['remove_attachments'] ?? [];
+            if (is_array($removeAttachments)) {
+                foreach ($removeAttachments as $filenameToRemove) {
+                    $this->fileUploadService->remove($filenameToRemove);
+                    $idea->removeAttachmentFilename($filenameToRemove);
+                }
+            }
+
             if (!$rating) {
                 $rating = new Rating();
                 $rating->setBusinessIdea($idea);
@@ -226,6 +255,11 @@ class BusinessIdeaController extends AbstractController
         }
 
         if ($this->isCsrfTokenValid('delete' . $idea->getId(), $request->request->get('_token'))) {
+            // Remove attached files
+            foreach ($idea->getAttachmentFilenames() as $filename) {
+                $this->fileUploadService->remove($filename);
+            }
+
             $this->entityManager->remove($idea);
             $this->entityManager->flush();
             $this->addFlash('success', 'app.success_idea_deleted');

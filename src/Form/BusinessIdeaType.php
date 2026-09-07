@@ -6,6 +6,7 @@ use App\Entity\BusinessIdea;
 use App\Service\CriteriaManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,6 +14,8 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BusinessIdeaType extends AbstractType
@@ -79,6 +82,27 @@ class BusinessIdeaType extends AbstractType
                     'audience.both' => BusinessIdea::AUDIENCE_BOTH,
                 ],
                 'required' => true,
+            ])
+            ->add('attachmentFiles', FileType::class, [
+                'label' => 'idea.attachment.label',
+                'mapped' => false,
+                'required' => false,
+                'multiple' => true,
+                'constraints' => [
+                    new All([
+                        new File(
+                            maxSize: '2M',
+                            maxSizeMessage: 'idea.attachment.max_size',
+                            mimeTypes: [
+                                'image/jpeg',
+                                'image/png',
+                                'image/webp',
+                                'application/pdf',
+                            ],
+                            mimeTypesMessage: 'idea.attachment.mime_type',
+                        ),
+                    ]),
+                ],
             ]);
 
         // Add rated criteria fields (unmapped) for self-evaluation

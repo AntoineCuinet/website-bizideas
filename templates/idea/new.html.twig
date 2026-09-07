@@ -14,7 +14,7 @@
         <p class="form-subtitle">{{ 'new_idea.subtitle'|trans }}</p>
     </div>
 
-    {{ form_start(form, {'attr': {'class': 'standard-form'}}) }}
+    {{ form_start(form, {'attr': {'class': 'standard-form', 'enctype': 'multipart/form-data'}}) }}
         <div class="form-card">
             <h2>{{ 'idea.details_project'|trans }}</h2>
             
@@ -61,6 +61,13 @@
                     {{ form_widget(form.targetAudience, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(form.targetAudience) }}
                 </div>
+            </div>
+
+            <div class="form-group attachment-group">
+                {{ form_label(form.attachmentFiles) }}
+                <span class="attachment-help">{{ 'idea.attachment.help'|trans }}</span>
+                {{ form_widget(form.attachmentFiles, {'attr': {'class': 'form-control-file', 'accept': 'image/jpeg,image/png,image/webp,application/pdf'}}) }}
+                {{ form_errors(form.attachmentFiles) }}
             </div>
         </div>
 

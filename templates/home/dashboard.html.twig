@@ -199,6 +199,45 @@
                                     <div class="accordion-item">
                                         <h3 class="accordion-header">
                                             <button type="button" 
+                                                    class="accordion-button{% if idea.attachmentFilenames is empty %} collapsed{% endif %}" 
+                                                    data-accordion-target="collapse-attachment-{{ idea.id }}"
+                                                    aria-expanded="{{ idea.attachmentFilenames is not empty ? 'true' : 'false' }}" 
+                                                    aria-controls="collapse-attachment-{{ idea.id }}"
+                                                    data-action="click->accordion#toggle">
+                                                <span class="accordion-header-content">
+                                                    <span class="accordion-header-title">{{ 'idea.attachment.section_title'|trans }}</span>
+                                                    {% if idea.attachmentFilenames is not empty %}
+                                                        <span class="accordion-header-badge">{{ idea.attachmentFilenames|length }}</span>
+                                                    {% endif %}
+                                                </span>
+                                                <span class="accordion-chevron">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                </span>
+                                            </button>
+                                        </h3>
+                                        <div id="collapse-attachment-{{ idea.id }}" class="accordion-collapse{% if idea.attachmentFilenames is not empty %} show{% endif %}">
+                                            <div class="accordion-body">
+                                                {% if idea.attachmentFilenames is not empty %}
+                                                    <div class="attachment-display">
+                                                        {% for filename in idea.attachmentFilenames %}
+                                                            <a href="{{ asset('uploads/ideas/' ~ filename) }}" target="_blank" rel="noopener noreferrer" class="attachment-link">
+                                                                <span class="attachment-link-text">{{ 'idea.attachment.open'|trans }}</span>
+                                                                <span class="attachment-link-filename">{{ filename }}</span>
+                                                            </a>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% else %}
+                                                    <div class="accordion-empty-state">
+                                                        <p>{{ 'idea.attachment.no_attachment'|trans }}</p>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="accordion-item">
+                                        <h3 class="accordion-header">
+                                            <button type="button" 
                                                     class="accordion-button collapsed" 
                                                     data-accordion-target="collapse-eval-{{ idea.id }}"
                                                     aria-expanded="false" 
