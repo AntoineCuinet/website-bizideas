@@ -160,4 +160,46 @@ class WhatsNewController extends AbstractController
 
         return $this->redirectToRoute('app_whats_new');
     }
+
+    #[Route('/whats-new/upload-image', name: 'app_whats_new_upload_image', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function uploadImage(
+        Request $request,
+        #[Autowire('%kernel.project_dir%')] string $projectDir
+    ): JsonResponse {
+        $file = $request->files->get('image');
+        
+        if (!$file) {
+            return new JsonResponse(['error' => 'No image uploaded'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        if (!in_array($file->getMimeType(), $allowedMimeTypes)) {
+            return new JsonResponse(['error' => 'Invalid file type'], Response::HTTP_BAD_REQUEST);
+        }
+
+        if ($file->getSize() > 5 * 1024 * 1024) { // 5MB limit
+            return new JsonResponse(['error' => 'File too large'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $uploadDir = $projectDir . '/public/uploads/whatsnew';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $safeFilename = preg_replace('/[^a-zA-Z0-9_-]/', '', $originalFilename);
+        $newFilename = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
+
+        try {
+            $file->move($uploadDir, $newFilename);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Failed to upload file'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        return new JsonResponse([
+            'url' => '/uploads/whatsnew/' . $newFilename,
+            'filename' => $originalFilename
+        ]);
+    }
 }
