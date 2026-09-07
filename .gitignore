@@ -23,3 +23,6 @@ idea.md
 
 # DS_Store
 .DS_Store
+
+# Uploads
+/public/uploads/
