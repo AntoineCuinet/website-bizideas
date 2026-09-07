@@ -204,6 +204,17 @@ idea:
     target_audience:
         label: "Public ciblé"
         blank: "Le public cible est obligatoire."
+    attachment:
+        label: "Pièce jointe (optionnel)"
+        help: "Formats acceptés : JPEG, PNG, WebP, PDF. Taille maximale : 2 Mo."
+        max_size: "Le fichier est trop volumineux. La taille maximale autorisée est de 2 Mo."
+        mime_type: "Le type de fichier n'est pas autorisé. Seuls les fichiers JPEG, PNG, WebP et PDF sont acceptés."
+        current: "Fichier actuel"
+        open: "Ouvrir le fichier"
+        remove: "Supprimer le fichier"
+        remove_confirm: "Êtes-vous sûr de vouloir supprimer ce fichier ?"
+        section_title: "Pièce jointe"
+        no_attachment: "Aucune pièce jointe pour cette idée."
     details_project: "Détails du projet"
 
 landing:
