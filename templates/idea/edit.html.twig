@@ -73,7 +73,7 @@
                         {% for filename in idea.attachmentFilenames %}
                             <div class="attachment-current-item">
                                 <a href="{{ asset('uploads/ideas/' ~ filename) }}" target="_blank" rel="noopener noreferrer" class="attachment-current-link">
-                                    {{ filename }}
+                                    {{ filename|clean_filename }}
                                 </a>
                                 <label class="attachment-remove-label">
                                     <input type="checkbox" name="remove_attachments[]" value="{{ filename }}" class="attachment-remove-checkbox">

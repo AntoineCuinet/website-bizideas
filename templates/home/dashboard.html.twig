@@ -222,7 +222,7 @@
                                                         {% for filename in idea.attachmentFilenames %}
                                                             <a href="{{ asset('uploads/ideas/' ~ filename) }}" target="_blank" rel="noopener noreferrer" class="attachment-link">
                                                                 <span class="attachment-link-text">{{ 'idea.attachment.open'|trans }}</span>
-                                                                <span class="attachment-link-filename">{{ filename }}</span>
+                                                                <span class="attachment-link-filename">{{ filename|clean_filename }}</span>
                                                             </a>
                                                         {% endfor %}
                                                     </div>

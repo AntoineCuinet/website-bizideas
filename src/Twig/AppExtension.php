@@ -32,6 +32,7 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFilter('app_markdown', [$this, 'parseMarkdown'], ['is_safe' => ['html']]),
+            new TwigFilter('clean_filename', [$this, 'cleanFilename']),
         ];
     }
 
@@ -100,5 +101,11 @@ class AppExtension extends AbstractExtension
     public function parseMarkdown(?string $text): string
     {
         return $this->markdownParser->parse($text);
+    }
+
+    public function cleanFilename(string $filename): string
+    {
+        // Strip the 13-character hex uniqid injected before the extension
+        return preg_replace('/-[a-f0-9]{13}(\.[a-zA-Z0-9]+)$/i', '$1', $filename);
     }
 }
