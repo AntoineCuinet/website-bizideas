@@ -234,6 +234,7 @@ class BusinessIdea
 
     public function addAttachmentFilename(string $filename): static
     {
+        $this->attachmentFilenames = $this->attachmentFilenames ?? [];
         if (!in_array($filename, $this->attachmentFilenames, true)) {
             $this->attachmentFilenames[] = $filename;
         }
@@ -242,6 +243,7 @@ class BusinessIdea
 
     public function removeAttachmentFilename(string $filename): static
     {
+        $this->attachmentFilenames = $this->attachmentFilenames ?? [];
         $this->attachmentFilenames = array_values(
             array_filter($this->attachmentFilenames, fn(string $f) => $f !== $filename)
         );
