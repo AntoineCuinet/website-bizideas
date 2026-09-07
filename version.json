@@ -1,10 +1,15 @@
 {
     "current": {
-        "version": "1.2.0",
-        "date": "2026-09-06",
-        "note": "Addition of a 'New Arrivals' page."
+        "version": "1.2.1",
+        "date": "2026-09-07",
+        "note": "Ability to upload files (PDF and images). Addition of images to the 'New Arrivals' page."
     },
     "history": [
+        {
+            "version": "1.2.0",
+            "date": "2026-09-06",
+            "note": "Addition of a 'New Arrivals' page."
+        },
         {
             "version": "1.1.6",
             "date": "2026-09-04",
