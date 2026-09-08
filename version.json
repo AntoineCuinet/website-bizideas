@@ -1,10 +1,15 @@
 {
     "current": {
-        "version": "1.2.1",
-        "date": "2026-09-07",
-        "note": "Ability to upload files (PDF and images). Addition of images to the 'New Arrivals' page."
+        "version": "1.2.2",
+        "date": "2026-09-08",
+        "note": "Adding categories to ideas to sort them. Adding app tests and CI."
     },
     "history": [
+        {
+            "version": "1.2.1",
+            "date": "2026-09-07",
+            "note": "Ability to upload files (PDF and images). Addition of images to the 'New Arrivals' page."
+        },
         {
             "version": "1.2.0",
             "date": "2026-09-06",
