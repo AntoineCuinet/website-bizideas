@@ -32,22 +32,6 @@ export default class extends Controller {
         textarea.dispatchEvent(new Event('input', { bubbles: true }));
     }
 
-    insertHeading1() {
-        this.insertText('# ', '', 'Titre');
-    }
-
-    insertHeading2() {
-        this.insertText('## ', '', 'Sous-titre');
-    }
-
-    insertBold() {
-        this.insertText('**', '**', 'texte en gras');
-    }
-
-    insertList() {
-        this.insertText('- ', '', 'élément de liste');
-    }
-
     insertImage() {
         // Create a hidden file input dynamically
         const fileInput = document.createElement('input');
@@ -116,7 +100,23 @@ export default class extends Controller {
         document.body.removeChild(fileInput);
     }
 
+    insertHeading1() {
+        this.insertText('# ', '', 'Titre');
+    }
+
+    insertHeading2() {
+        this.insertText('## ', '', 'Sous-titre');
+    }
+
+    insertBold() {
+        this.insertText('**', '**', 'Texte en gras');
+    }
+
+    insertList() {
+        this.insertText('- ', '', 'Élément de liste');
+    }
+
     insertLink() {
-        this.insertText('[', '](https://)', 'titre du lien');
+        this.insertText('[', '](https://)', 'Titre du lien');
     }
 }
