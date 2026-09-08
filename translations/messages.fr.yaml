@@ -216,6 +216,15 @@ idea:
         section_title: "Pièce jointe"
         no_attachment: "Aucune pièce jointe pour cette idée."
     details_project: "Détails du projet"
+    categories:
+        title: "Catégories"
+        existing_label: "Sélectionnez des catégories existantes"
+        new_label: "Ou créez de nouvelles catégories"
+        new_help: "Séparez les catégories par une virgule (ex: Tech, Finance)"
+        manage: "Gérer les catégories"
+        no_categories: "Aucune catégorie"
+        delete_confirm: "Êtes-vous sûr de vouloir supprimer cette catégorie ? Elle sera retirée de toutes les idées."
+        delete_success: "La catégorie a bien été supprimée."
 
 landing:
     features:
