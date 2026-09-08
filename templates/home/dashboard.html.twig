@@ -7,30 +7,45 @@
     <main class="dashboard-content">
         <section class="toolbar-section">
             <div class="toolbar-sort">
-                <label for="sort-select" class="sort-label">{{ 'app.sorting'|trans }} :</label>
-                <div class="select-wrapper">
-                    <select id="sort-select" class="sort-select">
-                        <option value="global_score" {% if sortBy == 'global_score' %}selected{% endif %}>{{ 'app.sorting.global_score'|trans }}</option>
-                        <option value="last_added" {% if sortBy == 'last_added' %}selected{% endif %}>{{ 'app.sorting.last_added'|trans }}</option>
-                        <option value="created_by_me" {% if sortBy == 'created_by_me' %}selected{% endif %}>{{ 'app.sorting.created_by_me'|trans }}</option>
-                        <option value="created_by_other" {% if sortBy == 'created_by_other' %}selected{% endif %}>
-                            {% if collaborators|length == 1 %}
-                                {{ 'app.sorting.created_by_other_param'|trans({'%email%': collaborators[0].displayName}) }}
-                            {% else %}
-                                {{ 'app.sorting.created_by_other'|trans }}
-                            {% endif %}
-                        </option>
-                        <option value="status" {% if sortBy == 'status' %}selected{% endif %}>{{ 'app.sorting.status'|trans }}</option>
-                    </select>
+                <div class="sort-item">
+                    <label for="sort-select" class="sort-label">{{ 'app.sorting'|trans }} :</label>
+                    <div class="select-wrapper">
+                        <select id="sort-select" class="sort-select">
+                            <option value="global_score" {% if sortBy == 'global_score' %}selected{% endif %}>{{ 'app.sorting.global_score'|trans }}</option>
+                            <option value="last_added" {% if sortBy == 'last_added' %}selected{% endif %}>{{ 'app.sorting.last_added'|trans }}</option>
+                            <option value="created_by_me" {% if sortBy == 'created_by_me' %}selected{% endif %}>{{ 'app.sorting.created_by_me'|trans }}</option>
+                            <option value="created_by_other" {% if sortBy == 'created_by_other' %}selected{% endif %}>
+                                {% if collaborators|length == 1 %}
+                                    {{ 'app.sorting.created_by_other_param'|trans({'%email%': collaborators[0].displayName}) }}
+                                {% else %}
+                                    {{ 'app.sorting.created_by_other'|trans }}
+                                {% endif %}
+                            </option>
+                            <option value="status" {% if sortBy == 'status' %}selected{% endif %}>{{ 'app.sorting.status'|trans }}</option>
+                        </select>
+                    </div>
                 </div>
+
+                {% if categories|length > 0 %}
+                    <div class="sort-item">
+                        <div class="select-wrapper">
+                            <select id="category-select" class="sort-select">
+                                <option value="0">{{ 'idea.categories.title'|trans }} (Toutes)</option>
+                                {% for cat in categories %}
+                                    <option value="{{ cat.id }}" {% if categoryId == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
 
             <div class="toolbar-export">
                 <span class="export-label">{{ 'app.export'|trans }} :</span>
                 <div class="export-buttons">
-                    <a href="?sort={{ sortBy }}&export=pdf" class="btn btn-sm btn-outline">{{ 'app.export.pdf'|trans }}</a>
-                    <a href="?sort={{ sortBy }}&export=markdown" class="btn btn-sm btn-outline">{{ 'app.export.md'|trans }}</a>
-                    <a href="?sort={{ sortBy }}&export=csv" class="btn btn-sm btn-outline">{{ 'app.export.csv'|trans }}</a>
+                    <a href="?sort={{ sortBy }}&category={{ categoryId }}&export=pdf" class="btn btn-sm btn-outline">{{ 'app.export.pdf'|trans }}</a>
+                    <a href="?sort={{ sortBy }}&category={{ categoryId }}&export=markdown" class="btn btn-sm btn-outline">{{ 'app.export.md'|trans }}</a>
+                    <a href="?sort={{ sortBy }}&category={{ categoryId }}&export=csv" class="btn btn-sm btn-outline">{{ 'app.export.csv'|trans }}</a>
                 </div>
             </div>
         </section>
@@ -61,6 +76,14 @@
                                 {{ 'app.created_by'|trans({'%email%': idea.creator.displayName}) }}
                             {% endif %}
                         </p>
+
+                        {% if idea.categories is not empty %}
+                            <div class="idea-categories">
+                                {% for category in idea.categories %}
+                                    <span class="category-badge">{{ category.name }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
 
                         <div class="idea-card-scores">
                             <div class="score-block">
@@ -110,6 +133,13 @@
                                 <p class="modal-meta-text">
                                     {{ 'app.sorting.created_by_and_date'|trans({'%email%': idea.creator.displayName, '%date%': idea.createdAt|date("d/m/Y")}) }}
                                 </p>
+                                {% if idea.categories is not empty %}
+                                    <div class="idea-categories modal-categories">
+                                        {% for category in idea.categories %}
+                                            <span class="category-badge">{{ category.name }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
 
                             <div class="modal-body">

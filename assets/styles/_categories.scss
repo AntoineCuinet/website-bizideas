@@ -1,0 +1,72 @@
+.category-badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4f46e5;
+    background-color: #e0e7ff;
+    border-radius: 9999px;
+    margin-right: 0.4rem;
+    margin-bottom: 0.4rem;
+}
+
+[data-theme="dark"] .category-badge {
+    color: #c7d2fe;
+    background-color: #3730a3;
+}
+
+.idea-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+}
+
+.categories-list {
+    margin-top: 1rem;
+
+    .category-items {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .category-item {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--border-color);
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        .category-count {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-right: auto;
+            margin-left: 0.5rem;
+        }
+
+        .delete-category-form {
+            margin: 0;
+
+            .btn-delete-icon {
+                background: none;
+                border: none;
+                cursor: pointer;
+                font-size: 1.1rem;
+                opacity: 0.7;
+                transition: opacity 0.2s;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
+.modal-categories {
+    margin-top: 1rem;
+}
