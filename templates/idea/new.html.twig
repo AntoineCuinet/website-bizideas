@@ -45,7 +45,7 @@
                 {{ form_errors(form.description) }}
             </div>
 
-            <div class="form-row-3">
+            <div class="form-row-3 attachment-group">
                 <div class="form-group">
                     {{ form_label(form.status) }}
                     {{ form_widget(form.status, {'attr': {'class': 'form-control'}}) }}
@@ -64,6 +64,38 @@
             </div>
 
             <div class="form-group attachment-group">
+                {{ form_label(form.categories) }}
+                {% if form.categories|length > 0 %}
+                    <div class="category-checkboxes-wrapper">
+                        {% for choice in form.categories %}
+                            <div class="category-checkbox-item">
+                                <label class="category-checkbox-label">
+                                    {{ form_widget(choice) }} {{ form_label(choice) }}
+                                </label>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <button type="button" class="btn-delete-category-small"
+                                            onclick="if(confirm('{{ 'idea.categories.delete_confirm'|trans|escape('js') }}')) { const f = document.getElementById('global-delete-category-form'); f.action = '{{ path('app_category_delete', {'id': '0'}) }}'.replace('0', '{{ choice.vars.value }}'); document.getElementById('global-delete-category-token').value = '{{ csrf_token('delete' ~ choice.vars.value) }}'; f.submit(); }" 
+                                            title="Supprimer">✕</button>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="category-empty-text">
+                        {{ 'idea.categories.no_categories'|trans }}
+                    </p>
+                {% endif %}
+                {{ form_errors(form.categories) }}
+            </div>
+
+            <div class="form-group form-group-spaced">
+                {{ form_label(form.new_categories) }}
+                {{ form_widget(form.new_categories, {'attr': {'class': 'form-control', 'placeholder': 'idea.categories.new_help'|trans}}) }}
+                <span class="form-help-text">{{ form.new_categories.vars.help|trans }}</span>
+                {{ form_errors(form.new_categories) }}
+            </div>
+
+            <div class="form-group attachment-group form-group-spaced-lg">
                 {{ form_label(form.attachmentFiles) }}
                 <span class="attachment-help">{{ 'idea.attachment.help'|trans }}</span>
                 {{ form_widget(form.attachmentFiles, {'attr': {'class': 'form-control-file', 'accept': 'image/jpeg,image/png,image/webp,application/pdf'}}) }}
@@ -121,4 +153,9 @@
         </div>
     {{ form_end(form) }}
 </div>
+{% if is_granted('ROLE_ADMIN') %}
+    <form id="global-delete-category-form" method="post" style="display: none;">
+        <input type="hidden" name="_token" id="global-delete-category-token" value="">
+    </form>
+{% endif %}
 {% endblock %}

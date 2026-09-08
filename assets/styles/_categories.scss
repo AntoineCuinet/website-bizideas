@@ -70,3 +70,53 @@
 .modal-categories {
     margin-top: 1rem;
 }
+
+/* Category Form Styles */
+.category-checkboxes-wrapper {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.category-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background-color: var(--bg-tertiary);
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.category-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin: 0;
+    cursor: pointer;
+    font-size: var(--font-sm);
+}
+
+.btn-delete-category-small {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-danger);
+    opacity: 0.7;
+    padding: 0 0 0 0.4rem;
+    font-size: var(--font-sm);
+    transition: opacity var(--transition-fast);
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.category-empty-text {
+    margin-top: 0.5rem;
+    color: var(--text-tertiary);
+    font-size: var(--font-sm);
+    font-style: italic;
+}
+
