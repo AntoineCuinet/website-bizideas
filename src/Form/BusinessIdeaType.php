@@ -18,10 +18,14 @@ use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use App\Repository\CategoryRepository;
+
 class BusinessIdeaType extends AbstractType
 {
     public function __construct(
-        private TranslatorInterface $translator
+        private TranslatorInterface $translator,
+        private CategoryRepository $categoryRepository,
+        private \Symfony\Bundle\SecurityBundle\Security $security
     ) {
     }
 
@@ -103,7 +107,50 @@ class BusinessIdeaType extends AbstractType
                         ),
                     ]),
                 ],
-            ]);
+            ])
+            ->add('categories', \Symfony\Bridge\Doctrine\Form\Type\EntityType::class, [
+                'class' => \App\Entity\Category::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'idea.categories.existing_label',
+                'required' => false,
+            ])
+            ->add('new_categories', TextType::class, [
+                'label' => 'idea.categories.new_label',
+                'mapped' => false,
+                'required' => false,
+                'help' => 'idea.categories.new_help',
+            ])
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                $idea = $event->getData();
+                $form = $event->getForm();
+
+                if (!$idea instanceof BusinessIdea) {
+                    return;
+                }
+
+                $newCategoriesString = $form->get('new_categories')->getData();
+                if (!empty($newCategoriesString)) {
+                    $names = array_filter(array_map('trim', explode(',', $newCategoriesString)));
+                    $names = array_unique($names);
+
+                    foreach ($names as $name) {
+                        $category = $this->categoryRepository->findOneBy(['name' => $name]);
+
+                        if (!$category) {
+                            $category = new \App\Entity\Category();
+                            $category->setName($name);
+                            $user = $this->security->getUser();
+                            if ($user instanceof \App\Entity\User) {
+                                $category->setCreatedBy($user);
+                            }
+                        }
+
+                        $idea->addCategory($category);
+                    }
+                }
+            });
 
         // Add rated criteria fields (unmapped) for self-evaluation
         $criteria = CriteriaManager::getRatedCriteria();

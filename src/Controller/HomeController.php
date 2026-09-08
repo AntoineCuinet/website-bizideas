@@ -20,6 +20,7 @@ class HomeController extends AbstractController
         Request $request,
         BusinessIdeaRepository $businessIdeaRepository,
         UserRepository $userRepository,
+        \App\Repository\CategoryRepository $categoryRepository,
         RatingService $ratingService,
         ExportService $exportService
     ): Response {
@@ -35,6 +36,19 @@ class HomeController extends AbstractController
 
         // 3. Get sorting criteria
         $sortBy = $request->query->get('sort', 'global_score');
+        $categoryId = $request->query->getInt('category', 0);
+
+        if ($categoryId > 0) {
+            $ideas = array_filter($ideas, function ($idea) use ($categoryId) {
+                foreach ($idea->getCategories() as $category) {
+                    if ($category->getId() === $categoryId) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
+
         $rankedIdeas = $ratingService->getRankedIdeas($ideas, $user, $sortBy);
 
         // 4. Handle export requests if present
@@ -106,10 +120,13 @@ class HomeController extends AbstractController
         });
 
         $totalIdeas = count($ideas);
+        $categories = $categoryRepository->findBy([], ['name' => 'ASC']);
 
         return $this->render('home/dashboard.html.twig', [
             'rankedIdeas' => $rankedIdeas,
             'sortBy' => $sortBy,
+            'categoryId' => $categoryId,
+            'categories' => $categories,
             'openIdeaItem' => $openIdeaItem,
             'criteria' => CriteriaManager::getRatedCriteria(),
             'collaborators' => $collaborators,
