@@ -24,10 +24,11 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-      - name: Setup Database
+      - name: Setup Database and Assets
         run: |
           echo 'DATABASE_URL="sqlite:///%kernel.project_dir%/var/test.db"' > .env.test.local
           php bin/console doctrine:schema:create --env=test
+          php bin/console sass:build
 
       - name: Run PHPUnit
         run: php bin/phpunit
