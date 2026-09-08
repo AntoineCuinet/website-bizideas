@@ -5,12 +5,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const collaToggle = document.getElementById('collaborators-toggle');
     const collaMenu = document.querySelector('.header-dropdown-menu');
     const sortSelect = document.getElementById('sort-select');
+    const categorySelect = document.getElementById('category-select');
 
-    if (sortSelect) {
-        sortSelect.addEventListener('change', (e) => {
-            window.location.href = '?sort=' + e.target.value;
-        });
+    function updateFilters() {
+        const url = new URL(window.location.href);
+        if (sortSelect) url.searchParams.set('sort', sortSelect.value);
+        if (categorySelect) url.searchParams.set('category', categorySelect.value);
+        window.location.href = url.toString();
     }
+
+    if (sortSelect) sortSelect.addEventListener('change', updateFilters);
+    if (categorySelect) categorySelect.addEventListener('change', updateFilters);
 
     if (toggleBtn) {
         toggleBtn.addEventListener('click', () => {
