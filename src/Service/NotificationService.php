@@ -123,5 +123,47 @@ class NotificationService
             ]);
         }
     }
+    /**
+     * Sends a notification to the idea creator when a new rating is added.
+     */
+    public function notifyNewRating(BusinessIdea $idea, User $rater): void
+    {
+        $creator = $idea->getCreator();
+
+        // Do not notify if the creator is rating their own idea (shouldn't happen per rules)
+        if ($creator->getId() === $rater->getId()) {
+            return;
+        }
+
+        $recipientEmail = $creator->getEmail();
+
+        $rateUrl = $this->urlGenerator->generate(
+            'app_home',
+            ['open' => $idea->getId()],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+
+        $subject = $this->translator->trans('email.new_rating.subject', ['%title%' => $idea->getTitle()]);
+
+        try {
+            $email = (new TemplatedEmail())
+                ->from($this->replyToEmail)
+                ->replyTo($this->replyToEmail)
+                ->to($recipientEmail)
+                ->subject($subject)
+                ->htmlTemplate('email/new_rating.html.twig')
+                ->context([
+                    'idea' => $idea,
+                    'rater' => $rater,
+                    'rateUrl' => $rateUrl,
+                ]);
+
+            $this->mailer->send($email);
+        } catch (\Exception $e) {
+            $this->logger->error(sprintf('Failed to send rating notification email: %s', $e->getMessage()), [
+                'exception' => $e,
+            ]);
+        }
+    }
 }
 

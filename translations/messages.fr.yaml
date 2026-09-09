@@ -174,6 +174,12 @@ email:
         intro: "Une nouvelle version de l'application (v%version%) est disponible."
         call_to_action: "Rendez-vous sur le site pour découvrir les nouveautés et améliorations :"
         button: "Accéder à l'application"
+    new_rating:
+        subject: "[Biz-Ideas] Nouvelle évaluation de votre idée : %title%"
+        title: "Nouvelle évaluation"
+        intro: "%rater% a ajouté une note ou un commentaire sur votre idée de business."
+        call_to_action: "Vous pouvez consulter son évaluation dès maintenant :"
+        button: "Voir l'idée"
     footer: "Cet email a été envoyé automatiquement depuis votre application Biz-Ideas."
 
 security:

@@ -210,11 +210,13 @@ class BusinessIdeaController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $isNewRating = false;
             if (!$rating) {
                 $rating = new Rating();
                 $rating->setBusinessIdea($idea);
                 $rating->setUser($user);
                 $this->entityManager->persist($rating);
+                $isNewRating = true;
             }
 
             $criteria = CriteriaManager::getRatedCriteria();
@@ -230,6 +232,10 @@ class BusinessIdeaController extends AbstractController
             $rating->setComment($comment);
 
             $this->entityManager->flush();
+
+            if ($isNewRating) {
+                $this->notificationService->notifyNewRating($idea, $user);
+            }
 
             $this->addFlash('success', 'app.success_rating_saved');
 
