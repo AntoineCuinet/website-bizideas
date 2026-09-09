@@ -1,10 +1,15 @@
 {
     "current": {
-        "version": "1.2.2",
-        "date": "2026-09-08",
-        "note": "Adding categories to ideas to sort them. Adding app tests and CI."
+        "version": "1.2.3",
+        "date": "2026-09-09",
+        "note": "Adding sticky to textarea. Upgrade exports style. Added email notification after rating an idea."
     },
     "history": [
+        {
+            "version": "1.2.2",
+            "date": "2026-09-08",
+            "note": "Adding categories to ideas to sort them. Adding app tests and CI."
+        },
         {
             "version": "1.2.1",
             "date": "2026-09-07",
