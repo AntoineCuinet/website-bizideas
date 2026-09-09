@@ -82,6 +82,28 @@
             border-left: 3px solid #cbd5e1;
         }
 
+        .files-section, .comments-section {
+            margin: 15px 0;
+            font-size: 12px;
+        }
+
+        .files-section a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .global-score-highlight {
+            font-size: 18px;
+            font-weight: bold;
+            color: #059669; /* Green to make it stand out */
+            background-color: #d1fae5;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -103,6 +125,14 @@
         }
         .clear {
             clear: both;
+        }
+        .crit-comment {
+            font-weight: normal;
+            font-style: italic;
+            font-size: 10px;
+            color: #64748b;
+            display: block;
+            margin-top: 3px;
         }
     </style>
 </head>
@@ -130,13 +160,49 @@
                         Créé par {{ idea.creator.displayName }} le {{ idea.createdAt|date("d/m/Y H:i") }}
                     </span>
                 </div>
+                {% if idea.categories|length > 0 %}
+                    <div style="margin-top: 5px;">
+                        {% for cat in idea.categories %}
+                            <span class="badge" style="background-color: #8b5cf6; margin-right: 4px;">{{ cat.name }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="global-score-highlight">
+                Note globale : {% if globalScore > 0 %}{{ globalScore }}/5{% else %}N/A{% endif %}
+            </div>
+            
+            <div style="font-size: 13px; margin-bottom: 15px; margin-left: 10px; color: #334155;">
+                {% for rd in item.ratingsData %}
+                    <div style="margin-bottom: 4px;">
+                        {{ rd.displayName }} : 
+                        {% if rd.score > 0 %}
+                            <strong style="color: #ea580c; font-size: 14px;">{{ rd.score }}/5 étoiles</strong>
+                        {% else %}
+                            <strong style="color: #94a3b8; font-size: 14px;">Non noté</strong>
+                        {% endif %}
+                    </div>
+                {% endfor %}
             </div>
 
             <div class="idea-desc">
                 {{ idea.description|app_markdown }}
             </div>
 
-            <h4 style="margin-bottom: 5px; color: #1e293b;">Détail des évaluations (Note globale: {% if globalScore > 0 %}{{ globalScore }}/5{% else %}N/A{% endif %})</h4>
+            {% if idea.attachmentFilenames|length > 0 %}
+                <div class="files-section">
+                    <strong>Fichiers liés :</strong>
+                    <ul>
+                        {% for filename in idea.attachmentFilenames %}
+                            {% set ext = filename|split('.')|last|upper %}
+                            <li><a href="{{ baseUrl }}/uploads/ideas/{{ filename }}">{{ filename }} ({{ ext }})</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <h4 style="margin-bottom: 5px; color: #1e293b;">Détail des évaluations</h4>
             <table>
                 <thead>
                     <tr>
@@ -165,6 +231,9 @@
                             <td class="score">
                                 {% if creatorRating and creatorRating.scoreFor(key) is not null %}
                                     {{ creatorRating.scoreFor(key) }} / 5
+                                    {% if creatorRating.commentFor(key) %}
+                                        <span class="crit-comment">{{ creatorRating.commentFor(key) }}</span>
+                                    {% endif %}
                                 {% else %}
                                     -
                                 {% endif %}
@@ -172,6 +241,9 @@
                             <td class="score">
                                 {% if otherRating and otherRating.scoreFor(key) is not null %}
                                     {{ otherRating.scoreFor(key) }} / 5
+                                    {% if otherRating.commentFor(key) %}
+                                        <span class="crit-comment">{{ otherRating.commentFor(key) }}</span>
+                                    {% endif %}
                                 {% else %}
                                     -
                                 {% endif %}
@@ -180,6 +252,23 @@
                     {% endfor %}
                 </tbody>
             </table>
+
+            {# General comments at the bottom #}
+            {% set generalComments = item.ratingsData|filter(rd => rd.comment) %}
+            
+            {% if generalComments|length > 0 %}
+                <div class="comments-section" style="margin-top: 20px; padding-top: 10px; border-top: 1px dashed #cbd5e1;">
+                    <h4 style="margin-top: 0; margin-bottom: 10px; color: #1e293b;">Commentaires généraux</h4>
+                    {% for rd in generalComments %}
+                        <div style="margin-bottom: 10px;">
+                            <strong>{{ rd.displayName }} :</strong>
+                            <div style="margin-top: 3px; color: #475569; background: #f8fafc; padding: 8px; border-radius: 4px;">
+                                {{ rd.comment|app_markdown }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
     {% else %}
         <p>{{ 'app.no_ideas'|trans }}</p>
