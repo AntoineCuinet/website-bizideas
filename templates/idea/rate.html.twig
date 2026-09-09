@@ -37,21 +37,31 @@
                 </div>
             </div>
 
+            {% set creatorRating = idea.ratingByUser(idea.creator) %}
             <div class="criteria-form-list">
                 {% for child in form %}
                     {% if child.vars.name starts with 'rating_' %}
+                        {% set criterionKey = child.vars.name|replace({'rating_': ''}) %}
                         <div class="criterion-field-row">
                             <div class="criterion-label-col">
                                 <label class="criterion-title-label">{{ child.vars.label|trans }}</label>
                                 <span class="criterion-help-text">{{ child.vars.help|trans }}</span>
                             </div>
                             <div class="criterion-input-col">
+                                {% if app.user.id != idea.creator.id %}
+                                    {% set creatorScore = creatorRating ? creatorRating.scoreFor(criterionKey) : null %}
+                                    {% if creatorScore is not null %}
+                                        <div class="creator-score-hint">
+                                            {{ 'rate.creator_score'|trans }} <strong>{{ creatorScore }} / 5</strong>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
                                 <div class="stars-radio-group">
                                     {% for radio in child %}
                                         <label class="star-radio-label">
                                             {{ form_widget(radio, {'attr': {
                                                 'data-action': 'change->live-rating-preview#update',
-                                                'data-criterion': child.vars.name|replace({'rating_': ''}),
+                                                'data-criterion': criterionKey,
                                                 'class': 'star-radio-input'
                                               }}) }}
                                             <span class="star-icon">★</span>
@@ -59,7 +69,6 @@
                                     {% endfor %}
                                 </div>
                                 
-                                {% set criterionKey = child.vars.name|replace({'rating_': ''}) %}
                                 {% set commentField = attribute(form, 'comment_' ~ criterionKey) %}
                                 <div class="criterion-comment-box">
                                     {{ form_widget(commentField) }}

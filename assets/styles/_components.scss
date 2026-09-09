@@ -308,6 +308,17 @@
     color: var(--text-secondary);
 }
 
+.creator-score-hint {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-bottom: 0.5rem;
+    text-align: right;
+    
+    strong {
+        color: var(--color-primary);
+    }
+}
+
 .stars-radio-group {
     display: flex;
     flex-direction: row-reverse; /* Allows DOM order sibling selectors ~ to highlight leftwards */
