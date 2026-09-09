@@ -19,7 +19,7 @@ export default class extends Controller {
         textarea.value = text.substring(0, start) + replacement + text.substring(end);
         
         // Focus and select the inserted text
-        textarea.focus();
+        textarea.focus({ preventScroll: true });
         if (selectedText) {
             textarea.setSelectionRange(start + before.length, start + before.length + selectedText.length);
         } else if (defaultText) {

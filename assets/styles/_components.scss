@@ -841,6 +841,9 @@
     border-top-right-radius: var(--radius-md);
     padding: 0.4rem 0.5rem;
     align-items: center;
+    position: sticky;
+    top: var(--header-height, 70px);
+    z-index: 9;
 
     @media (max-width: 576px) {
         gap: 0.3rem;

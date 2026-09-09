@@ -17,7 +17,7 @@ export default class extends Controller {
         this.originalContent = this.textareaTarget.value;
         this.viewContainerTarget.style.display = 'none';
         this.editContainerTarget.style.display = 'block';
-        this.textareaTarget.focus();
+        this.textareaTarget.focus({ preventScroll: true });
 
         // Trigger input event and immediately adjust height
         this.textareaTarget.style.height = 'auto';
