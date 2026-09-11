@@ -173,9 +173,9 @@
                                     <div class="accordion-item">
                                         <h3 class="accordion-header">
                                             <button type="button" 
-                                                    class="accordion-button" 
+                                                    class="accordion-button collapsed" 
                                                     data-accordion-target="collapse-info-{{ idea.id }}"
-                                                    aria-expanded="true" 
+                                                    aria-expanded="false" 
                                                     aria-controls="collapse-info-{{ idea.id }}"
                                                     data-action="click->accordion#toggle">
                                                 <span class="accordion-header-content">
@@ -186,7 +186,7 @@
                                                 </span>
                                             </button>
                                         </h3>
-                                        <div id="collapse-info-{{ idea.id }}" class="accordion-collapse show">
+                                        <div id="collapse-info-{{ idea.id }}" class="accordion-collapse">
                                             <div class="accordion-body">
                                                 <div class="modal-info-grid">
                                                     <div class="info-item">
@@ -205,9 +205,9 @@
                                     <div class="accordion-item">
                                         <h3 class="accordion-header">
                                             <button type="button" 
-                                                    class="accordion-button" 
+                                                    class="accordion-button collapsed" 
                                                     data-accordion-target="collapse-desc-{{ idea.id }}"
-                                                    aria-expanded="true" 
+                                                    aria-expanded="false" 
                                                     aria-controls="collapse-desc-{{ idea.id }}"
                                                     data-action="click->accordion#toggle">
                                                 <span class="accordion-header-content">
@@ -218,7 +218,7 @@
                                                 </span>
                                             </button>
                                         </h3>
-                                        <div id="collapse-desc-{{ idea.id }}" class="accordion-collapse show">
+                                        <div id="collapse-desc-{{ idea.id }}" class="accordion-collapse">
                                             <div class="accordion-body">
                                                 <div class="modal-desc-box">
                                                     {{ idea.description|app_markdown }}
@@ -318,94 +318,82 @@
                                         {% endif %}
                                     {% endfor %}
 
+                                    {% if commentsList is not empty %}
                                     <div class="accordion-item">
                                         <h3 class="accordion-header">
                                             <button type="button" 
-                                                    class="accordion-button{% if commentsList is empty %} collapsed{% endif %}" 
+                                                    class="accordion-button collapsed" 
                                                     data-accordion-target="collapse-comments-{{ idea.id }}"
-                                                    aria-expanded="{{ commentsList is not empty ? 'true' : 'false' }}" 
+                                                    aria-expanded="false" 
                                                     aria-controls="collapse-comments-{{ idea.id }}"
                                                     data-action="click->accordion#toggle">
                                                 <span class="accordion-header-content">
                                                     <span class="accordion-header-title">{{ 'app.modal_accordion.comments'|trans }}</span>
-                                                    {% if commentsList|length > 0 %}
-                                                        <span class="accordion-header-badge">{{ commentsList|length }}</span>
-                                                    {% endif %}
+                                                    <span class="accordion-header-badge">{{ commentsList|length }}</span>
                                                 </span>
                                                 <span class="accordion-chevron">
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                                 </span>
                                             </button>
                                         </h3>
-                                        <div id="collapse-comments-{{ idea.id }}" class="accordion-collapse{% if commentsList is not empty %} show{% endif %}">
+                                        <div id="collapse-comments-{{ idea.id }}" class="accordion-collapse">
                                             <div class="accordion-body">
-                                                {% if commentsList is not empty %}
-                                                    <div class="comments-list">
-                                                        {% for rData in commentsList %}
-                                                            <div class="comment-item">
-                                                                <div class="comment-header">
-                                                                    <strong>
-                                                                        {% if rData.email == app.user.email %}
-                                                                            {{ 'app.user_comment_author'|trans }}
-                                                                        {% else %}
-                                                                            {{ rData.displayName }}
-                                                                        {% endif %}
-                                                                    </strong>
-                                                                    <span class="comment-score">
-                                                                        {{ 'app.global_score_display'|trans({'%score%': rData.score}) }}
-                                                                    </span>
-                                                                </div>
-                                                                <div class="comment-body">{{ rData.comment|app_markdown }}</div>
+                                                <div class="comments-list">
+                                                    {% for rData in commentsList %}
+                                                        <div class="comment-item">
+                                                            <div class="comment-header">
+                                                                <strong>
+                                                                    {% if rData.email == app.user.email %}
+                                                                        {{ 'app.user_comment_author'|trans }}
+                                                                    {% else %}
+                                                                        {{ rData.displayName }}
+                                                                    {% endif %}
+                                                                </strong>
+                                                                <span class="comment-score">
+                                                                    {{ 'app.global_score_display'|trans({'%score%': rData.score}) }}
+                                                                </span>
                                                             </div>
-                                                        {% endfor %}
-                                                    </div>
-                                                {% else %}
-                                                    <div class="accordion-empty-state">
-                                                        <p>{{ 'app.modal_accordion.no_comments'|trans }}</p>
-                                                    </div>
-                                                {% endif %}
+                                                            <div class="comment-body">{{ rData.comment|app_markdown }}</div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    {% endif %}
 
+                                    {% if idea.attachmentFilenames is not empty %}
                                     <div class="accordion-item">
                                         <h3 class="accordion-header">
                                             <button type="button" 
-                                                    class="accordion-button{% if idea.attachmentFilenames is empty %} collapsed{% endif %}" 
+                                                    class="accordion-button collapsed" 
                                                     data-accordion-target="collapse-attachment-{{ idea.id }}"
-                                                    aria-expanded="{{ idea.attachmentFilenames is not empty ? 'true' : 'false' }}" 
+                                                    aria-expanded="false" 
                                                     aria-controls="collapse-attachment-{{ idea.id }}"
                                                     data-action="click->accordion#toggle">
                                                 <span class="accordion-header-content">
                                                     <span class="accordion-header-title">{{ 'idea.attachment.section_title'|trans }}</span>
-                                                    {% if idea.attachmentFilenames is not empty %}
-                                                        <span class="accordion-header-badge">{{ idea.attachmentFilenames|length }}</span>
-                                                    {% endif %}
+                                                    <span class="accordion-header-badge">{{ idea.attachmentFilenames|length }}</span>
                                                 </span>
                                                 <span class="accordion-chevron">
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                                 </span>
                                             </button>
                                         </h3>
-                                        <div id="collapse-attachment-{{ idea.id }}" class="accordion-collapse{% if idea.attachmentFilenames is not empty %} show{% endif %}">
+                                        <div id="collapse-attachment-{{ idea.id }}" class="accordion-collapse">
                                             <div class="accordion-body">
-                                                {% if idea.attachmentFilenames is not empty %}
-                                                    <div class="attachment-display">
-                                                        {% for filename in idea.attachmentFilenames %}
-                                                            <a href="{{ asset('uploads/ideas/' ~ filename) }}" target="_blank" rel="noopener noreferrer" class="attachment-link">
-                                                                <span class="attachment-link-text">{{ 'idea.attachment.open'|trans }}</span>
-                                                                <span class="attachment-link-filename">{{ filename|clean_filename }}</span>
-                                                            </a>
-                                                        {% endfor %}
-                                                    </div>
-                                                {% else %}
-                                                    <div class="accordion-empty-state">
-                                                        <p>{{ 'idea.attachment.no_attachment'|trans }}</p>
-                                                    </div>
-                                                {% endif %}
+                                                <div class="attachment-display">
+                                                    {% for filename in idea.attachmentFilenames %}
+                                                        <a href="{{ asset('uploads/ideas/' ~ filename) }}" target="_blank" rel="noopener noreferrer" class="attachment-link">
+                                                            <span class="attachment-link-text">{{ 'idea.attachment.open'|trans }}</span>
+                                                            <span class="attachment-link-filename">{{ filename|clean_filename }}</span>
+                                                        </a>
+                                                    {% endfor %}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    {% endif %}
                                 </div>
                             </div>
 
