@@ -101,8 +101,8 @@ app:
     modal_accordion:
         description: "Description du concept"
         business_model: "Modèle économique & Cible"
-        criteria: "Évaluation détaillée des critères"
-        comments: "Commentaires & Remarques"
+        criteria: "Évaluation des critères"
+        comments: "Commentaires"
         no_comments: "Aucun commentaire pour cette idée pour le moment."
 
 whats_new:
@@ -219,7 +219,7 @@ idea:
         open: "Ouvrir le fichier"
         remove: "Supprimer le fichier"
         remove_confirm: "Êtes-vous sûr de vouloir supprimer ce fichier ?"
-        section_title: "Pièce jointe"
+        section_title: "Pièces jointes"
         no_attachment: "Aucune pièce jointe pour cette idée."
     details_project: "Détails du projet"
     categories:
