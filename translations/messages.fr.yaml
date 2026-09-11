@@ -43,7 +43,7 @@ app:
     rank_number: "Rang #%rank%"
     details: "Détails de l'idée"
     status: "Statut"
-    revenue_model: "Modèle de revenus"
+    revenue_model: "Modèle économique"
     target_audience: "Public ciblé"
     stars: "étoiles"
     rate_this_idea: "Noter l'idée"
