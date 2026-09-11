@@ -29,15 +29,21 @@
 
     {{ form_start(form, {'attr': {'class': 'standard-form'}}) }}
         <div class="form-card">
+            {% set creatorRating = idea.ratingByUser(idea.creator) %}
             <div class="rating-header-sticky">
                 <h2>{{ 'rate.criteria_evaluation'|trans }}</h2>
-                <div class="live-score-preview-box">
-                    {{ 'app.rating_preview'|trans }} 
-                    <span class="preview-number" data-live-rating-preview-target="preview">-</span>
+                <div class="header-scores">
+                    {% if app.user.id != idea.creator.id and creatorGlobalScore is not null and creatorGlobalScore > 0 %}
+                        <div class="creator-global-score">
+                            {{ 'rate.creator_global_score'|trans }} <strong>{{ creatorGlobalScore }} / 5</strong>
+                        </div>
+                    {% endif %}
+                    <div class="live-score-preview-box">
+                        {{ 'app.rating_preview'|trans }} 
+                        <span class="preview-number" data-live-rating-preview-target="preview">-</span>
+                    </div>
                 </div>
             </div>
-
-            {% set creatorRating = idea.ratingByUser(idea.creator) %}
             <div class="criteria-form-list">
                 {% for child in form %}
                     {% if child.vars.name starts with 'rating_' %}

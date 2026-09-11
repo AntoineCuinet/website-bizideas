@@ -175,7 +175,7 @@ class BusinessIdeaController extends AbstractController
     }
 
     #[Route('/{id}/rate', name: 'app_idea_rate')]
-    public function rate(Request $request, BusinessIdea $idea): Response
+    public function rate(Request $request, BusinessIdea $idea, \App\Service\RatingService $ratingService): Response
     {
         $user = $this->getUser();
         if (!$user instanceof \App\Entity\User) {
@@ -242,9 +242,13 @@ class BusinessIdeaController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
+        $creatorRating = $idea->getRatingByUser($idea->getCreator());
+        $creatorGlobalScore = $creatorRating ? $ratingService->calculateRatingScore($creatorRating) : null;
+
         return $this->render('idea/rate.html.twig', [
             'form' => $form->createView(),
             'idea' => $idea,
+            'creatorGlobalScore' => $creatorGlobalScore,
         ]);
     }
 

@@ -249,6 +249,7 @@ rate:
     subtitle: "Attribuez votre évaluation sur les critères suivants pour cette idée."
     criteria_evaluation: "Évaluation des critères"
     creator_score: "Note du créateur :"
+    creator_global_score: "Note globale du créateur :"
 
 new_idea:
     subtitle: "Décrivez votre idée et réalisez votre auto-évaluation."
